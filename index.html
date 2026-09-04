@@ -2121,14 +2121,14 @@ body.is-account > section:not(#account){display:none}
     </div>
     <div class="test-r">
       <p class="test-cap" id="testCap">ИЦ «Сколково», улично-дорожная сеть</p>
-      <video class="is-on" src="videos/testing-streets.mp4" poster="images/testing/site-01.jpg"
-             muted loop playsinline preload="none"></video>
-      <video src="videos/testing-water.mp4" poster="images/testing/prud-skolkovo.jpg"
-             muted loop playsinline preload="none"></video>
-      <video src="videos/testing-air.mp4" poster="images/testing/setka-skolkovo.jpg"
-             muted loop playsinline preload="none"></video>
-      <video src="videos/testing-indoor.mp4" poster="images/testing/01_roboty-uborshiki-TC_1.jpg"
-             muted loop playsinline preload="none"></video>
+      <video class="is-on" src="videos/testing-streets.mp4"
+             muted loop playsinline preload="metadata"></video>
+      <video src="videos/testing-water.mp4"
+             muted loop playsinline preload="metadata"></video>
+      <video src="videos/testing-air.mp4"
+             muted loop playsinline preload="metadata"></video>
+      <video src="videos/testing-indoor.mp4"
+             muted loop playsinline preload="metadata"></video>
     </div>
     </div>
    </div>
@@ -3024,7 +3024,7 @@ var openWork=null,openModelCard=null;
      if(sh.tagName==='VIDEO') sh.pause();
     });
    });
-  },{rootMargin:'120px'}).observe(box);
+  },{rootMargin:'700px'}).observe(box);
  }
 })();
 
