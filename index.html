@@ -322,10 +322,14 @@ section{position:relative}
 .task-photo{width:calc(100% + var(--pad)*2);max-width:none;height:auto;aspect-ratio:4/3;
   object-fit:cover;border-radius:var(--r-s) var(--r-s) 0 0;
   margin:calc(var(--pad)*-1) calc(var(--pad)*-1) 16px}
-.task:nth-child(4n+1){background:var(--green)}
-.task:nth-child(4n+2){background:var(--mint)}
-.task:nth-child(4n+3){background:var(--sky)}
-.task:nth-child(4n+4){background:var(--pink)}
+.task:nth-child(8n+1){background:var(--green)}
+.task:nth-child(8n+2){background:var(--mint)}
+.task:nth-child(8n+3){background:var(--sky)}
+.task:nth-child(8n+4){background:var(--pink)}
+.task:nth-child(8n+5){background:#FFD9C2}
+.task:nth-child(8n+6){background:#E4D9FF}
+.task:nth-child(8n+7){background:#F5EFB0}
+.task:nth-child(8n+8){background:var(--sand)}
 .task h4{margin:0;font-size:26px;letter-spacing:-.035em;font-weight:500;line-height:1}
 .task p{margin:10px 0 0;font-size:15px;line-height:1.32;opacity:.68}
 @media(max-width:640px){
@@ -2836,7 +2840,11 @@ var TASKS=[
  {key:'cargo',t:'Перемещение грузов',d:'Паллеты и коробки едут по складу без погрузчика',img:'images/task-cargo.jpg'},
  {key:'line',t:'Сборку и сварку',d:'Повторяющиеся операции на производственной линии',img:'images/path-03.jpg'},
  {key:'service',t:'Уборку помещений',d:'Залы, коридоры и склады, в том числе ночью и в выходные',img:'images/path-02.jpg'},
- {key:'patrol',t:'Обход территории',d:'Съемка и показания там, где нужен постоянный контроль',img:'images/task-patrol.jpg'}
+ {key:'patrol',t:'Обход территории',d:'Съемка и показания там, где нужен постоянный контроль',img:'images/task-patrol.jpg'},
+ {key:'snow',t:'Уборка снега и мусора',d:'Дворы и тротуары чистые в любую погоду'},
+ {key:'bake',t:'Формовка выпечки',d:'Тесто и заготовки идут по линии без участия рук'},
+ {key:'print3d',t:'Печать архитектурных форм',d:'3D-печать бетоном малых форм и фасадных элементов'},
+ {key:'pipes',t:'Инспекция трубопроводов',d:'Осмотр труб изнутри без вскрытия и раскопок'}
 ];
 /* карточки продублированы шесть раз, поэтому работу определяем по data-work,
    а не по индексу: дубли в конце ленты открывают то же окно */
@@ -3490,7 +3498,7 @@ var CASES=[
    а не по индексу: дубли в конце ленты открывают то же окно */
 var cards=TASKS.concat(TASKS,TASKS).map(function(x){
  return '<button type="button" class="task" data-work="'+x.key+'">'+
-  '<img class="task-photo" src="'+x.img+'" alt="" width="900" height="675" loading="lazy" draggable="false">'+
+  (x.img?'<img class="task-photo" src="'+x.img+'" alt="" width="900" height="675" loading="lazy" draggable="false">':'')+
   '<div><h4>'+x.t+'</h4><p>'+x.d+'</p></div></button>';
 }).join('');
 document.getElementById('tape').innerHTML=cards+cards;
