@@ -431,8 +431,6 @@ body.is-catalog > section:not(#robots){display:none}
 .cp-chip.is-on{color:var(--white);box-shadow:inset 0 -1px 0 var(--green)}
 .cp-chip.is-on b{color:var(--green)}
 .cp-chip:focus-visible{outline:2px solid var(--green);outline-offset:3px}
-/* подсказка к выбранной группе роботов — простыми словами, под рядом чипов */
-.cp-hint{margin:-8px 0 22px;font-size:14px;line-height:1.4;color:var(--w-45);max-width:760px}
 
 /* второй уровень: задачи внутри выбранной категории — чипами под вкладками.
    Активный набран белым, чтобы не спорить с зеленой активной категорией */
@@ -455,11 +453,9 @@ body.is-catalog > section:not(#robots){display:none}
   transition:grid-template-rows .32s cubic-bezier(.2,.7,.3,1)}
 .cp-g.on .cp-g-list{grid-template-rows:1fr}
 .cp-g-in{overflow:hidden}
-.cp-v{display:block;width:100%;padding:8px 0;text-align:left;font-size:14px;line-height:1.25;
+.cp-v{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+  width:100%;padding:7px 0;text-align:left;font-size:14px;line-height:1.25;
   color:var(--w-70);transition:color .2s}
-.cp-v-t{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
-/* пояснение к сфере — мелко и приглушенно, чтобы список читался как список */
-.cp-v small{display:block;margin-top:3px;font-size:12px;line-height:1.3;color:var(--w-45)}
 .cp-v:last-child{padding-bottom:18px}
 .cp-v:hover{color:var(--white)}
 .cp-v.on{color:var(--green)}
@@ -2322,7 +2318,6 @@ body.is-account > section:not(#account){display:none}
     <h1 class="cp-title">Найдите<br>своего робота</h1>
   </div>
   <div class="cp-cats" id="cpCats"></div>
-  <p class="cp-hint" id="cpHint" hidden></p>
   <div class="cp-layout">
     <aside class="cp-side">
       <button type="button" class="cp-filters" id="cpFilters">Фильтры<b></b></button>
@@ -2802,61 +2797,6 @@ var CATALOG={
  "RusRobot GR-40":{type:"Портальный робот",kin:"Манипуляторы",industry:"Производство",maker:"ООО «Русский робот»",region:"Челябинская область",funcs:["Обслуживание станков"],exp:"Внедряется на предприятиях обрабатывающей и машиностроительной промышленности.",sp:[["Грузоподъемность номинальная","70 кг"],["Вылет консоли","1500 мм"],["Рабочая зона (по оси Х)","10120 мм"]]},
  "Birbi P-1":{type:"Портальный робот",kin:"Манипуляторы",industry:"Производство",maker:"ООО «Биайди Технолоджис Рус»",region:"Ярославская область",funcs:["Погрузка на логистический транспорт"],exp:"Внедрен на производствах с/х, электроники и приборостроения, легкой промышленности.",sp:[["Грузоподъемность номинальная","5 кг"],["Вылет консоли","1200 мм"],["Рабочая зона (по оси Х)","1610 мм"]]}
 };
-/* ---- два простых фильтра каталога ----
-   «Какой робот» собирается из форм-фактора и коллаборативности,
-   «Где применяется» — из сферы. Названия и подсказки — простыми словами,
-   без «форм-фактора» и «коллаборативных». У каждого робота есть оба
-   значения, поэтому любой выбор показывает всех подходящих и никого не теряет */
-var WHO_HINT={
- 'Манипуляторы за ограждением':'Промышленная рука-робот: сварка, сборка, укладка. Работает в клетке, без людей рядом',
- 'Манипуляторы рядом с людьми':'Те же руки-роботы, но безопасные: работают без ограждения и останавливаются при касании',
- 'Складские и логистические':'Возят паллеты, коробки и тележки по складу или цеху без водителя',
- 'Уборщики':'Метут, моют и убирают снег на улицах и в помещениях',
- 'Строительные':'Демонтаж, ремонт, печать зданий, управление кранами',
- 'Сельскохозяйственные':'Посев, уборка урожая, уход за животными, беспилотная техника для полей',
- 'Для осмотра и охраны':'Обходят территорию и трубы, снимают показания, ищут людей',
- 'Беспилотный транспорт':'Грузовики, тягачи, такси, трамвай и метро без водителя',
- 'Человекоподобные и робособаки':'Ходят на ногах: гуманоиды для работы рядом с людьми и робособаки для обхода объектов',
- 'Другие роботы':'Решения, которые не попали в остальные группы'
-};
-var WHO_ORDER=Object.keys(WHO_HINT);
-var WHO_BY_KIN={
- 'Складские роботы':'Складские и логистические','Уборщики':'Уборщики','Строительные':'Строительные',
- 'Сельскохозяйственные':'Сельскохозяйственные','Мониторинг и инспекция':'Для осмотра и охраны',
- 'Беспилотный транспорт':'Беспилотный транспорт','Биоморфные':'Человекоподобные и робособаки'
-};
-function whoOf(r){
- if(r.kin==='Манипуляторы') return r.collab?'Манипуляторы рядом с людьми':'Манипуляторы за ограждением';
- return WHO_BY_KIN[r.kin]||'Другие роботы';
-}
-var WHERE_HINT={
- 'Производство':'Цеха и линии: сборка, сварка, обслуживание станков',
- 'Склады и логистика':'Склады, распределительные центры, закрытые территории',
- 'Улицы и парки':'Уборка и обслуживание городских территорий',
- 'Магазины, офисы и помещения':'Торговые залы, офисы, гостиницы, любые помещения',
- 'Стройка':'Стройплощадки и здания',
- 'Сельское хозяйство':'Поля, теплицы, фермы',
- 'Дороги и перевозки':'Городские улицы и трассы, пассажиры и грузы',
- 'Промышленные объекты и инспекция':'Трубопроводы, станции, опасные и удалённые объекты',
- 'Другие объекты':'Сфера уточняется у производителя'
-};
-var WHERE_ORDER=Object.keys(WHERE_HINT);
-var WHERE_BY_IND={
- 'Производство':'Производство','Лаборатории и производство':'Производство','Промышленность и сервис':'Производство',
- 'Склады и логистика':'Склады и логистика','Склады и производство':'Склады и логистика','Закрытые территории':'Склады и логистика',
- 'Городское хозяйство':'Улицы и парки',
- 'Помещения и торговые объекты':'Магазины, офисы и помещения','Торговые объекты':'Магазины, офисы и помещения',
- 'Строительство':'Стройка',
- 'Сельское хозяйство':'Сельское хозяйство',
- 'Городские перевозки':'Дороги и перевозки','Магистральные перевозки':'Дороги и перевозки',
- 'Промышленные объекты':'Промышленные объекты и инспекция','Спасательные работы':'Промышленные объекты и инспекция'
-};
-function whereOf(r){
- var v=WHERE_BY_IND[r.industry];
- if(v) return v;
- return (!r.industry||/запросу/.test(r.industry))?'Другие объекты':r.industry;
-}
-
 ROBOTS.forEach(function(r){
  var t=REG[r.name]||{};
  /* каталог российских роботов — источник для тех, кого нет в REG и DETAIL */
@@ -2868,7 +2808,6 @@ ROBOTS.forEach(function(r){
  r.industry=t.industry||c.industry||'по\u00a0запросу';
  r.origin='по\u00a0запросу'; r.price=c.price||'по\u00a0запросу'; r.region=c.region||'по\u00a0запросу';
  r.owner='Робопортал Москвы · данные демонстрационные';
- r.who=whoOf(r); r.where=whereOf(r);   /* значения двух фильтров каталога */
  r.kind=KIND_FIX[r.name]||KIND[r.cat]||'решение';
  /* в реестре пока никто: в таблице этих отметок нет, выдавать за
     включенные нельзя. Проставьте true тем, кто действительно вошел */
@@ -3335,11 +3274,9 @@ var openWork=null,openModelCard=null;
  });
 })();
 
-/* ---- раздел «роботы»: каталог с двумя простыми фильтрами ----
-   Сверху чипы «какой робот» — понятные группы с подсказкой под рядом,
-   слева «где применяется» — сферы с пояснениями, плюс поиск.
-   У каждого робота есть оба значения, поэтому любой выбор показывает
-   всех подходящих и никого не теряет. */
+/* ---- раздел «роботы»: каталог с двухуровневым фильтром ----
+   Первый уровень — категория из таблицы реестра, второй — задача внутри
+   категории. Плюс поиск, отметка реестра и три выпадающих списка. */
 (function(){
  var page=document.getElementById('robots');
  if(!page) return;
@@ -3358,46 +3295,43 @@ var openWork=null,openModelCard=null;
   if(a>=2&&a<=4&&(b<12||b>14)) return 'решения';
   return 'решений'; }
 
- var state={who:'Все',where:'Все',q:''};
- var open={where:true};   /* единственная группа слева сразу раскрыта */
- var hint=document.getElementById('cpHint');
+ var CATS=['Промышленные','Сервисные','Транспортные'];
+ var state={cat:'Все',sub:'Все',q:'',reg:false,collab:false,kin:'Все',ind:'Все'};
+ var open={};       /* какие группы фильтров раскрыты */
 
- function inWho(){ return state.who==='Все'?ROBOTS
-   :ROBOTS.filter(function(r){return r.who===state.who}); }
+ function inCat(){ return state.cat==='Все'?ROBOTS
+   :ROBOTS.filter(function(r){return r.cat===state.cat}); }
  function list(){
   var q=state.q.trim().toLowerCase();
-  return inWho().filter(function(r){
-   if(state.where!=='Все'&&r.where!==state.where) return false;
-   if(q){ var hay=(r.name+' '+r.d+' '+(r.use||'')+' '+r.maker+' '+(r.kin||'')+' '+(r.type||'')+' '+(r.industry||'')+' '+(r.who||'')+' '+(r.where||'')).toLowerCase();
+  return inCat().filter(function(r){
+   if(state.sub!=='Все'&&(r.sub||[]).indexOf(state.sub)<0) return false;
+   if(state.reg&&!r.registry) return false;
+   if(state.collab&&!r.collab) return false;
+   if(state.kin!=='Все'&&r.kin!==state.kin) return false;
+   if(state.ind!=='Все'&&r.industry!==state.ind) return false;
+   if(q){ var hay=(r.name+' '+r.d+' '+(r.use||'')+' '+r.maker+' '+(r.kin||'')+' '+(r.type||'')+' '+(r.industry||'')).toLowerCase();
           if(hay.indexOf(q)<0) return false; }
    return true;
   });
  }
 
- /* чипы «какой робот»: порядок фиксированный, чтобы группы не прыгали,
-    пустые группы не рисуем. Подсказка к выбранной группе — строкой под рядом */
  function drawCats(){
-  var all=[['Все','Все роботы',ROBOTS.length]].concat(WHO_ORDER.map(function(w){
-    return [w,w,ROBOTS.filter(function(r){return r.who===w}).length]; })
-   .filter(function(a){ return a[2]>0; }));
+  var all=[['Все','Все роботы',ROBOTS.length]].concat(CATS.map(function(c){
+    return [c,c,ROBOTS.filter(function(r){return r.cat===c}).length]; }));
   cats.innerHTML=all.map(function(a){
-   var h=WHO_HINT[a[0]]||'';
-   return '<button type="button" class="cp-chip'+(state.who===a[0]?' is-on':'')+
-    '" data-who="'+esc(a[0])+'"'+(h?' title="'+esc(h)+'"':'')+'>'+esc(a[1])+'<b>'+a[2]+'</b></button>'; }).join('');
-  if(hint){
-   var t=state.who==='Все'?'':(WHO_HINT[state.who]||'');
-   hint.textContent=t; hint.hidden=!t;
-  }
+   return '<button type="button" class="cp-chip'+(state.cat===a[0]?' is-on':'')+
+    '" data-cat="'+esc(a[0])+'">'+esc(a[1])+'<b>'+a[2]+'</b></button>'; }).join('');
  }
 
- /* задачи (SUBS) фильтром больше не выносятся: теги есть не у всех моделей,
-    они остаются только подписью под названием на плитке */
+ /* второй уровень — задачи внутри выбранной категории. Первым чипом
+    «все», дальше задачи по убыванию числа решений. Для «всех роботов»
+    ряд не рисуем: одиннадцать чипов в две строки только шумят */
+ function labelOf(k){ return SUBS[k]?SUBS[k][0]:k; }
 
- /* значения группы считаем по выбранной группе роботов: пустых пунктов не
-    будет. Порядок — по списку сфер, остальное по числу решений.
+ /* значения группы считаем по текущей категории: пустых пунктов не будет.
     Выбор одиночный — повторный клик снимает фильтр */
- function values(field,order){
-  var pool=inWho(), out=[];
+ function values(field){
+  var pool=inCat(), out=[];
   pool.forEach(function(r){
    var v=r[field];
    (Array.isArray(v)?v:[v]).forEach(function(x){
@@ -3407,42 +3341,57 @@ var openWork=null,openModelCard=null;
     if(hit) hit.n++; else out.push({v:x,n:1});
    });
   });
-  out.sort(function(a,b){
-   var ia=order?order.indexOf(a.v):-1, ib=order?order.indexOf(b.v):-1;
-   if(ia<0) ia=999; if(ib<0) ib=999;
-   return ia-ib||b.n-a.n||a.v.localeCompare(b.v,'ru'); });
+  out.sort(function(a,b){ return b.n-a.n||a.v.localeCompare(b.v,'ru'); });
   return out;
  }
 
- /* пункт группы: название со счетчиком и пояснение простыми словами */
- function group(key,label,vals,cur,hints){
+ function group(key,label,vals,cur,name){
   if(!vals.length) return '';
   var on=open[key]||false;
   return '<div class="cp-g'+(on?' on':'')+'" data-g="'+key+'">'+
    '<button type="button" class="cp-g-h">'+esc(label)+'<i>+</i></button>'+
    '<div class="cp-g-list"><div class="cp-g-in">'+
     vals.map(function(x){
-     var h=hints&&hints[x.v];
      return '<button type="button" class="cp-v'+(cur===x.v?' on':'')+'" data-f="'+key+
-      '" data-v="'+esc(x.v)+'"><span class="cp-v-t">'+esc(x.v)+'<b>'+x.n+'</b></span>'+
-      (h?'<small>'+esc(h)+'</small>':'')+'</button>';
+      '" data-v="'+esc(x.v)+'">'+esc(name?name(x.v):x.v)+'<b>'+x.n+'</b></button>';
     }).join('')+
    '</div></div></div>';
  }
 
  function drawSide(){
-  /* одна ось слева: где робот будет работать. Форм-фактор ушел в чипы
-     сверху, коллаборативность — в группу «манипуляторы рядом с людьми».
-     Задачи и отметка реестра фильтрами больше не выносятся: теги задач
-     есть не у всех моделей, а реестр пока пуст. Производителя ищут строкой */
-  side.innerHTML=group('where','Где применяется',values('where',WHERE_ORDER),state.where,WHERE_HINT);
-  var picked=state.where!=='Все'?1:0;
+  var pool=inCat();
+  var regN=pool.filter(function(r){return r.registry}).length;
+  /* коллаборативность — свойство робота, а не его вид: отдельный
+     переключатель, как отметка реестра */
+  var colN=pool.filter(function(r){return r.collab}).length;
+  side.innerHTML=
+   /* три оси отбора: чем робот является, где стоит и что делает.
+      Производителя фильтром не выносим — на семнадцать моделей приходится
+      почти столько же производителей, отбор по нему ничего не сужает.
+      Найти по производителю по-прежнему можно строкой поиска */
+   group('kin','Тип робота',values('kin'),state.kin)+
+   group('ind','Где работает',values('industry'),state.ind)+
+   group('sub','Что делает',values('sub'),state.sub,labelOf)+
+   (colN?'<div class="cp-g'+(open.collab?' on':'')+'" data-g="collab">'+
+     '<button type="button" class="cp-g-h">Работа рядом с людьми<i>+</i></button>'+
+     '<div class="cp-g-list"><div class="cp-g-in">'+
+      '<button type="button" class="cp-v'+(state.collab?' on':'')+'" data-f="collab" data-v="1">'+
+       'Только работающие рядом с людьми<b>'+colN+'</b></button>'+
+     '</div></div></div>':'')+
+   (regN?'<div class="cp-g'+(open.reg?' on':'')+'" data-g="reg">'+
+     '<button type="button" class="cp-g-h">Реестр Москвы<i>+</i></button>'+
+     '<div class="cp-g-list"><div class="cp-g-in">'+
+      '<button type="button" class="cp-v'+(state.reg?' on':'')+'" data-f="reg" data-v="1">'+
+       'Только из реестра<b>'+regN+'</b></button>'+
+     '</div></div></div>':'');
+  var picked=(state.sub!=='Все')+(state.kin!=='Все')+(state.ind!=='Все')+
+             (state.reg?1:0)+(state.collab?1:0);
   filtersBtn.innerHTML='Фильтры<b>'+(picked||'')+'</b>';
  }
 
  /* задача решения — короткая строка под названием */
  function taskOf(r){
-  var k=(r.sub||[])[0];
+  var k=(state.sub!=='Все'&&(r.sub||[]).indexOf(state.sub)>=0)?state.sub:(r.sub||[])[0];
   return (k&&SUBS[k]&&SUBS[k][0])||r.type||r.cat;
  }
 
@@ -3477,10 +3426,9 @@ var openWork=null,openModelCard=null;
 
  cats.addEventListener('click',function(e){
   var b=e.target.closest('.cp-chip'); if(!b) return;
-  state.who=b.getAttribute('data-who');
-  /* сферы пересчитываются под новую группу — прежний выбор снимаем,
-     иначе можно остаться с пустой выдачей */
-  state.where='Все';
+  state.cat=b.getAttribute('data-cat'); state.sub='Все';
+  state.kin='Все'; state.ind='Все';
+  state.reg=false; state.collab=false;
   draw();
  });
  side.addEventListener('click',function(e){
@@ -3488,7 +3436,9 @@ var openWork=null,openModelCard=null;
   if(h){ var k=h.parentNode.getAttribute('data-g'); open[k]=!open[k]; return drawSide(); }
   var v=e.target.closest('.cp-v'); if(!v) return;
   var f=v.getAttribute('data-f'), val=v.getAttribute('data-v');
-  state[f]=state[f]===val?'Все':val;
+  if(f==='reg') state.reg=!state.reg;
+  else if(f==='collab') state.collab=!state.collab;
+  else state[f]=state[f]===val?'Все':val;
   draw();
  });
  filtersBtn.addEventListener('click',function(){ sideBox.classList.toggle('is-open'); });
