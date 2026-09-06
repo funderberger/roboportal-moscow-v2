@@ -771,19 +771,30 @@ body.is-analytics > section:not(#analytics){display:none}
 
 /* окно исследования */
 .ar-dir{margin:0;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
-.ar-name{margin:12px 0 0;font-size:clamp(24px,3vw,44px);line-height:1.02;
+/* мета-строка статьи: тип зеленым, дальше автор, дата и объем через точки */
+.ar-meta{margin:0;display:flex;flex-wrap:wrap;align-items:baseline;row-gap:6px;
+  font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--w-45)}
+.ar-meta span+span::before{content:"·";margin:0 10px;color:var(--w-16)}
+.ar-meta .is-dir{color:var(--green)}
+.ar-name{margin:14px 0 0;font-size:clamp(26px,3vw,44px);line-height:1.04;
   letter-spacing:-.035em;font-weight:500}
-.ar-desc{margin:16px 0 0;max-width:64ch;font-size:clamp(16px,1.3vw,20px);
-  line-height:1.35;color:var(--w-70)}
-.ar-cover{margin:22px 0 0;border-radius:var(--r-s);overflow:hidden;
-  border:1px solid var(--w-08);aspect-ratio:16/7;background:var(--coal)}
+.ar-desc{margin:14px 0 0;max-width:64ch;font-size:clamp(16px,1.3vw,19px);
+  line-height:1.5;color:var(--w-70)}
+.ar-cta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:22px}
+.ar-cover{margin:26px 0 0;border-radius:var(--r-s);overflow:hidden;
+  border:1px solid var(--w-08);aspect-ratio:16/8;background:var(--coal)}
 .ar-cover img{width:100%;height:100%;object-fit:cover}
-.ar-list{margin:0;padding:0;list-style:none;display:grid;gap:9px}
-.ar-list li{position:relative;padding-left:16px;font-size:15px;line-height:1.35;color:var(--w-70)}
-.ar-list li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;
+/* разделы статьи отбиты линейками, заголовки — мелким капсом */
+.ar-sec{margin-top:clamp(28px,3vw,40px);padding-top:22px;border-top:1px solid var(--w-08)}
+.ar-h{margin:0 0 16px;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--w-45)}
+.ar-list{margin:0;padding:0;list-style:none;display:grid;gap:12px}
+.ar-list li{position:relative;padding-left:18px;font-size:16px;line-height:1.5;color:var(--w-70)}
+.ar-list li::before{content:"";position:absolute;left:0;top:10px;width:6px;height:6px;
   border-radius:50%;background:var(--green)}
-.ar-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
-.ar-note{margin:12px 0 0;font-size:13px;line-height:1.4;color:var(--w-45)}
+.ar-chips{display:flex;flex-wrap:wrap;gap:8px}
+.ar-chips span{padding:7px 14px;border-radius:999px;border:1px solid var(--w-16);
+  font-size:13.5px;color:var(--w-70)}
+.ar-note{margin:14px 0 0;font-size:13px;line-height:1.4;color:var(--w-45)}
 
 @media(max-width:1180px){.an-grid{grid-template-columns:1fr 1fr}}
 /* на узком экране три группы значений заняли бы экран до первой карточки,
@@ -4352,33 +4363,33 @@ var RESEARCH=[
  }
  function open(slug,from){
   var r=bySlug(slug); if(!r||!dlg.showModal) return;
+    /* карточка как статья: мета, заголовок, лид, скачивание, обложка,
+     главные выводы и темы. Оглавление и паспорт убраны — читателю
+     нужны суть и файл, а не опись содержимого */
+  var facts=[r.dir];
+  if(r.author&&r.author!=='Не указан') facts.push(r.author);
+  facts.push(r.date);
+  facts.push(r.pages+' стр · ~'+(r.rt||10)+' мин чтения');
+  var chips=[].concat(r.rtypes||[],r.ind||[],r.scen||[],r.tags||[])
+   .filter(function(v,i,a){ return v&&a.indexOf(v)===i; });
   var body=
-   '<p class="ar-dir">'+esc(r.dir)+'</p>'+
+   '<p class="ar-meta">'+facts.map(function(x,i){
+     return '<span'+(i?'':' class="is-dir"')+'>'+esc(x)+'</span>'; }).join('')+'</p>'+
    '<h2 class="ar-name">'+esc(r.title)+'</h2>'+
    '<p class="ar-desc">'+esc(r.desc)+'</p>'+
+   '<div class="ar-cta">'+(r.file
+     ?'<a class="btn btn-green" href="'+esc(r.file)+'" download>Скачать исследование, pdf →</a>'
+     :'<a class="btn btn-green" href="mailto:roboty@cluster.mos.ru?subject='+encodeURIComponent('Запрос исследования: '+r.title)+'">Скачать исследование, pdf →</a>')+'</div>'+
    '<div class="ar-cover"><img src="'+esc(r.cover)+'" alt="" loading="lazy"></div>'+
-   box('Главные выводы','<ul class="ar-list">'+r.findings.map(function(x){
-     return '<li>'+esc(x)+'</li>'; }).join('')+'</ul>'+
-     (r.srcCited===false?'<p class="ar-note">Оценки приведены без ссылок на внешние источники</p>':''))+
-   box('Что внутри','<ul class="ar-list">'+r.structure.map(function(x){
-     return '<li>'+esc(x)+'</li>'; }).join('')+'</ul>')+
-   box('Паспорт документа','<div class="tt">'+[
-     ['Тип исследования',r.dir],
-     ['Вид роботов',r.rtypes.join(', ')],
-     ['Где применяется',(r.ind||[]).join(', ')],
-     ['Сценарий применения',(r.scen||[]).join(', ')],
-     ['Автор',r.author&&r.author!=='Не указан'?r.author:'По запросу'],
-     ['Дата',r.date],
-     ['Объем',r.pages+' стр.'],
-     /* в темах оставляем только то, чего нет в отрасли и сценарии */
-     ['Темы',r.tags.filter(function(t){
-       return (r.ind||[]).indexOf(t)<0&&(r.scen||[]).indexOf(t)<0; }).join(', ')]
-    ].filter(function(p){ return p[1]; }).map(function(p){
-     return '<div><span>'+esc(p[0])+'</span><b>'+esc(p[1])+'</b></div>'; }).join('')+'</div>');
-  /* скачать исследование: файл, если он выложен, иначе запрос письмом */
-  body+='<div class="ar-cta">'+(r.file
-    ?'<a class="btn btn-green" href="'+esc(r.file)+'" download>Скачать исследование, pdf →</a>'
-    :'<a class="btn btn-green" href="mailto:roboty@cluster.mos.ru?subject='+encodeURIComponent('Запрос исследования: '+r.title)+'">Скачать исследование, pdf →</a>')+'</div>';
+   '<section class="ar-sec"><h3 class="ar-h">Главное из исследования</h3>'+
+    '<ul class="ar-list">'+r.findings.map(function(x){
+      return '<li>'+esc(x)+'</li>'; }).join('')+'</ul>'+
+    (r.srcCited===false?'<p class="ar-note">Оценки приведены без ссылок на внешние источники</p>':'')+
+   '</section>'+
+   '<section class="ar-sec"><h3 class="ar-h">Темы исследования</h3>'+
+    '<div class="ar-chips">'+chips.map(function(c){
+      return '<span>'+esc(c)+'</span>'; }).join('')+'</div></section>';
+
 
   dlg.innerHTML='<div class="tdlg"><div class="tdlg-box">'+
    '<div class="tdlg-top"><span class="tbox-h" style="margin:0">Исследование</span>'+
