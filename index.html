@@ -782,6 +782,7 @@ body.is-analytics > section:not(#analytics){display:none}
 .ar-list li{position:relative;padding-left:16px;font-size:15px;line-height:1.35;color:var(--w-70)}
 .ar-list li::before{content:"";position:absolute;left:0;top:8px;width:5px;height:5px;
   border-radius:50%;background:var(--green)}
+.ar-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:24px}
 .ar-note{margin:12px 0 0;font-size:13px;line-height:1.4;color:var(--w-45)}
 
 @media(max-width:1180px){.an-grid{grid-template-columns:1fr 1fr}}
@@ -4374,6 +4375,10 @@ var RESEARCH=[
        return (r.ind||[]).indexOf(t)<0&&(r.scen||[]).indexOf(t)<0; }).join(', ')]
     ].filter(function(p){ return p[1]; }).map(function(p){
      return '<div><span>'+esc(p[0])+'</span><b>'+esc(p[1])+'</b></div>'; }).join('')+'</div>');
+  /* скачать исследование: файл, если он выложен, иначе запрос письмом */
+  body+='<div class="ar-cta">'+(r.file
+    ?'<a class="btn btn-green" href="'+esc(r.file)+'" download>Скачать исследование, pdf →</a>'
+    :'<a class="btn btn-green" href="mailto:roboty@cluster.mos.ru?subject='+encodeURIComponent('Запрос исследования: '+r.title)+'">Скачать исследование, pdf →</a>')+'</div>';
 
   dlg.innerHTML='<div class="tdlg"><div class="tdlg-box">'+
    '<div class="tdlg-top"><span class="tbox-h" style="margin:0">Исследование</span>'+
