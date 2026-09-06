@@ -137,16 +137,19 @@ section{position:relative}
 /* тень нужна белому тексту поверх кадра, но она наследуется внутрь кнопок,
    где темная надпись лежит на светлой заливке и от нее только грязнится */
 .hero-slug .btn{text-shadow:none}
-.hero-slug .h-display{margin-bottom:clamp(4px,.5vw,8px)}
+/* заголовок и кнопка в один ряд по нижней линии; шрифт чуть меньше,
+   чтобы заголовок держался в двух строках */
+.hero-row{display:flex;align-items:flex-end;justify-content:space-between;gap:20px 32px;flex-wrap:wrap}
+.hero-slug .h-display{margin-bottom:0;font-size:clamp(30px,4.6vw,78px)}
 .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
 /* низ героя: подпись слева, кнопка справа на одной линии — так блок текста
    опускается к нижнему краю, а не висит по центру кадра */
 .hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:20px 32px;flex-wrap:wrap}
 .hero-bottom .lead{margin:0;align-self:center;flex:1;min-width:min(100%,320px);max-width:640px}
-.hero-cta.is-corner{margin:18px 0 0 auto;justify-content:flex-end;flex:none}
+.hero-cta.is-corner{margin:0 0 6px auto;justify-content:flex-end;flex:none}
 @media(max-width:640px){
-  .hero-bottom{flex-direction:column;align-items:stretch}
-  .hero-cta.is-corner{margin-top:22px}
+  .hero-row{flex-direction:column;align-items:stretch}
+  .hero-cta.is-corner{margin:22px 0 0}
 }
 .hero-badge{position:absolute;top:clamp(20px,3vw,40px);right:clamp(20px,3vw,40px);z-index:3;
   border:1px solid var(--w-16);border-radius:999px;padding:9px 17px;font-size:13px;color:var(--w-70);
@@ -1963,8 +1966,8 @@ body.is-account > section:not(#account){display:none}
       <video src="videos/hero-main-v2.mp4" autoplay muted loop playsinline preload="auto"></video>
     </div>
     <div class="hero-slug">
-      <h1 class="h-display">Строим будущее<br>российской робототехники</h1>
-      <div class="hero-bottom">
+      <div class="hero-row">
+        <h1 class="h-display">Строим будущее<br>российской робототехники</h1>
         <div class="hero-cta is-corner">
           <a href="#robots" class="btn btn-green">Смотреть роботов</a>
         </div>
