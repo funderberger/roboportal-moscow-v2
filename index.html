@@ -277,62 +277,61 @@ section{position:relative}
 .obj-chip.on{background:var(--green);border-color:var(--green);color:#06110B}
 .obj-chip:focus-visible{outline:2px solid var(--green);outline-offset:3px}
 
-/* ---------- что можно поручить роботу ----------
-   Дорожка прокрутки: кадр с заголовком и лентой приклеен, лента едет
-   влево по мере прокрутки страницы */
-.tasks{position:relative;padding:0}
-.tgal-runway{position:relative}
-.tgal-stick{position:sticky;top:0;height:100vh;padding-top:var(--head-h);
-  display:flex;flex-direction:column;
-  justify-content:center;gap:clamp(18px,3vh,40px);overflow:hidden}
-.tasks-head{width:100%;margin:0;padding:0 var(--gut)}
-.tasks-head .sec-h{max-width:none}
-.tgal-rail{overflow:hidden;min-width:0;padding-left:var(--gut)}
-.tgal-track{display:flex;align-items:stretch;gap:clamp(14px,1.6vw,22px);
-  width:max-content;margin:0;padding:0;list-style:none;will-change:transform}
-/* карточки не гасим: активную отмечает рамка в цвете, остальные читаются
-   полностью — затемненные выглядели выключенными */
-.tgal-card{flex:0 0 auto;width:clamp(300px,30vw,420px);cursor:pointer;
-  display:flex;flex-direction:column;padding:clamp(18px,1.7vw,26px);
-  border:1px solid var(--w-08);border-radius:var(--r);background:var(--coal);
-  transition:border-color .35s,background .35s}
-/* выбранную карточку отмечает только зеленая рамка и фон на тон темнее */
-.tgal-card.is-on{border-color:var(--green);background:var(--ink)}
-.tgal-card:hover{border-color:var(--w-16)}
-.tgal-card.is-on:hover{border-color:var(--green)}
-.tgal-t{margin:0;font-size:clamp(20px,1.8vw,27px);line-height:1.06;letter-spacing:-.03em;
-  font-weight:600;color:var(--white)}
-.tgal-env{margin:10px 0 0;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--w-45)}
-.tgal-shot{position:relative;margin:clamp(16px,1.8vw,26px) 0;
-  height:clamp(150px,13vw,190px);overflow:hidden}
-.tgal-shot img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-.tgal-lb{margin:0 0 6px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-  font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
-.tgal-list{margin:auto 0 0;padding:0;list-style:none;display:grid}
-.tgal-list li{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
-  padding:9px 0;border-top:1px solid var(--w-08)}
-.tgal-card.is-on .tgal-list li:hover b{color:var(--green)}
-.tgal-list b{font-size:14.5px;font-weight:500;color:var(--white)}
-.tgal-list em{font-style:normal;font-size:12.5px;color:var(--w-45);text-align:right}
-/* последняя плитка ленты — переход в каталог */
-.tgal-card.tgal-cta,.tgal-card.tgal-cta.is-on{background:var(--green);border-color:var(--green);padding:0}
-.tgal-cta a{position:relative;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;height:100%;padding:clamp(18px,1.7vw,26px);color:#06110B;text-align:center}
-.tgal-cta-t{font-size:clamp(30px,3vw,46px);line-height:1.04;letter-spacing:-.03em;font-weight:600}
-.tgal-cta-n{margin-top:14px;font-size:clamp(16px,1.25vw,18px);color:rgba(6,17,11,.72)}
-/* стрелка вынесена в правый верхний угол, текст остается по центру плитки */
-.tgal-cta-go{position:absolute;top:clamp(18px,1.7vw,26px);right:clamp(18px,1.7vw,26px);
-  margin:0;width:48px;height:48px;border-radius:999px;
-  display:grid;place-items:center;background:#06110B;color:var(--green);font-size:18px}
-/* на узком экране и без анимаций — обычный вертикальный список */
-.tgal--flat .tgal-runway{height:auto}
-.tgal--flat .tgal-stick{position:static;height:auto;display:block;padding:clamp(50px,7vw,110px) 0}
-.tgal--flat .tgal-rail{overflow:visible;padding:0 var(--gut)}
-.tgal--flat .tgal-track{width:auto;flex-direction:column;transform:none!important}
-.tgal--flat .tgal-card{width:100%;opacity:1}
-/* на узком экране список остается прежним: карточки роботов — только в ленте */
-.tgal--flat .tgal-more{display:none}
+/* ---------- задачи предприятия: бегущая лента карточек ---------- */
+.tasks{position:relative;padding:clamp(50px,7vw,110px) 0;overflow:hidden}
+/* текст уходит вправо, слева стоит робот — видна только его передняя половина,
+   вторая уезжает за край секции (ее обрезает overflow) */
+.tasks-head{padding:0 var(--gut) 0 0;margin-bottom:34px;margin-left:auto;max-width:min(820px,62vw)}
+/* секция режет все, что выше ее края (overflow:hidden), поэтому робот
+   стоит с небольшим отступом сверху — иначе поворот на 10° срезает
+   красный флажок на антенне */
+.tasks-robot{position:absolute;left:0;top:clamp(16px,2vw,34px);z-index:3;
+  width:clamp(180px,21vw,330px);transform:translateX(-26%) rotate(10deg);transform-origin:50% 55%;
+  pointer-events:none;user-select:none}
+/* css-анимация — запасной вариант, если скрипт не отработал; при живом
+   скрипте ход ленты считает rAF, чтобы ее можно было тащить курсором.
+   touch-action:pan-y оставляет вертикальную прокрутку странице */
+/* фильтр по объекту: подсказывает, с чего начать, если задача еще не
+   сформулирована. Выбранный объект гасит в ленте задачи не из его набора */
+/* подводка отбита от заголовка, чипы — от подводки: три строки подряд
+   без отступов слипались в одну простыню */
+.tasks-head .lead{margin-top:18px;max-width:52ch}
+.tasks-objs{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:26px}
+.obj-chip{padding:11px 22px;border-radius:999px;border:1px solid var(--w-16);
+  font-size:15px;letter-spacing:-.015em;color:var(--w-70);transition:.22s}
+.obj-chip:hover{border-color:var(--green);color:var(--green)}
+.obj-chip.on{background:var(--green);border-color:var(--green);color:#06110B}
+.obj-chip:focus-visible{outline:2px solid var(--green);outline-offset:3px}
+/* задачи не из выбранного объекта не убираем, а приглушаем: лента едет
+   без разрывов, и видно, что выбор можно снять */
+.task.is-off{opacity:.22;filter:saturate(.4)}
+.tape{position:relative;z-index:1;display:flex;gap:12px;width:max-content;
+  animation:run 44s linear infinite;cursor:grab;touch-action:pan-y}
+.tape.is-drag{cursor:grabbing;user-select:none}
+/* карточка работы — кнопка: открывает окно подбора, доступна с клавиатуры */
+.task{--pad:24px;flex:none;width:300px;border-radius:var(--r-s);padding:var(--pad);
+  display:flex;flex-direction:column;color:#06110B;text-align:left;
+  transition:transform .3s cubic-bezier(.2,.7,.3,1)}
+.task{transition:transform .3s cubic-bezier(.2,.7,.3,1),opacity .35s,filter .35s}
+.task:hover{transform:translateY(-4px)}
+.task:focus-visible{outline:2px solid var(--white);outline-offset:3px}
+/* кадр во всю карточку, как в цепочке шагов: отрицательные поля съедают
+   внутренний отступ, поэтому фото упирается в края, а верхний радиус
+   повторяет радиус карточки. height:auto обязателен — иначе атрибут height
+   у <img> перебивает aspect-ratio */
+.task-photo{width:calc(100% + var(--pad)*2);max-width:none;height:auto;aspect-ratio:4/3;
+  object-fit:cover;border-radius:var(--r-s) var(--r-s) 0 0;
+  margin:calc(var(--pad)*-1) calc(var(--pad)*-1) 16px}
+.task:nth-child(4n+1){background:var(--green)}
+.task:nth-child(4n+2){background:var(--mint)}
+.task:nth-child(4n+3){background:var(--sky)}
+.task:nth-child(4n+4){background:var(--pink)}
+.task h4{margin:0;font-size:26px;letter-spacing:-.035em;font-weight:500;line-height:1}
+.task p{margin:10px 0 0;font-size:15px;line-height:1.32;opacity:.68}
+@media(max-width:640px){
+  .tasks-head{margin-left:0;max-width:none;padding:0 var(--gut)}
+  .tasks-robot{display:none}
+}
 
 /* ---------- «для чего нужен такой робот»: карточки приезжают справа ----------
    Длинная дорожка .why-runway задает путь прокрутки, сцена внутри приколота
@@ -2011,14 +2010,13 @@ body.is-account > section:not(#account){display:none}
 
 <!-- ============ задачи предприятия ============ -->
 <section class="tasks rev" id="tasks">
-  <div class="tgal-runway" id="tgalRunway">
-    <div class="tgal-stick">
-      <div class="tasks-head">
-        <h2 class="h1 sec-h">Что можно поручить роботу</h2>
-      </div>
-      <div class="tgal-rail"><ul class="tgal-track" id="tgalTrack"></ul></div>
-    </div>
+  <img class="tasks-robot" src="images/robot-courier.png" alt="" loading="lazy">
+  <div class="tasks-head">
+    <h2 class="h1">Что можно поручить роботу</h2>
+    <p class="lead">Роботы умеют многое — теперь найдите того, кто решит вашу задачу</p>
+    <div class="tasks-objs" id="taskObjs" role="group" aria-label="объект внедрения"></div>
   </div>
+  <div class="tape" id="tape"></div>
 </section>
 
 
@@ -3488,204 +3486,130 @@ var CASES=[
  {id:'ronavi',fn:'Транспортер паллет',short:'Перевозка грузов',resNum:'× 2',res:'ниже себестоимость операции, окупаемость модернизации — 9 месяцев',model:'Ronavi H1500',photo:'images/cases/case-02-ronavi.webp',maker:'ООО «Ронави Роботикс»',where:'Склад производственной компании «Восток-Сервис»',task:'Автоматизировать длинный участок транспортировки из зоны отбора в зоны отгрузки, пополнения и доработки',how:'Робот возит грузы по складу без человека, связан с WMS и RMS. Четыре сотрудника и штабелер заменены одной машиной'},
  {id:'rubi',fn:'Робот-уборщик',short:'Уборка территорий',resNum:'> 1,3 млн м²',res:'убрано за учебный год 2025/26',model:'RUBI-M',photo:'images/cases/case-03-rubi.jpg',maker:'ООО «Робо»',where:'Школы № 281 и № 1514 в Москве, школа «Самолетум» в Красногорске',task:'Автоматизировать регулярную уборку школы и снять нагрузку с клининговой службы',how:'Убирает по автоматическим заданиям и сохраненным картам, маршруты и отчеты — удаленно'}
 ];
-/* ---- что можно поручить роботу ----
-   Пока дорожка идет мимо экрана, кадр приклеен: в нем заголовок и лента.
-   Доля пройденного пути двигает ленту так, чтобы очередная карточка встала
-   к левому краю. Карточка: работа, снимок решения и список моделей */
-(function(){
- var sec=document.getElementById('tasks');
- if(!sec||typeof WORKS==='undefined'||typeof ROBOTS==='undefined') return;
- var runway=document.getElementById('tgalRunway'), track=document.getElementById('tgalTrack');
- if(!runway||!track) return;
- function esc(t){ return String(t==null?'':t)
-  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
- function byName(n){ for(var i=0;i<ROBOTS.length;i++) if(ROBOTS[i].name===n) return ROBOTS[i]; return null; }
- function taskTitle(k){ if(typeof TASKS==='undefined') return '';
-  for(var i=0;i<TASKS.length;i++) if(TASKS[i].key===k) return TASKS[i].t; return ''; }
+/* карточки продублированы шесть раз, поэтому работу определяем по data-work,
+   а не по индексу: дубли в конце ленты открывают то же окно */
+var cards=TASKS.concat(TASKS,TASKS).map(function(x){
+ return '<button type="button" class="task" data-work="'+x.key+'">'+
+  '<img class="task-photo" src="'+x.img+'" alt="" width="900" height="675" loading="lazy" draggable="false">'+
+  '<div><h4>'+x.t+'</h4><p>'+x.d+'</p></div></button>';
+}).join('');
+document.getElementById('tape').innerHTML=cards+cards;
 
- /* Лента работ. Состав, порядок, среда и списки решений — с витрины
-    коллеги: robots-production-e8fb.up.railway.app, блок «Что можно
-    поручить роботу». Тексты взяты как есть, слово «город» из среды
-    «Ездить без водителя» убрано. Четыре работы совпадают с WORKS —
-    у них по клику открывается окно подбора, у остальных — карточка
-    модели. Снимки — те же файлы каталога, уже лежат локально */
-var TDECK=[
- {t:"Возить паллеты по складу",env:"Склад, распредцентр",w:'cargo',p:[
-  ["Ronavi H1500","Ронави","images/ronavi-h1500.png"],
-  ["AMR1500","МОРОС","images/amr1500.png"],
-  ["AK-2000-2","Автомакон","images/catalog/ak-2000-2.webp"],
-  ["RoboCV X-MOTION NG","Робосиви","images/catalog/robocv-x-motion-ng.webp"]]},
- {t:"Мыть полы после закрытия",env:"Ритейл, аэропорты, склады",w:'service',p:[
-  ["MARK 2 SE","Р2Б","images/mark2se.png"],
-  ["АК-SC80","Автомакон","images/catalog/ak-sc80.webp"],
-  ["Клинботикс 600","Вейбот","images/catalog/klinbotiks-600.webp"],
-  ["РУБИ-С-03","РОБО","images/catalog/rubi-s-03.webp"]]},
- {t:"Убирать улицы и дворы",env:"ЖКХ, парки, предприятия",p:[
-  ["Пиксель","Автономика","images/pixel.png"],
-  ["БРО 3.0","168Роботикс","images/catalog/bro-3-0.webp"],
-  ["МАРК","Виафор","images/catalog/mark.webp"],
-  ["Веном Саранча","Робком","images/catalog/venom-sarancha.webp"]]},
- {t:"Варить швы и подавать детали",env:"Производственный участок",w:'line',p:[
-  ["RX-20/1700","Роботех","images/catalog/rx-20-1700.webp"],
-  ["RusRobot RR 60-2100","Русский робот","images/catalog/rusrobot-rr-60-2100.webp"],
-  ["ARM 135","Прикладная","images/catalog/arm-135.webp"],
-  ["A12-1450","Эйдос","images/a12-1450.png"]]},
- {t:"Раскладывать и упаковывать",env:"Пищевое, фарма, электроника",p:[
-  ["Битроботикс","Битроботикс","images/catalog/bitrobotiks.webp"],
-  ["Экстремум","Невлабс","images/catalog/ekstremum.webp"],
-  ["Birbi D-1","БиАйДи","images/birbi-d1.png"],
-  ["Birbi S-1","БиАйДи","images/catalog/birbi-s-1.webp"]]},
- {t:"Ломать стены и конструкции",env:"Стройка, металлургия",p:[
-  ["Azarrus 1.0","Деморобот","images/catalog/azarrus-1-0.webp"],
-  ["Azarrus 3.0","Деморобот","images/catalog/azarrus-3-0.webp"],
-  ["Azarrus 5.0","Деморобот","images/catalog/azarrus-5-0.webp"],
-  ["Azarrus 6.0","Деморобот","images/catalog/azarrus-6-0.webp"]]},
- {t:"Строить дома и дороги",env:"Стройплощадка, дороги",p:[
-  ["АМТ S300","АМТ","images/catalog/amt-s300.webp"],
-  ["Вирсайн СДУ","Вирсайн","images/catalog/virsayn-sdu.webp"],
-  ["МРСК","КБ интеграл","images/catalog/mrsk.webp"],
-  ["Беспилотный каток RV-7DD","РАСКАТ","images/catalog/bespilotnyy-katok-rv-7dd.webp"]]},
- {t:"Лазить внутри труб",env:"ЖКХ, нефтегаз, теплосети",p:[
-  ["Тьюбот","Тьюбот","images/catalog/tyubot.webp"],
-  ["Sigma 150","Тарис","images/catalog/sigma-150.webp"],
-  ["Юникон-ЗСК","Юникон-ЗСК","images/catalog/yunikon-zsk.webp"],
-  ["ТДК-400-М-Л","Диаконт","images/catalog/tdk-400-m-l.webp"]]},
- {t:"Ходить в обход круглосуточно",env:"Предприятия, закрытые объекты",w:'patrol',p:[
-  ["Трал Патруль 5","СМП-Сервис","images/catalog/tral-patrul-5.webp"],
-  ["Inchbot L1/L1 Edu","Кью Групп","images/inchbot-l1.png"],
-  ["ГУМИЧ Спасатель","ГУМИЧ РТК","images/catalog/gumich-spasatel.webp"]]},
- {t:"Пахать, сеять и доить",env:"Сельхозпредприятия",p:[
-  ["Cognitive Agro Pilot","Когнитив Пилот","images/catalog/cognitive-agro-pilot.webp"],
-  ["Агробот","Аврора","images/catalog/agrobot.webp"],
-  ["Волшебник 2.0","Промтехника","images/catalog/volshebnik-2-0.webp"],
-  ["Кати","Агробит","images/catalog/kati.webp"]]},
- {t:"Ездить без водителя",env:"Заводы, дороги",p:[
-  ["Evocargo N1","ЭвоКарго","images/evocargo-n1.png"],
-  ["Navio L5","Автотех","images/navio-l5.png"],
-  ["Роботакси","Яндекс","images/robotaxi.png"],
-  ["Львёнок-Москва","ПК ТС","images/catalog/lvenok-moskva.webp"]]},
- {t:"Разговаривать с посетителями",env:"Сервис, офисы, приёмные",p:[
-  ["Promobot V.4","Промобот","images/catalog/promobot-v-4.webp"],
-  ["Грин","Сбер","images/catalog/grin.webp"],
-  ["Арди","Айдол","images/catalog/ardi.webp"],
-  ["Unitree H2","Кью Групп","images/unitree-h2.png"]]}
+/* ---- шаг 1: где внедряете ----
+   Вход для тех, кто не формулирует задачу, а знает свой объект: склад,
+   цех, торговый зал. Каждый объект — набор задач из TASKS; выбор гасит
+   в ленте все, что к объекту не относится. Первый чип «любой объект»
+   выбран по умолчанию и ничего не гасит: шаг виден как шаг, а лента
+   при этом сразу показывает все задачи. */
+var OBJECTS=[
+ {t:'Любой объект',  works:null},
+ {t:'Торговый центр',works:['service','patrol']},
+ {t:'Склад',        works:['cargo','patrol']},
+ {t:'Завод',        works:['line','cargo','patrol']},
+ {t:'Офис',         works:['service','patrol']},
+ {t:'Стройка',      works:['patrol','cargo']}
 ];
+(function(){
+ var box=document.getElementById('taskObjs');
+ var tape=document.getElementById('tape');
+ if(!box||!tape) return;
+ box.insertAdjacentHTML('beforeend',OBJECTS.map(function(o,i){
+  return '<button type="button" class="obj-chip'+(i===0?' on':'')+'" data-i="'+i+'"'+
+   ' aria-pressed="'+(i===0?'true':'false')+'">'+o.t+'</button>';
+ }).join(''));
+ var chips=[].slice.call(box.querySelectorAll('.obj-chip'));
+ var active=0;                      /* «любой объект» */
+ function apply(){
+  var set=OBJECTS[active]&&OBJECTS[active].works;
+  chips.forEach(function(c,i){
+   c.classList.toggle('on',i===active);
+   c.setAttribute('aria-pressed',i===active?'true':'false');
+  });
+  Array.prototype.forEach.call(tape.children,function(card){
+   var w=card.getAttribute('data-work');
+   card.classList.toggle('is-off',!!set&&set.indexOf(w)<0);
+  });
+ }
+ box.addEventListener('click',function(e){
+  var c=e.target.closest('.obj-chip'); if(!c) return;
+  /* снимать выбор некуда: «любой объект» и есть пустой фильтр */
+  active=+c.getAttribute('data-i');
+  apply();
+ });
+})();
+/* ---- лента задач: едет без остановок, курсором можно листать ----
+   Ход держит css-анимация (ее считает композитор, поэтому она не зависит
+   от загруженности js). На время перетаскивания анимация ставится на паузу,
+   а после отпускания возвращается с той же точки — через отрицательную
+   задержку, которая перематывает круг на нужную долю. */
+(function(){
+ var tape=document.getElementById('tape');
+ if(!tape) return;
+ var DUR=44;                       /* столько же секунд, сколько в стилях */
+ var half=0,x=0,drag=false,px=0,moved=0,down=null;
 
- track.innerHTML=TDECK.map(function(c,i){
-  var lead=c.p[0];
-  return '<li class="tgal-card'+(c.w?'':' tgal-more')+'"'+
-    (c.w?' data-work="'+esc(c.w)+'"':'')+' data-model="'+esc(lead[0])+'">'+
-   '<p class="tgal-t">'+esc(c.t)+'</p>'+
-   '<p class="tgal-env">'+esc(c.env)+'</p>'+
-   '<div class="tgal-shot"><img src="'+esc(lead[2])+'" alt="'+esc(lead[0])+'" loading="lazy"></div>'+
-   '<p class="tgal-lb">решения:</p>'+
-   '<ul class="tgal-list">'+c.p.map(function(m){
-     return '<li data-model="'+esc(m[0])+'"><b class="nolow">'+esc(m[0])+
-      '</b><em class="nolow">'+esc(m[1])+'</em></li>'; }).join('')+'</ul>'+
-  '</li>';
- }).join('')+
- '<li class="tgal-card tgal-cta"><a href="#robots">'+
-  '<span class="tgal-cta-t">Выбери своего робота</span>'+
-  '<span class="tgal-cta-n">'+ROBOTS.length+' решений в\u00a0каталоге</span>'+
-  '<span class="tgal-cta-go" aria-hidden="true">→</span></a></li>';
+ function measure(){ half=tape.scrollWidth/2; }   /* период css-анимации */
+ function shift(){                 /* текущий сдвиг из матрицы анимации */
+  var m=getComputedStyle(tape).transform;
+  if(!m||m==='none') return 0;
+  var v=m.match(/matrix3?d?\((.+)\)/);
+  if(!v) return 0;
+  var pp=v[1].split(',');
+  return -parseFloat(pp.length>6?pp[12]:pp[4])||0;
+ }
+ function wrap(){ if(half>0){ x%=half; if(x<0) x+=half; } }
+ measure();
+ addEventListener('resize',measure);
 
- var cards=[].slice.call(track.children);
- var last=cards.length-1, xs=[], idx=[], raw=[], stops=0, hold=1, active=-1, ticking=false, flat=false;
- var STEP=34, TAIL=45; /* vh: шаг между остановками и запас в конце, где лента уже стоит */
-
- function ease(t){ return t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2; }
- /* Остановки ленты: карточки по очереди встают к левому краю,
-    а последняя остановка упирает конец ленты в правый край кадра и дальше
-    не тянет: плитка «Выбери своего робота» приходит справа и там остается */
- function measure(){
-  var rail=track.parentNode, base=cards[0].offsetLeft;
-  raw=cards.map(function(c){ return -(c.offsetLeft-base); });
-  var gut=parseFloat(getComputedStyle(rail).paddingLeft)||0;
-  var beltW=cards[last].offsetLeft-base+cards[last].offsetWidth;
-  var end=rail.clientWidth-gut*2-beltW;
-  xs=[0]; idx=[0];
-  if(end<0){
-   for(var i=1;i<=last;i++){ if(raw[i]<=end) break; xs.push(raw[i]); idx.push(i); }
-   xs.push(end); idx.push(last);
-  }
-  stops=xs.length-1;
+ function paint(){ tape.style.transform='translate3d('+(-x)+'px,0,0)'; }
+ tape.addEventListener('pointerdown',function(e){
+  if(e.button!==0) return;
+  /* карточку под курсором запоминаем здесь: после setPointerCapture события
+     переадресуются на ленту и e.target уже не тот */
+  down=e.target.closest?e.target.closest('.task'):null; moved=0;
+  e.preventDefault();              /* иначе за курсором тянется выделение */
+  drag=true; px=e.clientX; x=shift();
+  tape.classList.add('is-drag');
+  /* css-анимация в каскаде сильнее инлайнового transform, поэтому паузы
+     мало — ее надо снять целиком, иначе лента не идет за курсором и
+     прыгает в момент отпускания. Позицию перед этим переносим в inline,
+     так что снятие анимации ничего не сдвигает */
+  x=shift(); paint();
+  tape.style.animation='none';
+  try{ tape.setPointerCapture(e.pointerId); }catch(_){}
+ });
+ tape.addEventListener('pointermove',function(e){
+  if(!drag) return;
+  var d=e.clientX-px; moved+=Math.abs(d);
+  x-=d; px=e.clientX;
+  wrap(); paint();
+ });
+ function drop(e){
+  if(!drag) return;
+  drag=false;
+  tape.classList.remove('is-drag');
+  try{ tape.releasePointerCapture(e.pointerId); }catch(_){}
+  /* возвращаем анимацию с той же точки: отрицательная задержка
+     перематывает круг на пройденную долю. Порядок важен — сначала
+     возвращаем анимацию, потом задержку, иначе шорткат ее затрет */
+  var frac=half>0?(x%half)/half:0;
+  tape.style.animation='';
+  tape.style.animationDelay=(-frac*DUR)+'s';
+  tape.style.transform='';
+  /* короткое касание без протяжки — это клик по карточке */
+  if(moved<5&&down&&typeof openWork==='function') openWork(down.getAttribute('data-work'),down);
+  down=null;
  }
- function nearest(x){
-  var best=0, bd=Infinity;
-  for(var i=0;i<raw.length;i++){
-   var d=Math.abs(raw[i]-x);
-   if(d<bd){ bd=d; best=i; }
-  }
-  return best;
- }
- function mark(k){
-  if(k===active) return;
-  active=k;
-  for(var i=0;i<cards.length;i++) cards[i].classList.toggle('is-on',i===k);
- }
- function frame(){
-  ticking=false;
-  if(flat) return;
-  var r=runway.getBoundingClientRect();
-  var total=r.height-innerHeight;
-  var p=total>0?(-r.top)/total:0;
-  if(p<0) p=0;
-  p=p/hold; if(p>1) p=1; /* хвост дорожки — покой: плитка уже стоит справа */
-  var x=0;
-  if(stops>0){
-   var f=p*stops,i=Math.floor(f);
-   if(i>stops-1) i=stops-1;
-   var t=ease(f-i);
-   x=xs[i]+(xs[i+1]-xs[i])*t;
-   /* на последнем отрезке лента упирается в правый край, и хвостовые
-      карточки до левого края уже не доходят — там отметку ведем по
-      остатку пути, иначе они никогда не подсвечиваются */
-   if(i===stops-1){
-    var from=nearest(xs[stops-1]);
-    mark(from+Math.round(t*Math.max(0,(last-1)-from)));
-   } else mark(nearest(x));
-  } else mark(0);
-  track.style.transform='translate3d('+x+'px,0,0)';
- }
- function tick(){ if(ticking) return; ticking=true; requestAnimationFrame(frame); }
- function stickyOk(){
-  var st=sec.querySelector('.tgal-stick');
-  if(!st||getComputedStyle(st).position!=='sticky') return false;
-  for(var e=st.parentElement;e&&e!==document.documentElement;e=e.parentElement){
-   var c=getComputedStyle(e);
-   if(c.overflowY!=='visible'&&c.overflowY!=='clip') return false;
-  }
-  return true;
- }
- function setMode(){
-  var plain=(innerWidth>0&&innerWidth<=900) ||
-       matchMedia('(prefers-reduced-motion: reduce)').matches;
-  /* проверять липкость нужно без класса простого списка: он сам снимает
-     position:sticky, и без этого блок уже не вернулся бы к ленте */
-  sec.classList.remove('tgal--flat');
-  flat=plain||!stickyOk();
-  sec.classList.toggle('tgal--flat',flat);
-  if(flat){ runway.style.height=''; track.style.transform=''; return; }
-  measure();
-  var run=stops*STEP, tail=stops>0?TAIL:0;
-  hold=run>0?run/(run+tail):1;
-  runway.style.height=(100+run+tail)+'vh';
-  active=-1; frame();
- }
- addEventListener('scroll',tick,{passive:true,capture:true});
- addEventListener('scroll',frame,{passive:true,capture:true});
- addEventListener('resize',function(){ setMode(); tick(); });
- setMode();
- addEventListener('load',function(){ setMode(); tick(); });
- setTimeout(function(){ setMode(); tick(); },600);
-
- track.addEventListener('click',function(e){
-  var c=e.target.closest('.tgal-card'); if(!c||c.classList.contains('tgal-cta')) return;
-  var row=e.target.closest('.tgal-list li');
-  if(row&&typeof openModelCard==='function'){ openModelCard(row.getAttribute('data-model'),row); return; }
-  var w=c.getAttribute('data-work');
-  if(w&&typeof openWork==='function'){ openWork(w,c); return; }
-  if(typeof openModelCard==='function') openModelCard(c.getAttribute('data-model'),c);
+ tape.addEventListener('pointerup',drop);
+ tape.addEventListener('pointercancel',drop);
+ tape.addEventListener('dragstart',function(e){ e.preventDefault(); });
+ /* клавиатура: у <button> Enter и пробел дают click, ловим его отдельно */
+ tape.addEventListener('keydown',function(e){
+  if(e.key!=='Enter'&&e.key!==' ') return;
+  var card=e.target.closest?e.target.closest('.task'):null;
+  if(!card) return;
+  e.preventDefault();
+  if(typeof openWork==='function') openWork(card.getAttribute('data-work'),card);
  });
 })();
 
