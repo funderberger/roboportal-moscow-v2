@@ -471,7 +471,7 @@ body.is-catalog > section:not(#robots){display:none}
 .cp-search:focus{outline:none;border-color:var(--green)}
 
 /* сетка без коробок: ячейки разделены волосяными линейками, как в референсе.
-   Плитка .cp-card — <article>, внутри кнопка-карточка и кнопка заявки */
+   Все внутри .cp-card — span, это <button> */
 .cp-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;
   border-top:1px solid var(--w-08);border-left:1px solid var(--w-08)}
 .cp-card{display:flex;flex-direction:column;width:100%;text-align:left;
@@ -479,29 +479,15 @@ body.is-catalog > section:not(#robots){display:none}
   border-right:1px solid var(--w-08);border-bottom:1px solid var(--w-08);
   transition:background .25s}
 .cp-card:hover{background:var(--coal)}
-/* плитка — <article> с двумя кнопками: открыть карточку и подать заявку */
-.cp-open{display:block;width:100%;padding:0;text-align:left}
-.cp-open:focus-visible{outline:2px solid var(--green);outline-offset:4px}
+.cp-card:focus-visible{outline:2px solid var(--green);outline-offset:-2px}
 .cp-pic{display:block;position:relative;height:clamp(150px,13vw,210px);margin-bottom:18px}
 .cp-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
   transition:transform .3s cubic-bezier(.2,.7,.3,1)}
 .cp-card:hover .cp-pic img{transform:scale(1.04)}
-/* название, задача, производитель — и три главных параметра */
+/* текста по минимуму: название и задача одной строкой */
 .cp-n{display:block;font-size:15px;letter-spacing:.02em;text-transform:uppercase;
   font-weight:500;color:var(--white)}
 .cp-task{display:block;margin-top:7px;font-size:14px;line-height:1.3;color:var(--w-45)}
-.cp-maker{display:block;margin-top:6px;font-size:13px;line-height:1.3;color:var(--w-45)}
-.cp-sp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:14px;
-  padding-top:12px;border-top:1px solid var(--w-08)}
-.cp-sp span{display:block;min-width:0}
-.cp-sp b{display:block;font-weight:500;font-size:14px;line-height:1.2;color:var(--white);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cp-sp i{display:block;margin-top:3px;font-style:normal;font-size:11px;line-height:1.25;color:var(--w-45)}
-.cp-apply{display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:0;
-  align-self:flex-start;font-size:14px;color:var(--green)}
-.cp-apply i{font-style:normal;transition:transform .2s}
-.cp-apply:hover i{transform:translateX(3px)}
-.cp-apply:focus-visible{outline:2px solid var(--green);outline-offset:4px}
 .cp-empty{grid-column:1/-1;padding:40px 0;color:var(--w-45);font-size:16px}
 @media(min-width:1700px){.cp-grid{grid-template-columns:repeat(5,1fr)}}
 @media(max-width:1359px){.cp-grid{grid-template-columns:repeat(3,1fr)}}
@@ -521,10 +507,6 @@ body.is-catalog > section:not(#robots){display:none}
 @media(max-width:640px){
   .cp-grid{grid-template-columns:1fr 1fr}
   .cp-pic{height:clamp(130px,34vw,180px)}
-  .cp-sp{grid-template-columns:1fr;gap:5px}
-  .cp-sp span{display:flex;flex-direction:row-reverse;justify-content:space-between;gap:8px;align-items:baseline}
-  .cp-sp b{white-space:normal;text-align:right}
-  .cp-sp i{margin:0}
 }
 @media (prefers-reduced-motion:reduce){
   .cp-card,.cp-pic img{transition:none}
@@ -2828,31 +2810,7 @@ ROBOTS.forEach(function(r){
 /* ---- подбор характеристик по подписи ----
    Таблицы из выгрузки и каталога разнородные: у манипулятора «рабочая зона»
    и «повторяемость», у склада «грузоподъемность» и «скорость». Поэтому
-   ищем по ключевым словам. Нужно плитке каталога (три главных параметра)
-   и экрану работы (значения под подписи работы) */
-var SPEC_KEYS=[
- [/грузоподъ|нагрузк/i,'Грузоподъёмность'],
- [/скорост/i,'Скорость'],
- [/автономн|время работы/i,'Автономность'],
- [/производительн/i,'Производительность'],
- [/рабочая зона|вылет|радиус/i,'Рабочая зона'],
- [/повторяем|точност/i,'Точность'],
- [/степен.*свобод|осей/i,'Оси'],
- [/^масса|^вес/i,'Масса'],
- [/мощност/i,'Мощность'],
- [/защит/i,'Защита'],
- [/пассажир|вместимост/i,'Вместимость'],
- [/дальност|дистанц|запас хода/i,'Дальность'],
- [/^рост/i,'Рост'],
- [/диаметр/i,'Диаметр труб'],
- [/объ[её]м/i,'Объём'],
- [/ширин/i,'Ширина'],
- [/высот/i,'Высота'],
- [/температур/i,'Температура'],
- [/зарядк/i,'Зарядка'],
- [/пол[её]т/i,'Полёт'],
- [/шум/i,'Шум']
-];
+   экран работы ищет значения под свои подписи по ключевым словам */
 /* индекс первой строки таблицы, подпись которой подходит под ключ */
 function techFind(tech,re,used){
  if(!tech) return -1;
@@ -2874,15 +2832,6 @@ var WORK_SPEC_RE={
 function workSpec(r,key,lab,n){
  var sp=(r.sp&&r.sp[key])||[];
  return sp[n]||(WORK_SPEC_RE[lab]?techPick(r.tech,WORK_SPEC_RE[lab]):'')||'По запросу';
-}
-/* три главных параметра для плитки: по приоритету ключей, без повторов строк */
-function keySpecs(r){
- var out=[], used={};
- for(var i=0;i<SPEC_KEYS.length&&out.length<3;i++){
-  var j=techFind(r.tech,SPEC_KEYS[i][0],used);
-  if(j>=0){ used[j]=true; out.push([SPEC_KEYS[i][1],r.tech[j][1]]); }
- }
- return out;
 }
 
 /* ---- задачи: лента ---- */
@@ -3395,25 +3344,14 @@ var openWork=null,openModelCard=null;
   return (k&&SUBS[k]&&SUBS[k][0])||r.type||r.cat;
  }
 
- /* карточка: снимок, название, задача, производитель и три главных
-    параметра. Плитка — <article> с двумя кнопками: открыть карточку
-    и подать заявку, поэтому сама плитка кнопкой быть не может */
+ /* карточка: снимок, название и задача — больше в каталоге не нужно.
+    Производитель, характеристики и заявка — внутри карточки модели */
  function card(r){
-  var ks=keySpecs(r);
-  var specs=ks.length
-   ? ks.map(function(p){ return '<span><b class="nolow">'+esc(p[1])+'</b><i>'+esc(p[0])+'</i></span>'; }).join('')
-   : (r.s||[]).slice(0,3).map(function(v){ return '<span><b class="nolow">'+esc(v)+'</b></span>'; }).join('');
-  var maker=/запросу/.test(r.maker||'')?'':r.maker;
-  return '<article class="cp-card">'+
-   '<button type="button" class="cp-open" data-model="'+esc(r.name)+'">'+
-    '<span class="cp-pic"><img src="'+esc(r.img)+'" alt="" loading="lazy" draggable="false"></span>'+
-    '<span class="cp-n nolow">'+esc(r.name)+'</span>'+
-    '<span class="cp-task">'+esc(taskOf(r))+'</span>'+
-    (maker?'<span class="cp-maker nolow">'+esc(maker)+'</span>':'')+
-    (specs?'<span class="cp-sp">'+specs+'</span>':'')+
-   '</button>'+
-   '<button type="button" class="cp-apply" data-newapp="comp" data-robot="'+esc(r.name)+'">Подать заявку <i aria-hidden="true">→</i></button>'+
-  '</article>';
+  return '<button type="button" class="cp-card" data-model="'+esc(r.name)+'">'+
+   '<span class="cp-pic"><img src="'+esc(r.img)+'" alt="" loading="lazy" draggable="false"></span>'+
+   '<span class="cp-n nolow">'+esc(r.name)+'</span>'+
+   '<span class="cp-task">'+esc(taskOf(r))+'</span>'+
+  '</button>';
  }
  function draw(){
   drawCats(); drawSide();
@@ -3445,8 +3383,7 @@ var openWork=null,openModelCard=null;
  search.addEventListener('input',function(){ state.q=search.value; draw(); });
 
  grid.addEventListener('click',function(e){
-  /* кнопку заявки внутри плитки ведет общий обработчик data-newapp */
-  var c=e.target.closest('.cp-open'); if(!c) return;
+  var c=e.target.closest('.cp-card'); if(!c) return;
   if(typeof openModelCard==='function') openModelCard(c.getAttribute('data-model'),c);
  });
 
