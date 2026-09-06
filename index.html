@@ -3255,7 +3255,6 @@ var openWork=null,openModelCard=null;
   return inCat().filter(function(r){
    if(state.sub!=='Все'&&(r.sub||[]).indexOf(state.sub)<0) return false;
    if(state.reg&&!r.registry) return false;
-   if(state.collab&&!r.collab) return false;
    if(state.kin!=='Все'&&r.kin!==state.kin) return false;
    if(state.ind!=='Все'&&r.industry!==state.ind) return false;
    if(q){ var hay=(r.name+' '+r.d+' '+(r.use||'')+' '+r.maker+' '+(r.kin||'')+' '+(r.type||'')+' '+(r.industry||'')).toLowerCase();
@@ -3310,9 +3309,6 @@ var openWork=null,openModelCard=null;
  function drawSide(){
   var pool=inCat();
   var regN=pool.filter(function(r){return r.registry}).length;
-  /* коллаборативность — свойство робота, а не его вид: отдельный
-     переключатель, как отметка реестра */
-  var colN=pool.filter(function(r){return r.collab}).length;
   side.innerHTML=
    /* три оси отбора: чем робот является, где стоит и что делает.
       Производителя фильтром не выносим — на семнадцать моделей приходится
@@ -3321,12 +3317,6 @@ var openWork=null,openModelCard=null;
    group('kin','Тип робота',values('kin'),state.kin)+
    group('ind','Где работает',values('industry'),state.ind)+
    group('sub','Что делает',values('sub'),state.sub,labelOf)+
-   (colN?'<div class="cp-g'+(open.collab?' on':'')+'" data-g="collab">'+
-     '<button type="button" class="cp-g-h">Работа рядом с людьми<i>+</i></button>'+
-     '<div class="cp-g-list"><div class="cp-g-in">'+
-      '<button type="button" class="cp-v'+(state.collab?' on':'')+'" data-f="collab" data-v="1">'+
-       'Только работающие рядом с людьми<b>'+colN+'</b></button>'+
-     '</div></div></div>':'')+
    (regN?'<div class="cp-g'+(open.reg?' on':'')+'" data-g="reg">'+
      '<button type="button" class="cp-g-h">Реестр Москвы<i>+</i></button>'+
      '<div class="cp-g-list"><div class="cp-g-in">'+
@@ -3334,7 +3324,7 @@ var openWork=null,openModelCard=null;
        'Только из реестра<b>'+regN+'</b></button>'+
      '</div></div></div>':'');
   var picked=(state.sub!=='Все')+(state.kin!=='Все')+(state.ind!=='Все')+
-             (state.reg?1:0)+(state.collab?1:0);
+             (state.reg?1:0);
   filtersBtn.innerHTML='Фильтры<b>'+(picked||'')+'</b>';
  }
 
@@ -3375,7 +3365,6 @@ var openWork=null,openModelCard=null;
   var v=e.target.closest('.cp-v'); if(!v) return;
   var f=v.getAttribute('data-f'), val=v.getAttribute('data-v');
   if(f==='reg') state.reg=!state.reg;
-  else if(f==='collab') state.collab=!state.collab;
   else state[f]=state[f]===val?'Все':val;
   draw();
  });
