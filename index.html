@@ -2022,13 +2022,7 @@ body.is-account > section:not(#account){display:none}
   <div class="sup-head">
     <h2 class="h1 sec-h">Поддержка<br>под ваши задачи</h2>
   </div>
-  <div class="sup-bar">
-    <div class="sup-tabs" role="tablist" aria-label="кому адресованы меры">
-      <button type="button" class="sup-tab is-on" role="tab" data-aud="buy" aria-selected="true">Я заказчик</button>
-      <button type="button" class="sup-tab" role="tab" data-aud="make" aria-selected="false">Я разработчик</button>
-    </div>
-  </div>
-  <div class="sup-grid" id="supGrid" data-aud="buy">
+  <div class="sup-grid" id="supGrid" data-aud="make">
     <article class="sup-card" data-aud="buy">
       <p class="se-when">Предлагаемая мера</p>
       <h3 class="se-t">Субсидия на внедрение сервисных роботов</h3>
@@ -3982,7 +3976,7 @@ var MEASURES=[
  }
  function passing(){
   return MEASURES.filter(function(m){
-   if(m.role!==role) return false;
+   /* показываем все меры: деление на разработчика и внедряющего убрано */
    if(sel.open&&!isOpen(m)) return false;
    if(sel.kind.length&&sel.kind.indexOf(kindOf(m))<0) return false;
    if(sel.task.length&&!(m.tasks||[]).some(function(t){ return sel.task.indexOf(t)>=0; })) return false;
