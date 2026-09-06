@@ -143,7 +143,7 @@ section{position:relative}
    опускается к нижнему краю, а не висит по центру кадра */
 .hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:20px 32px;flex-wrap:wrap}
 .hero-bottom .lead{margin:0;align-self:center;flex:1;min-width:min(100%,320px);max-width:640px}
-.hero-cta.is-corner{margin:0;justify-content:flex-end;flex:none}
+.hero-cta.is-corner{margin:18px 0 0 auto;justify-content:flex-end;flex:none}
 @media(max-width:640px){
   .hero-bottom{flex-direction:column;align-items:stretch}
   .hero-cta.is-corner{margin-top:22px}
@@ -1965,7 +1965,6 @@ body.is-account > section:not(#account){display:none}
     <div class="hero-slug">
       <h1 class="h-display">Строим будущее<br>российской робототехники</h1>
       <div class="hero-bottom">
-        <p class="lead">Создаём условия для внедрения роботов, развития производства и масштабирования технологий по всей стране</p>
         <div class="hero-cta is-corner">
           <a href="#robots" class="btn btn-green">Смотреть роботов</a>
         </div>
