@@ -252,31 +252,6 @@ section{position:relative}
   padding:8px 14px;border-radius:999px;background:rgba(6,10,8,.72);
   border:1px solid var(--w-16);backdrop-filter:blur(8px);
   font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--w-70)}
-
-/* ---------- задачи предприятия: бегущая лента карточек ---------- */
-/* текст уходит вправо, слева стоит робот — видна только его передняя половина,
-   вторая уезжает за край секции (ее обрезает overflow) */
-.tasks-head{padding:0 var(--gut) 0 0;margin-bottom:34px;margin-left:auto;max-width:min(820px,62vw);text-align:right}
-/* секция режет все, что выше ее края (overflow:hidden), поэтому робот
-   стоит с небольшим отступом сверху — иначе поворот на 10° срезает
-   красный флажок на антенне */
-/* ---------- задачи: сетка карточек ----------
-   Бегущая лента ушла: карточки стоят рядами, при наведении карточка
-   поднимается и слегка растет — как в референсе. Фильтр по объекту
-   гасит лишние, не перестраивая сетку */
-.tasks-head{display:flex;flex-direction:column;align-items:flex-start;
-  gap:clamp(14px,1.6vw,22px);max-width:1180px;margin:0 auto clamp(26px,3.4vw,48px)}
-.tasks-head .sec-h{max-width:none}
-.tasks-pill{display:inline-block;padding:8px 18px;border-radius:999px;
-  border:1px solid var(--w-16);background:var(--w-08);
-  font-size:13px;letter-spacing:-.01em;color:var(--w-70)}
-.tasks-objs{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px}
-.obj-chip{padding:11px 22px;border-radius:999px;border:1px solid var(--w-16);
-  font-size:15px;letter-spacing:-.015em;color:var(--w-70);transition:.22s}
-.obj-chip:hover{border-color:var(--green);color:var(--green)}
-.obj-chip.on{background:var(--green);border-color:var(--green);color:#06110B}
-.obj-chip:focus-visible{outline:2px solid var(--green);outline-offset:3px}
-
 /* ---------- задачи предприятия: бегущая лента карточек ---------- */
 .tasks{position:relative;padding:clamp(50px,7vw,110px) 0;overflow:hidden}
 /* текст уходит вправо, слева стоит робот — видна только его передняя половина,
