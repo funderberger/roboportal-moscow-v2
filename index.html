@@ -256,7 +256,7 @@ section{position:relative}
 /* ---------- задачи предприятия: бегущая лента карточек ---------- */
 /* текст уходит вправо, слева стоит робот — видна только его передняя половина,
    вторая уезжает за край секции (ее обрезает overflow) */
-.tasks-head{padding:0 var(--gut) 0 0;margin-bottom:34px;margin-left:auto;max-width:min(820px,62vw)}
+.tasks-head{padding:0 var(--gut) 0 0;margin-bottom:34px;margin-left:auto;max-width:min(820px,62vw);text-align:right}
 /* секция режет все, что выше ее края (overflow:hidden), поэтому робот
    стоит с небольшим отступом сверху — иначе поворот на 10° срезает
    красный флажок на антенне */
@@ -281,7 +281,7 @@ section{position:relative}
 .tasks{position:relative;padding:clamp(50px,7vw,110px) 0;overflow:hidden}
 /* текст уходит вправо, слева стоит робот — видна только его передняя половина,
    вторая уезжает за край секции (ее обрезает overflow) */
-.tasks-head{padding:0 var(--gut) 0 0;margin-bottom:34px;margin-left:auto;max-width:min(820px,62vw)}
+.tasks-head{padding:0 var(--gut) 0 0;margin-bottom:34px;margin-left:auto;max-width:min(820px,62vw);text-align:right}
 /* секция режет все, что выше ее края (overflow:hidden), поэтому робот
    стоит с небольшим отступом сверху — иначе поворот на 10° срезает
    красный флажок на антенне */
@@ -295,8 +295,9 @@ section{position:relative}
    сформулирована. Выбранный объект гасит в ленте задачи не из его набора */
 /* подводка отбита от заголовка, чипы — от подводки: три строки подряд
    без отступов слипались в одну простыню */
-.tasks-head .lead{margin-top:18px;max-width:52ch}
-.tasks-objs{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:26px}
+.tasks-head h2{margin-left:auto;width:-moz-fit-content;width:fit-content}
+.tasks-head .lead{margin:18px 0 0 auto;max-width:52ch}
+.tasks-objs{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:10px;margin-top:26px}
 .obj-chip{padding:11px 22px;border-radius:999px;border:1px solid var(--w-16);
   font-size:15px;letter-spacing:-.015em;color:var(--w-70);transition:.22s}
 .obj-chip:hover{border-color:var(--green);color:var(--green)}
@@ -2825,8 +2826,8 @@ function workSpec(r,key,lab,n){
 /* ---- задачи: лента ---- */
 var TASKS=[
  {key:'cargo',t:'Перемещение грузов',d:'Паллеты и коробки едут по складу без погрузчика',img:'images/task-cargo.jpg'},
- {key:'line',t:'Сборку и сварку',d:'Повторяющиеся операции на производственной линии',img:'images/path-03.jpg'},
- {key:'service',t:'Уборку помещений',d:'Залы, коридоры и склады, в том числе ночью и в выходные',img:'images/path-02.jpg'},
+ {key:'line',t:'Сборка и сварка',d:'Повторяющиеся операции на производственной линии',img:'images/path-03.jpg'},
+ {key:'service',t:'Уборка помещений',d:'Залы, коридоры и склады, в том числе ночью и в выходные',img:'images/path-02.jpg'},
  {key:'patrol',t:'Обход территории',d:'Съемка и показания там, где нужен постоянный контроль',img:'images/task-patrol.jpg'},
  {key:'snow',t:'Уборка снега и мусора',d:'Дворы и тротуары чистые в любую погоду',img:'images/task-snow.png'},
  {key:'bake',t:'Формовка выпечки',d:'Тесто и заготовки идут по линии без участия рук',img:'images/task-bake.png'},
