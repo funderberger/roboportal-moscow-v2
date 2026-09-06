@@ -2330,10 +2330,6 @@ body.is-account > section:not(#account){display:none}
     </span>
     <span class="sup-band-go">Подать заявку <i aria-hidden="true">→</i></span>
   </button>
-  <div class="ms-tabs" id="msTabs" role="tablist" aria-label="Тип заявителя">
-    <button type="button" class="ms-tab is-on" role="tab" aria-selected="true" data-role="consumer">Я заказчик</button>
-    <button type="button" class="ms-tab" role="tab" aria-selected="false" data-role="producer">Я разработчик</button>
-  </div>
   <div class="fn-layout">
     <aside class="fn-side" id="fnSide"></aside>
     <div class="fn-results">
@@ -4040,8 +4036,9 @@ var MEASURES=[
  function blank(){ return {open:false,kind:[],task:[]}; }
  /* одно состояние вместо пары «черновик — примененный отбор»: галочка
     сразу меняет выдачу, кнопки «Применить» больше нет */
- /* раздел открывается на заказчике — как и таб в разметке */
- var sel=blank(), role='consumer', search='';
+  /* на экране только меры для разработчиков: разделение на заказчика и
+    разработчика убрано, поддержка внедряющих живет в путях внедрения */
+ var sel=blank(), role='producer', search='';
  function picked(){ return (sel.open?1:0)+sel.kind.length+sel.task.length; }
  var shown={};                     /* сколько карточек показано в группе */
 
