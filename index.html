@@ -3486,58 +3486,53 @@ var CASES=[
  {id:'ronavi',fn:'Транспортер паллет',short:'Перевозка грузов',resNum:'× 2',res:'ниже себестоимость операции, окупаемость модернизации — 9 месяцев',model:'Ronavi H1500',photo:'images/cases/case-02-ronavi.webp',maker:'ООО «Ронави Роботикс»',where:'Склад производственной компании «Восток-Сервис»',task:'Автоматизировать длинный участок транспортировки из зоны отбора в зоны отгрузки, пополнения и доработки',how:'Робот возит грузы по складу без человека, связан с WMS и RMS. Четыре сотрудника и штабелер заменены одной машиной'},
  {id:'rubi',fn:'Робот-уборщик',short:'Уборка территорий',resNum:'> 1,3 млн м²',res:'убрано за учебный год 2025/26',model:'RUBI-M',photo:'images/cases/case-03-rubi.jpg',maker:'ООО «Робо»',where:'Школы № 281 и № 1514 в Москве, школа «Самолетум» в Красногорске',task:'Автоматизировать регулярную уборку школы и снять нагрузку с клининговой службы',how:'Убирает по автоматическим заданиям и сохраненным картам, маршруты и отчеты — удаленно'}
 ];
-/* лента работ — состав и подписи с витрины, как в ленте на главной
-   первого портала. У четырех работ есть окно подбора (data-work),
-   остальные ведут в каталог. data-objs — для чипов «объект внедрения» */
-var TAPE_DECK=[
- {t:"Возить паллеты по складу",env:"Склад, распредцентр",w:'cargo',objs:"Склад|Завод",img:"images/ronavi-h1500.png"},
- {t:"Мыть полы после закрытия",env:"Ритейл, аэропорты, склады",w:'service',objs:"Торговый центр|Склад|Офис",img:"images/mark2se.png"},
- {t:"Убирать улицы и дворы",env:"ЖКХ, парки, предприятия",objs:"",img:"images/pixel.png"},
- {t:"Варить швы и подавать детали",env:"Производственный участок",w:'line',objs:"Завод",img:"images/catalog/rx-20-1700.webp"},
- {t:"Раскладывать и упаковывать",env:"Пищевое, фарма, электроника",objs:"Завод",img:"images/catalog/bitrobotiks.webp"},
- {t:"Ломать стены и конструкции",env:"Стройка, металлургия",objs:"Стройка|Завод",img:"images/catalog/azarrus-1-0.webp"},
- {t:"Строить дома и дороги",env:"Стройплощадка, дороги",objs:"Стройка",img:"images/catalog/amt-s300.webp"},
- {t:"Лазить внутри труб",env:"ЖКХ, нефтегаз, теплосети",objs:"Завод",img:"images/catalog/tyubot.webp"},
- {t:"Ходить в обход круглосуточно",env:"Предприятия, закрытые объекты",w:'patrol',objs:"Склад|Завод|Стройка|Офис|Торговый центр",img:"images/catalog/tral-patrul-5.webp"},
- {t:"Пахать, сеять и доить",env:"Сельхозпредприятия",objs:"",img:"images/catalog/cognitive-agro-pilot.webp"},
- {t:"Ездить без водителя",env:"Заводы, дороги",objs:"Завод|Склад",img:"images/evocargo-n1.png"},
- {t:"Разговаривать с посетителями",env:"Сервис, офисы, приёмные",objs:"Торговый центр|Офис",img:"images/catalog/promobot-v-4.webp"}
-];
-var cards=TAPE_DECK.map(function(x){
- return '<button type="button" class="task"'+(x.w?' data-work="'+x.w+'"':'')+
-  ' data-objs="'+x.objs+'">'+
+/* карточки продублированы шесть раз, поэтому работу определяем по data-work,
+   а не по индексу: дубли в конце ленты открывают то же окно */
+var cards=TASKS.concat(TASKS,TASKS).map(function(x){
+ return '<button type="button" class="task" data-work="'+x.key+'">'+
   '<img class="task-photo" src="'+x.img+'" alt="" width="900" height="675" loading="lazy" draggable="false">'+
-  '<div><h4>'+x.t+'</h4><p>'+x.env+'</p></div></button>';
+  '<div><h4>'+x.t+'</h4><p>'+x.d+'</p></div></button>';
 }).join('');
 document.getElementById('tape').innerHTML=cards+cards;
 
 /* ---- шаг 1: где внедряете ----
-   Выбор объекта приглушает в ленте работы, которые к нему не относятся.
-   Первый чип «любой объект» ничего не гасит */
-var OBJECTS=['Любой объект','Торговый центр','Склад','Завод','Офис','Стройка'];
+   Вход для тех, кто не формулирует задачу, а знает свой объект: склад,
+   цех, торговый зал. Каждый объект — набор задач из TASKS; выбор гасит
+   в ленте все, что к объекту не относится. Первый чип «любой объект»
+   выбран по умолчанию и ничего не гасит: шаг виден как шаг, а лента
+   при этом сразу показывает все задачи. */
+var OBJECTS=[
+ {t:'Любой объект',  works:null},
+ {t:'Торговый центр',works:['service','patrol']},
+ {t:'Склад',        works:['cargo','patrol']},
+ {t:'Завод',        works:['line','cargo','patrol']},
+ {t:'Офис',         works:['service','patrol']},
+ {t:'Стройка',      works:['patrol','cargo']}
+];
 (function(){
  var box=document.getElementById('taskObjs');
  var tape=document.getElementById('tape');
  if(!box||!tape) return;
  box.insertAdjacentHTML('beforeend',OBJECTS.map(function(o,i){
   return '<button type="button" class="obj-chip'+(i===0?' on':'')+'" data-i="'+i+'"'+
-   ' aria-pressed="'+(i===0?'true':'false')+'">'+o+'</button>';
+   ' aria-pressed="'+(i===0?'true':'false')+'">'+o.t+'</button>';
  }).join(''));
  var chips=[].slice.call(box.querySelectorAll('.obj-chip'));
- var active=0;
+ var active=0;                      /* «любой объект» */
  function apply(){
-  var want=active===0?null:OBJECTS[active];
+  var set=OBJECTS[active]&&OBJECTS[active].works;
   chips.forEach(function(c,i){
    c.classList.toggle('on',i===active);
    c.setAttribute('aria-pressed',i===active?'true':'false');
   });
   Array.prototype.forEach.call(tape.children,function(card){
-   var tags=(card.getAttribute('data-objs')||'').split('|');
-   card.classList.toggle('is-off',!!want&&tags.indexOf(want)<0);
+   var w=card.getAttribute('data-work');
+   card.classList.toggle('is-off',!!set&&set.indexOf(w)<0);
   });
  }
  box.addEventListener('click',function(e){
   var c=e.target.closest('.obj-chip'); if(!c) return;
+  /* снимать выбор некуда: «любой объект» и есть пустой фильтр */
   active=+c.getAttribute('data-i');
   apply();
  });
@@ -3602,11 +3597,7 @@ var OBJECTS=['Любой объект','Торговый центр','Склад
   tape.style.animationDelay=(-frac*DUR)+'s';
   tape.style.transform='';
   /* короткое касание без протяжки — это клик по карточке */
-  if(moved<5&&down){
-   var wk=down.getAttribute('data-work');
-   if(wk&&typeof openWork==='function') openWork(wk,down);
-   else location.hash='#robots';
-  }
+  if(moved<5&&down&&typeof openWork==='function') openWork(down.getAttribute('data-work'),down);
   down=null;
  }
  tape.addEventListener('pointerup',drop);
@@ -3618,9 +3609,7 @@ var OBJECTS=['Любой объект','Торговый центр','Склад
   var card=e.target.closest?e.target.closest('.task'):null;
   if(!card) return;
   e.preventDefault();
-  var wk2=card.getAttribute('data-work');
-  if(wk2&&typeof openWork==='function') openWork(wk2,card);
-  else location.hash='#robots';
+  if(typeof openWork==='function') openWork(card.getAttribute('data-work'),card);
  });
 })();
 
