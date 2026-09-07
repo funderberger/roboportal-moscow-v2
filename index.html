@@ -223,8 +223,7 @@ section{position:relative}
   grid-template-columns:repeat(4,1fr);gap:14px}
 /* карточка: снимок сверху со своим цветом подсветки, ниже название,
    круглая стрелка справа и строка про пример изделия */
-.co-card{--glow:rgba(66,227,131,.20);
-  display:flex;flex-direction:column;border-radius:var(--r-s);overflow:hidden;
+.co-card{display:flex;flex-direction:column;border-radius:var(--r-s);overflow:hidden;
   background:var(--ink);border:1px solid var(--w-08);
   transition:transform .3s cubic-bezier(.2,.7,.3,1),border-color .25s}
 .co-card:hover{transform:translateY(-5px);border-color:var(--w-16)}
@@ -234,8 +233,7 @@ section{position:relative}
 .co-card:hover .co-pic img{transform:scale(1.04)}
 /* свечение снизу кадра — оно же связывает снимок с темной подложкой */
 .co-pic::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(80% 70% at 50% 100%, var(--glow), transparent 70%),
-             linear-gradient(180deg, transparent 55%, rgba(16,16,16,.85) 100%)}
+  background:linear-gradient(180deg, transparent 60%, rgba(16,16,16,.8) 100%)}
 .co-pic.is-wait{display:grid;place-content:center;border-bottom:1px dashed var(--w-16)}
 .co-pic.is-wait::after{display:none}
 .co-pic.is-wait span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--w-45)}
@@ -6344,19 +6342,19 @@ var RTC_STEPS=[
 
  var PARTS=[
   {g:'Двигатели', t:'Двигатели и сервоприводы', d:'Сервопривод для роботизированного манипулятора',
-   img:'images/parts/part-2.jpg', co:27, it:80, glow:'rgba(66,227,131,.22)'},
+   img:'images/parts/part-2.jpg', co:27, it:80},
   {g:'Управление', t:'Системы управления и обработки данных', d:'Промышленный контроллер движения',
-   img:'images/parts/part-3.jpg', co:40, it:79, glow:'rgba(120,180,255,.22)'},
+   img:'images/parts/part-3.jpg', co:40, it:79},
   {g:'Сенсоры', t:'Сенсоры и средства связи', d:'Видеопередатчик и навигационный модуль',
-   img:'images/parts/part-4.jpg', co:19, it:42, glow:'rgba(66,227,131,.18)'},
+   img:'images/parts/part-4.jpg', co:19, it:42},
   {g:'Электропитание', t:'Электропитание', d:'Тяговый аккумуляторный модуль',
-   img:'images/parts/part-0.jpg', co:16, it:78, glow:'rgba(255,176,66,.22)'},
+   img:'images/parts/part-0.jpg', co:16, it:78},
   {g:'Компоненты', t:'Электронная компонентная база', d:'Микроконтроллер реального времени',
-   img:'', co:15, it:17, glow:'rgba(168,120,255,.22)'},
+   img:'', co:15, it:17},
   {g:'Разъёмы', t:'Разъёмы', d:'Силовые и слаботочные соединители',
-   img:'', co:0, it:0, glow:'rgba(200,210,220,.18)'},
+   img:'', co:0, it:0},
   {g:'ПО', t:'ПО', d:'Программное обеспечение для автономной навигации',
-   img:'', co:11, it:30, glow:'rgba(66,227,131,.20)'}
+   img:'', co:11, it:30}
  ];
  var pick='Все';
 
@@ -6377,7 +6375,7 @@ var RTC_STEPS=[
    var cnt=p.co? p.co+' '+plu(p.co,['компания','компании','компаний'])+' · '+
                  p.it+' '+plu(p.it,['изделие','изделия','изделий'])
                 : 'данные собираются';
-   return '<article class="co-card" style="--glow:'+p.glow+'">'+
+   return '<article class="co-card">'+
     '<span class="co-pic'+(p.img?'':' is-wait')+'">'+
      (p.img?'<img src="'+esc(p.img)+'" alt="" loading="lazy">':'<span>фото готовится</span>')+
     '</span>'+
