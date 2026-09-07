@@ -253,49 +253,45 @@ section{position:relative}
 @media(max-width:520px){.co-grid{grid-template-columns:1fr}}
 
 /* ---- второй экран: две двери с переходами в разделы ----
-   Обе карточки собраны одинаково: заголовок, строка о разделе, список
-   переходов и кнопка внизу. Кнопки стоят на одной линии за счет auto-отступа,
-   хотя строк слева три, а справа четыре */
-.rd-head{max-width:1180px;margin:0 auto clamp(16px,1.8vw,26px)}
+   Обе карточки светлые: темная сливалась с фоном страницы. Снимок робота
+   лежит в правом нижнем углу и забирает разницу в высоте — строк слева три,
+   справа четыре, а нижний край у карточек общий */
+.rd-head{max-width:none;margin:0 0 clamp(16px,1.8vw,26px)}
 .rd-head .h1{font-size:clamp(32px,4.8vw,76px);line-height:.96}
-.rd-head .h1 em{font-style:normal;color:var(--green)}
-.rd-lead{margin:clamp(14px,1.6vw,22px) 0 0;max-width:64ch}
-.rd-two{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
-.rd-card{border-radius:var(--r);padding:clamp(20px,2vw,32px);display:flex;flex-direction:column}
-.rd-light{background:var(--sand);color:#06110B}
-.rd-dark{background:var(--ink);border:1px solid var(--w-08)}
-.rd-t{margin:0;font-size:clamp(24px,2.6vw,38px);line-height:1;letter-spacing:-.04em;font-weight:500}
-.rd-sub{margin:10px 0 0;max-width:46ch;min-height:2.7em;font-size:clamp(14px,1vw,16px);line-height:1.35}
-.rd-light .rd-sub{color:rgba(6,17,11,.62)}
-.rd-dark .rd-sub{color:var(--w-70)}
-.rd-list{margin:clamp(16px,1.8vw,24px) 0 clamp(16px,1.8vw,24px);display:grid;gap:8px;grid-auto-rows:1fr}
-/* строка — целиком ссылка: кликается вся плашка, а не подпись */
+.rd-lead{margin:clamp(12px,1.4vw,18px) 0 0;max-width:64ch}
+.rd-two{max-width:none;display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
+.rd-card{position:relative;overflow:hidden;border-radius:var(--r);
+  padding:clamp(22px,2.2vw,34px);display:flex;flex-direction:column;color:#06110B}
+.rd-a{background:var(--sand)}
+.rd-b{background:var(--sky)}
+.rd-t{margin:0;font-size:clamp(26px,2.8vw,42px);line-height:1;letter-spacing:-.04em;font-weight:500}
+.rd-sub{margin:10px 0 0;max-width:34ch;min-height:2.7em;
+  font-size:clamp(14px,1.05vw,17px);line-height:1.35;color:rgba(6,17,11,.62)}
+.rd-list{position:relative;z-index:2;margin:clamp(16px,1.8vw,24px) 0 clamp(16px,1.8vw,24px);
+  max-width:min(100%,560px);display:grid;gap:8px;grid-auto-rows:1fr}
 .rd-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;min-height:64px;
-  gap:14px;padding:11px 15px;border-radius:var(--r-s);transition:.24s cubic-bezier(.2,.7,.3,1)}
-.rd-light .rd-row{background:rgba(6,17,11,.05)}
-.rd-light .rd-row:hover{background:rgba(6,17,11,.09);transform:translateX(4px)}
-.rd-dark .rd-row{background:var(--coal);border:1px solid var(--w-08)}
-.rd-dark .rd-row:hover{border-color:var(--green);transform:translateX(4px)}
-.rd-ico{flex:none;width:38px;height:38px;border-radius:11px;display:grid;place-content:center}
-.rd-light .rd-ico{background:#fff}
-.rd-dark .rd-ico{background:var(--ink)}
-.rd-ico svg{width:19px;height:19px;fill:none;stroke-width:1.5;
+  gap:14px;padding:11px 15px;border-radius:var(--r-s);
+  background:rgba(255,255,255,.62);transition:.24s cubic-bezier(.2,.7,.3,1)}
+.rd-row:hover{background:#fff;transform:translateX(4px)}
+.rd-ico{flex:none;width:38px;height:38px;border-radius:11px;display:grid;place-content:center;
+  background:rgba(6,17,11,.06)}
+.rd-ico svg{width:19px;height:19px;fill:none;stroke:#06110B;stroke-width:1.5;
   stroke-linecap:round;stroke-linejoin:round}
-.rd-light .rd-ico svg{stroke:#06110B}
-.rd-dark .rd-ico svg{stroke:var(--green)}
 .rd-txt b{display:block;font-size:15px;line-height:1.2;letter-spacing:-.015em;font-weight:500}
-.rd-txt span{display:block;margin-top:3px;font-size:12.5px;line-height:1.3}
-.rd-light .rd-txt span{color:rgba(6,17,11,.55)}
-.rd-dark .rd-txt span{color:var(--w-45)}
-.rd-row i{font-style:normal;font-size:17px;line-height:1;transition:transform .24s}
-.rd-light .rd-row i{color:rgba(6,17,11,.4)}
-.rd-dark .rd-row i{color:var(--w-45)}
+.rd-txt span{display:block;margin-top:3px;font-size:12.5px;line-height:1.3;color:rgba(6,17,11,.55)}
+.rd-row i{font-style:normal;font-size:17px;line-height:1;color:rgba(6,17,11,.4);transition:transform .24s}
 .rd-row:hover i{transform:translateX(3px)}
-.rd-cta{align-self:flex-start;margin-top:auto;margin-bottom:0}
+.rd-cta{position:relative;z-index:2;align-self:flex-start;margin-top:auto;margin-bottom:0}
 .rd-cta-dark{background:#06110B;color:#fff}
 .rd-cta-dark:hover{background:var(--coal);transform:translateY(-2px)}
-.rd-cta-light{background:var(--white);color:#06110B}
-.rd-cta-light:hover{background:var(--mint);transform:translateY(-2px)}
+/* снимок робота: заполняет правый нижний угол, под текстом и кнопками */
+.rd-fig{position:absolute;right:-4%;bottom:0;width:38%;max-width:300px;
+  z-index:1;pointer-events:none;user-select:none}
+.rd-fig img{display:block;width:100%;height:auto}
+@media(max-width:1100px){
+  .rd-list{max-width:none}
+  .rd-fig{display:none}
+}
 @media(max-width:900px){
   .rd-two{grid-template-columns:1fr}
   .rd-sub{max-width:none}
@@ -2284,13 +2280,13 @@ body.is-account > section:not(#account){display:none}
 <section class="roles rev" id="roles">
   <div class="rd-head">
     <h2 class="h1 sec-h">Среда для<br>технологического рывка</h2>
-    <p class="lead rd-lead">Помогаем заказчикам находить передовые роботизированные решения,<br>а разработчикам – воплощать технологии в реальных проектах.</p>
+    <p class="lead rd-lead">Помогаем заказчикам находить передовые роботизированные решения,<br>а разработчикам – воплощать технологии в реальных проектах</p>
   </div>
 
   <div class="rd-two">
-    <article class="rd-card rd-light">
+    <article class="rd-card rd-a">
       <h3 class="rd-t">Заказчикам</h3>
-      <p class="rd-sub">Подберите решение, проверьте его перед внедрением и получите поддержку</p>
+      <p class="rd-sub">Подберите, протестируйте и внедряйте роботизированные решения</p>
       <div class="rd-list">
         <a class="rd-row" href="#robots">
           <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></svg></span>
@@ -2307,41 +2303,38 @@ body.is-account > section:not(#account){display:none}
           <span class="rd-txt"><b>Меры поддержки</b><span>Компенсируйте затраты на внедрение роботов</span></span>
           <i aria-hidden="true">→</i>
         </a>
-        <a class="rd-row" href="#cases">
-          <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H20v13H6.5A2.5 2.5 0 0 0 4 19.5z"/><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20v3H6.5A2.5 2.5 0 0 1 4 19.5z"/><path d="M9 8.5h6"/></svg></span>
-          <span class="rd-txt"><b>Кейсы внедрений</b><span>Посмотрите, как роботы уже работают на объектах Москвы</span></span>
-          <i aria-hidden="true">→</i>
-        </a>
       </div>
       <a class="btn rd-cta rd-cta-dark" href="#robots">Подобрать робота →</a>
+      <span class="rd-fig"><img src="images/robot-courier.png" alt="" loading="lazy"></span>
     </article>
 
-    <article class="rd-card rd-dark">
+    <article class="rd-card rd-b">
       <h3 class="rd-t">Разработчикам</h3>
-      <p class="rd-sub">Доведите разработку до реального применения — от испытаний до первых заказчиков</p>
+      <p class="rd-sub">Создавайте, развивайте и масштабируйте роботизированные решения</p>
       <div class="rd-list">
         <a class="rd-row" href="#trials">
           <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6A2 2 0 0 0 19 18l-5-9V3"/><path d="M9 3h6M7.5 15h9"/></svg></span>
           <span class="rd-txt"><b>Испытания</b><span>Проверьте и доработайте решение в реальных условиях</span></span>
           <i aria-hidden="true">→</i>
         </a>
-        <a class="rd-row" href="#finance">
-          <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v5c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 11v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></svg></span>
-          <span class="rd-txt"><b>Меры поддержки</b><span>Гранты и льготные займы на разработку, производство и пилоты</span></span>
-          <i aria-hidden="true">→</i>
-        </a>
         <a class="rd-row" href="#robots">
           <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l5-6 4 4 7-8"/><path d="M15 7h5v5"/></svg></span>
-          <span class="rd-txt"><b>Продвижение</b><span>Включите решение в реестр и представьте его заказчикам</span></span>
+          <span class="rd-txt"><b>Продвижение</b><span>Расскажите о своем решении, включите его в реестр робототехники Москвы и получите доступ к новым заказчикам</span></span>
           <i aria-hidden="true">→</i>
         </a>
         <a class="rd-row" href="#coop">
           <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="7" r="2.4"/><circle cx="18" cy="7" r="2.4"/><circle cx="12" cy="17" r="2.4"/><path d="M7.6 8.9l3 6M16.4 8.9l-3 6M8.4 7h7.2"/></svg></span>
-          <span class="rd-txt"><b>Кооперация</b><span>Найдите партнёров по комплектующим и заказчиков для внедрения</span></span>
+          <span class="rd-txt"><b>Кооперация</b><span>Найдите партнеров для развития и доработки ваших решений</span></span>
+          <i aria-hidden="true">→</i>
+        </a>
+        <a class="rd-row" href="#finance">
+          <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v5c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 11v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></svg></span>
+          <span class="rd-txt"><b>Меры поддержки</b><span>Получите гранты и льготные кредиты на разработку и развитие решений</span></span>
           <i aria-hidden="true">→</i>
         </a>
       </div>
-      <a class="btn rd-cta rd-cta-light" href="#account">Добавить решение в реестр →</a>
+      <a class="btn rd-cta rd-cta-dark" href="#account">Рассказать о своем решении →</a>
+      <span class="rd-fig"><img src="images/robot-wave.png" alt="" loading="lazy"></span>
     </article>
   </div>
 </section>
