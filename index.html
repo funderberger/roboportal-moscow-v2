@@ -5930,6 +5930,20 @@ var RTC_STEPS=[
    ROBS.push({name:r.name, img:r.img, task:r.type||r.kin||r.cat});
   });
  });
+ /* одиннадцать штук: по головной модели каждой работы, потом добор.
+    Так в ленте склад, уборка, улица, обходы, сервис, сварка и транспорт,
+    а не одиннадцать складских тележек подряд */
+ var head=[], rest=[];
+ WORK_LIST.forEach(function(w,i){
+  w.models.forEach(function(nm,j){
+   var r=BY_NAME[nm]; if(!r) return;
+   (j===0?head:rest).push(nm);
+  });
+ });
+ var pick={}, order=[];
+ head.concat(rest).forEach(function(nm){ if(!pick[nm]&&order.length<11){ pick[nm]=1; order.push(nm); } });
+ ROBS=order.map(function(nm){ var r=BY_NAME[nm];
+  return {name:r.name, img:r.img, task:r.type||r.d||r.cat}; });
  var RIB_WORKS={type:'works', h:'Решения из каталога',
    em:cnt(ROBS.length,['модель','модели','моделей']),
    items:ROBS, link:'#robots', ctaT:'Найдите своего робота',
