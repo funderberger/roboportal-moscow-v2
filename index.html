@@ -813,6 +813,8 @@ body.is-finance > section:not(#finance){display:none}
 .fn-title{margin:0;font-size:clamp(34px,5.2vw,84px);line-height:.94;
   letter-spacing:-.04em;font-weight:500}
 .fn-lead{margin:18px 0 0;max-width:60ch}
+/* подзаголовок раздела мер держим в одну строку */
+#finance .fn-lead{max-width:none}
 
 .fn-layout{display:grid;grid-template-columns:clamp(230px,20vw,290px) 1fr;
   gap:clamp(16px,2vw,32px);align-items:start}
@@ -2500,7 +2502,7 @@ body.is-account > section:not(#account){display:none}
 <section class="fin-page" id="finance">
   <div class="fn-hero">
     <h1 class="fn-title">Программы развития<br>для робототехники</h1>
-    <p class="lead fn-lead">Льготные займы, гранты и субсидии на разработку, производство и внедрение роботов в Москве</p>
+    <p class="lead fn-lead">Гранты и льготные займы на разработку, производство и внедрение роботов</p>
   </div>
   <button type="button" class="sup-band" data-newapp="reg">
     <span class="sup-band-txt">
