@@ -1602,6 +1602,7 @@ dialog#taskDlg::backdrop,dialog#finDlg::backdrop,dialog#anDlg::backdrop,dialog#c
 .sup-tab.is-on{background:var(--green);color:#06110B}
 .sup-tab:focus-visible{outline:2px solid var(--green);outline-offset:2px}
 .sup-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.sup-more{margin-top:14px}
 /* показываются только карточки выбранной аудитории */
 .sup-card{display:none}
 .sup-grid[data-aud="buy"] .sup-card[data-aud="buy"],
@@ -2207,7 +2208,7 @@ body.is-account > section:not(#account){display:none}
     <h2 class="h1 sec-h">Поддержка<br>под ваши задачи</h2>
   </div>
   <div class="sup-grid" id="supGrid" data-aud="make">
-    <article class="sup-card" data-aud="buy">
+    <article class="sup-card" data-aud="make">
       <p class="se-when">Отбор пока не открыт</p>
       <h3 class="se-t">Субсидия на внедрение роботов</h3>
       <p class="se-sum"><span>до 100 млн ₽</span></p>
@@ -2247,7 +2248,7 @@ body.is-account > section:not(#account){display:none}
       <p class="se-d">Компенсируется половина ключевой ставки ЦБ по кредиту</p>
       <p class="se-org">Московский Фонд поддержки промышленности и предпринимательства</p>
     </article>
-    <article class="sup-card" data-aud="make">
+    <article class="sup-card" data-aud="buy">
       <p class="se-when">Отбор пока не открыт</p>
       <h3 class="se-t">Займы под контракт</h3>
       <p class="se-sum"><span>до 100 млн ₽</span></p>
@@ -2264,6 +2265,7 @@ body.is-account > section:not(#account){display:none}
       <p class="se-org">Фонд «Московский инновационный кластер»</p>
     </article>
   </div>
+  <a class="btn btn-ghost sup-more" href="#finance">Все меры поддержки →</a>
   <button type="button" class="sup-band" data-newapp="reg">
     <span class="sup-band-txt">
       <span class="sup-band-t">Подайте заявку на включение<br>в реестр роботизированных систем</span>
@@ -3073,7 +3075,7 @@ var WORK_MEASURES={
  service:SERVICE_MEASURES,
  patrol:SERVICE_MEASURES,
  line:[
-  {org:'Департамент инвестиционной и промышленной политики Москвы',name:'Субсидия на внедрение роботов',
+  {org:'Департамент предпринимательства и инновационного развития Москвы',name:'Субсидия на внедрение роботов',
    sum:'До 100 млн ₽ · до 50%',state:'Отбор пока не открыт'},
   {org:'Московский Фонд поддержки промышленности и предпринимательства',name:'Компенсация ставки по кредиту',
    sum:'До 3–7%',state:'Отбор пока не открыт'}
