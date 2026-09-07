@@ -167,7 +167,7 @@ section{position:relative}
 /* блок идет сразу за героем, у которого нет нижнего отступа. Сверху воздуха
    больше обычного шага секций: робот втянут в этот отступ отрицательным
    margin-top (см. .roles-robot) и без запаса наезжает на кадр героя */
-.roles{position:relative;padding:clamp(44px,5.4vw,80px) var(--gut) clamp(40px,4.6vw,68px)}
+.roles{position:relative;padding:clamp(34px,4vw,58px) var(--gut) clamp(30px,3.4vw,50px)}
 /* заголовок слева, робот справа; выравниваем по нижнему краю, чтобы он
    «стоял» на одной линии с последней строкой заголовка */
 .roles-slug{display:flex;align-items:flex-end;justify-content:space-between;
@@ -208,10 +208,10 @@ section{position:relative}
    переходов и кнопка внизу. Кнопки стоят на одной линии за счет auto-отступа,
    хотя строк слева три, а справа четыре */
 .rd-head{max-width:1180px;margin:0 auto clamp(16px,1.8vw,26px)}
-.rd-head .h1{font-size:clamp(28px,3.8vw,56px);line-height:1}
+.rd-head .h1{font-size:clamp(32px,4.8vw,76px);line-height:.96}
 .rd-head .h1 em{font-style:normal;color:var(--green)}
 .rd-lead{margin:clamp(14px,1.6vw,22px) 0 0;max-width:64ch}
-.rd-two{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
+.rd-two{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
 .rd-card{border-radius:var(--r);padding:clamp(20px,2vw,32px);display:flex;flex-direction:column}
 .rd-light{background:var(--sand);color:#06110B}
 .rd-dark{background:var(--ink);border:1px solid var(--w-08)}
@@ -2155,8 +2155,11 @@ body.is-account > section:not(#account){display:none}
 
 @media (min-width:901px){
  .hero{padding-bottom:var(--sec-y)}
- .roles,.why,.tasks,.support,.testing,.cases,.band{
+ .why,.tasks,.support,.testing,.cases,.band{
    padding-top:var(--sec-y);padding-bottom:var(--sec-y)}
+ /* второй экран живет по своим полям: он должен помещаться в экран целиком,
+    а общий отступ секций для него слишком велик */
+ .roles{padding-top:clamp(40px,4.4vw,64px);padding-bottom:clamp(34px,3.6vw,52px)}
  /* подвал приклеен к полосе контакта, поэтому снизу у нее отступа нет */
  .band{padding-bottom:0}
 }
