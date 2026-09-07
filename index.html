@@ -1619,10 +1619,7 @@ dialog#taskDlg::backdrop,dialog#finDlg::backdrop,dialog#anDlg::backdrop,dialog#c
   transform-origin:top center;opacity:.32;cursor:pointer;
   transition:transform .5s cubic-bezier(.2,.7,.3,1),opacity .4s,border-color .3s}
 .cd-card.is-on{transform:translateX(-50%) scale(1);opacity:1;border-color:var(--green);cursor:default}
-/* соседние истории спрятаны: на экране остается одна карточка,
-   листается стрелками. Карточки не удалены, только скрыты */
-.cd-card{opacity:0;pointer-events:none}
-.cd-card.is-on{pointer-events:auto}
+.cd-card.is-far{opacity:0;pointer-events:none}
 .cd-media{position:relative;overflow:hidden;border-radius:var(--r-s);aspect-ratio:16/9;background:var(--coal)}
 .cd-media img{width:100%;height:100%;object-fit:cover;display:block}
 /* кейс без снимка: рамка держит место и говорит, что фото будет */
@@ -3896,7 +3893,7 @@ var CASES=[
   how:'Компактный робот дистанционно разрушает железобетонные перекрытия, перегородки и фундаменты расселяемых домов — оператор на безопасном расстоянии',
   howS:'Ломает перекрытия и перегородки дистанционно, оператор — в стороне'}
 ,
- {id:'rosatom',fn:'Комплекс лазерной сварки',short:'Роботизированная сварка',resNum:'× 5',res:'ниже стоимость производства метра сварного шва',model:'',photo:'images/cases/case-09-rosatom.jpg',maker:'Разработка «Росатома»',where:'ЦКБ машиностроения «Росатома»',
+ {id:'rosatom',hide:true,fn:'Комплекс лазерной сварки',short:'Роботизированная сварка',resNum:'× 5',res:'ниже стоимость производства метра сварного шва',model:'',photo:'images/cases/case-09-rosatom.jpg',maker:'Разработка «Росатома»',where:'ЦКБ машиностроения «Росатома»',
   task:'Снизить уровень брака ручной сварки и обеспечить стабильное качество ответственных соединений',
   taskS:'Снизить брак ручной сварки и стабилизировать качество швов',
   how:'Робот выполняет лазерную и гибридную сварку ответственных узлов ядерных реакторов и насосов АЭС'},
@@ -3905,7 +3902,7 @@ var CASES=[
   taskS:'Регулярно убирать снег, листья и мусор без ручного труда',
   how:'Автономный робот работает по заданному маршруту без оператора и содержит большие территории',
   howS:'Едет по заданному маршруту и убирает территорию без оператора'},
- {id:'astramis',fn:'Летающий робот-мойщик',short:'Мойка фасадов высоток',resNum:'× 4',res:'быстрее мойка фасадов — без промышленных альпинистов',model:'Astramis AeroUnit',photo:'images/cases/case-06-astramis.png',maker:'ООО «Астрамис»',where:'Технопарк «Сколково»',
+ {id:'astramis',hide:true,fn:'Летающий робот-мойщик',short:'Мойка фасадов высоток',resNum:'× 4',res:'быстрее мойка фасадов — без промышленных альпинистов',model:'Astramis AeroUnit',photo:'images/cases/case-06-astramis.png',maker:'ООО «Астрамис»',where:'Технопарк «Сколково»',
   task:'Автоматизировать тяжелый ручной труд альпинистов на очистке и мойке фасадов высотных зданий',
   taskS:'Заменить труд альпинистов на мойке фасадов высотных зданий',
   how:'Летающий робот моет окна и стены высоток быстро и безопасно — без людей на веревках'},
@@ -4086,7 +4083,9 @@ var OBJECTS=[
  function esc(t){ return String(t==null?'':t)
   .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
- deck.innerHTML=CASES.map(function(c,i){
+ /* hide:true — история остается в данных, но в ленту не попадает */
+ var SHOWN=CASES.filter(function(c){ return !c.hide; });
+ deck.innerHTML=SHOWN.map(function(c,i){
   return '<article class="cd-card" data-i="'+i+'" data-case="'+esc(c.id)+'">'+
    '<div class="cd-media'+(c.photo?'':' is-wait')+'">'+
     (c.photo?'<img src="'+esc(c.photo)+'" alt="" loading="lazy">':'<span>фото готовится</span>')+
