@@ -223,8 +223,8 @@ section{position:relative}
 .rl-door:hover .rl-go i{transform:translateX(4px)}
 .rl-go b{font-size:15.5px;font-weight:500}
 
-.rl-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:14px 0}
-.rl-bar h3{margin:0;font-size:clamp(20px,2vw,30px);line-height:1.05;letter-spacing:-.03em;font-weight:500}
+.rl-dlg-h{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 16px}
+.rl-dlg-h h3{margin:0;font-size:clamp(22px,2.2vw,34px);line-height:1.05;letter-spacing:-.03em;font-weight:500}
 .rl-swap{margin-left:auto;display:inline-flex;align-items:center;gap:8px;padding:10px 18px;
   border-radius:999px;border:1px solid var(--w-16);background:none;cursor:pointer;font:inherit;
   font-size:14px;color:var(--w-70);transition:.2s}
@@ -2156,15 +2156,6 @@ body.is-account > section:not(#account){display:none}
     </button>
   </div>
 
-  <div class="rl-route" id="rlRoute" hidden>
-    <div class="rl-bar">
-      <h3 id="rlTitle"></h3>
-      <button type="button" class="rl-swap" id="rlSwap"></button>
-    </div>
-    <div class="rl-steps" id="rlSteps"></div>
-    <div class="rl-detail" id="rlDetail"></div>
-    <div class="rl-rib" id="rlRib"></div>
-  </div>
 </section>
 
 
@@ -2565,6 +2556,7 @@ body.is-account > section:not(#account){display:none}
 <dialog id="trFormDlg" aria-label="заявка на испытания"></dialog>
 
 <dialog id="taskDlg" aria-label="подбор роботов под работу"></dialog>
+<dialog id="rlDlg" aria-label="путь на портале"></dialog>
 
 <!-- ============ полоса контакта ============ -->
 <section class="band rev" id="band">
@@ -5771,8 +5763,9 @@ var RTC_STEPS=[
    площадки из ENVIRONMENTS, меры из MEASURES — если каталог обновится,
    этот экран обновится вместе с ним. */
 (function(){
- var fork=document.getElementById('rlFork'), route=document.getElementById('rlRoute');
- if(!fork||!route) return;
+ var fork=document.getElementById('rlFork'), dlg=document.getElementById('rlDlg');
+ if(!fork||!dlg||!dlg.showModal) return;
+ var bodyOverflow='';
 
  function esc(s){ return String(s==null?'':s)
    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -6012,18 +6005,43 @@ var RTC_STEPS=[
 
  function go(who){
   state.who=who; state.step=0;
-  fork.hidden=true; route.hidden=false;
+  if(!dlg.innerHTML){
+   dlg.innerHTML='<div class="tdlg"><div class="tdlg-box">'+
+    '<div class="tdlg-top"><span class="tbox-h" style="margin:0">Путь на портале</span>'+
+    '<button type="button" class="tdlg-x" data-x aria-label="Закрыть">✕</button></div>'+
+    '<div class="tdlg-scroll">'+
+     '<div class="rl-dlg-h"><h3 id="rlTitle"></h3>'+
+      '<button type="button" class="rl-swap" id="rlSwap"></button></div>'+
+     '<div class="rl-steps" id="rlSteps"></div>'+
+     '<div class="rl-detail" id="rlDetail"></div>'+
+     '<div class="rl-rib" id="rlRib"></div>'+
+    '</div></div></div>';
+  }
   render();
+  if(!dlg.open){
+   bodyOverflow=document.body.style.overflow;
+   document.body.style.overflow='hidden';
+   dlg.showModal();
+  }
+  var sc=dlg.querySelector('.tdlg-scroll'); if(sc) sc.scrollTop=0;
  }
+ function shut(){ if(dlg.open) dlg.close(); document.body.style.overflow=bodyOverflow; }
 
  fork.addEventListener('click', function(e){
   var b=e.target.closest('[data-go]'); if(b) go(b.getAttribute('data-go'));
  });
- route.addEventListener('click', function(e){
+ dlg.addEventListener('click', function(e){
   var s=e.target.closest('[data-step]');
   if(s){ state.step=+s.getAttribute('data-step'); render(); return; }
-  if(e.target.closest('#rlSwap')) go(state.who==='biz'?'dev':'biz');
+  if(e.target.closest('#rlSwap')){ go(state.who==='biz'?'dev':'biz'); return; }
+  if(e.target.closest('[data-x]')){ shut(); return; }
+  /* ссылка внутри окна ведет в раздел страницы: сначала закрываем окно,
+     иначе якорь отработает под затемнением */
+  var a=e.target.closest('a[href^="#"]');
+  if(a){ shut(); return; }
+  if(e.target===dlg) shut();   /* клик по затемнению */
  });
+ dlg.addEventListener('cancel', function(){ document.body.style.overflow=bodyOverflow; });
 })();
 </script>
 </body>
