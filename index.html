@@ -223,8 +223,18 @@ section{position:relative}
 .rl-door:hover .rl-go i{transform:translateX(4px)}
 .rl-go b{font-size:15.5px;font-weight:500}
 
-.rl-dlg-h{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 16px}
-.rl-dlg-h h3{margin:0;font-size:clamp(22px,2.2vw,34px);line-height:1.05;letter-spacing:-.03em;font-weight:500}
+/* ---- путь на портале ----
+   Отдельный экран, как каталог и витрина мер: при хеше #path лендинг
+   прячется целиком, остается шапка, маршрут и подвал */
+#path{display:none}
+body.is-path #path{display:block}
+body.is-path > section:not(#path){display:none}
+.rl-page-head{margin-bottom:clamp(18px,2.4vw,32px)}
+.rl-back{display:inline-flex;align-items:center;gap:8px;font-size:14.5px;color:var(--w-45);transition:color .2s}
+.rl-back:hover{color:var(--green)}
+.rl-page-bar{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin-top:14px}
+.rl-page-t{margin:0;font-size:clamp(34px,5.2vw,84px);line-height:.94;
+  letter-spacing:-.04em;font-weight:500}
 .rl-swap{margin-left:auto;display:inline-flex;align-items:center;gap:8px;padding:10px 18px;
   border-radius:999px;border:1px solid var(--w-16);background:none;cursor:pointer;font:inherit;
   font-size:14px;color:var(--w-70);transition:.2s}
@@ -1260,9 +1270,9 @@ select.trf-in option{background:var(--coal);color:var(--white)}
 /* ---------- окно подбора роботов под работу ---------- */
 /* два уровня живут в одном <dialog>: экран работы и карточка модели.
    Содержимое целиком собирает скрипт из ROBOTS и WORKS */
-dialog#rlDlg,dialog#taskDlg,dialog#finDlg,dialog#anDlg,dialog#caseDlg,dialog#trDlg,dialog#trFormDlg{border:0;padding:0;background:transparent;color:var(--white);
+dialog#taskDlg,dialog#finDlg,dialog#anDlg,dialog#caseDlg,dialog#trDlg,dialog#trFormDlg{border:0;padding:0;background:transparent;color:var(--white);
   width:100%;max-width:none;height:100%;max-height:none}
-dialog#rlDlg::backdrop,dialog#taskDlg::backdrop,dialog#finDlg::backdrop,dialog#anDlg::backdrop,dialog#caseDlg::backdrop,dialog#trDlg::backdrop,dialog#trFormDlg::backdrop{background:rgba(6,10,8,.72);
+dialog#taskDlg::backdrop,dialog#finDlg::backdrop,dialog#anDlg::backdrop,dialog#caseDlg::backdrop,dialog#trDlg::backdrop,dialog#trFormDlg::backdrop{background:rgba(6,10,8,.72);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .tdlg{min-height:100%;display:flex;align-items:center;justify-content:center;padding:var(--gut)}
 /* колонка: шапка приколота, прокручивается только тело — окно не вылезает
@@ -2478,6 +2488,20 @@ body.is-account > section:not(#account){display:none}
     </div>
   </div>
 </section>
+<!-- ============ путь на портале: отдельный экран ============ -->
+<section class="fin-page" id="path">
+  <div class="rl-page-head">
+    <a class="rl-back" href="#roles">← На главную</a>
+    <div class="rl-page-bar">
+      <h2 class="rl-page-t" id="rlTitle"></h2>
+      <button type="button" class="rl-swap" id="rlSwap"></button>
+    </div>
+  </div>
+  <div class="rl-steps" id="rlSteps"></div>
+  <div class="rl-detail" id="rlDetail"></div>
+  <div class="rl-rib" id="rlRib"></div>
+</section>
+
 <dialog id="finDlg" aria-label="мера поддержки"></dialog>
 <dialog id="caseDlg" aria-label="история внедрения"></dialog>
 
@@ -2556,7 +2580,6 @@ body.is-account > section:not(#account){display:none}
 <dialog id="trFormDlg" aria-label="заявка на испытания"></dialog>
 
 <dialog id="taskDlg" aria-label="подбор роботов под работу"></dialog>
-<dialog id="rlDlg" aria-label="путь на портале"></dialog>
 
 <!-- ============ полоса контакта ============ -->
 <section class="band rev" id="band">
@@ -3522,13 +3545,15 @@ var openWork=null,openModelCard=null;
  function route(){
   var h=location.hash;
   var cat=h==='#robots', fin=h==='#finance',
-      an=h==='#analytics', tr=h==='#trials', acc=h==='#account';
+      an=h==='#analytics', tr=h==='#trials', acc=h==='#account', pa=h==='#path';
   document.body.classList.toggle('is-catalog',cat);
   document.body.classList.toggle('is-finance',fin);
   document.body.classList.toggle('is-analytics',an);
   document.body.classList.toggle('is-trials',tr);
   document.body.classList.toggle('is-account',acc);
-  if(cat||fin||an||tr||acc){ window.scrollTo(0,0); return; }
+  document.body.classList.toggle('is-path',pa);
+  if(pa&&typeof window.rlRender==='function') window.rlRender();
+  if(cat||fin||an||tr||acc||pa){ window.scrollTo(0,0); return; }
   if(h.length>1){
    var t=document.getElementById(h.slice(1));
    if(t){
@@ -5773,9 +5798,8 @@ var RTC_STEPS=[
    площадки из ENVIRONMENTS, меры из MEASURES — если каталог обновится,
    этот экран обновится вместе с ним. */
 (function(){
- var fork=document.getElementById('rlFork'), dlg=document.getElementById('rlDlg');
- if(!fork||!dlg||!dlg.showModal) return;
- var bodyOverflow='';
+ var fork=document.getElementById('rlFork'), page=document.getElementById('path');
+ if(!fork||!page) return;
 
  function esc(s){ return String(s==null?'':s)
    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
@@ -6015,43 +6039,19 @@ var RTC_STEPS=[
 
  function go(who){
   state.who=who; state.step=0;
-  if(!dlg.innerHTML){
-   dlg.innerHTML='<div class="tdlg"><div class="tdlg-box">'+
-    '<div class="tdlg-top"><span class="tbox-h" style="margin:0">Путь на портале</span>'+
-    '<button type="button" class="tdlg-x" data-x aria-label="Закрыть">✕</button></div>'+
-    '<div class="tdlg-scroll">'+
-     '<div class="rl-dlg-h"><h3 id="rlTitle"></h3>'+
-      '<button type="button" class="rl-swap" id="rlSwap"></button></div>'+
-     '<div class="rl-steps" id="rlSteps"></div>'+
-     '<div class="rl-detail" id="rlDetail"></div>'+
-     '<div class="rl-rib" id="rlRib"></div>'+
-    '</div></div></div>';
-  }
-  render();
-  if(!dlg.open){
-   bodyOverflow=document.body.style.overflow;
-   document.body.style.overflow='hidden';
-   dlg.showModal();
-  }
-  var sc=dlg.querySelector('.tdlg-scroll'); if(sc) sc.scrollTop=0;
+  if(location.hash==='#path'){ render(); route(); }
+  else location.hash='#path';
  }
- function shut(){ if(dlg.open) dlg.close(); document.body.style.overflow=bodyOverflow; }
+ window.rlRender=function(){ if(!state.who) state.who='biz'; render(); };
 
  fork.addEventListener('click', function(e){
   var b=e.target.closest('[data-go]'); if(b) go(b.getAttribute('data-go'));
  });
- dlg.addEventListener('click', function(e){
+ page.addEventListener('click', function(e){
   var s=e.target.closest('[data-step]');
   if(s){ state.step=+s.getAttribute('data-step'); render(); return; }
-  if(e.target.closest('#rlSwap')){ go(state.who==='biz'?'dev':'biz'); return; }
-  if(e.target.closest('[data-x]')){ shut(); return; }
-  /* ссылка внутри окна ведет в раздел страницы: сначала закрываем окно,
-     иначе якорь отработает под затемнением */
-  var a=e.target.closest('a[href^="#"]');
-  if(a){ shut(); return; }
-  if(e.target===dlg) shut();   /* клик по затемнению */
+  if(e.target.closest('#rlSwap')) go(state.who==='biz'?'dev':'biz');
  });
- dlg.addEventListener('cancel', function(){ document.body.style.overflow=bodyOverflow; });
 })();
 </script>
 </body>
