@@ -2638,7 +2638,6 @@ body.is-account > section:not(#account){display:none}
   <div class="cp-head">
     <h1 class="cp-title">Найдите<br>своего робота</h1>
   </div>
-  <div class="cp-cats" id="cpCats"></div>
   <div class="cp-layout">
     <aside class="cp-side">
       <button type="button" class="cp-filters" id="cpFilters">Фильтры<b></b></button>
@@ -3582,7 +3581,6 @@ var openWork=null,openModelCard=null;
  var page=document.getElementById('robots');
  if(!page) return;
  var grid=document.getElementById('cpGrid'),
-     cats=document.getElementById('cpCats'),
      side=document.getElementById('cpSide'),
      sideBox=side.parentNode,
      filtersBtn=document.getElementById('cpFilters'),
@@ -3596,23 +3594,57 @@ var openWork=null,openModelCard=null;
   if(a>=2&&a<=4&&(b<12||b>14)) return 'решения';
   return 'решений'; }
 
+ /* отрасль и работа — две оси отбора в каталоге. Считаем их здесь, а не
+    держим в данных: в выгрузке отрасль записана пятнадцатью разными
+    формулировками, а задача проставлена лишь у четверти моделей */
+ var BRANCH={
+  'Производство':'Промышленность','Промышленные объекты':'Промышленность',
+  'Промышленность и сервис':'Промышленность','Лаборатории и производство':'Промышленность',
+  'Склады и логистика':'Склады и логистика','Склады и производство':'Склады и логистика',
+  'Строительство':'Строительство','Сельское хозяйство':'Сельское хозяйство',
+  'Городское хозяйство':'Городское хозяйство','Спасательные работы':'Городское хозяйство',
+  'Закрытые территории':'Городское хозяйство',
+  'Торговые объекты':'Торговля и услуги','Помещения и торговые объекты':'Торговля и услуги',
+  'Магистральные перевозки':'Транспорт','Городские перевозки':'Транспорт'
+ };
+ var JOB_BY_SUB={
+  store:'Перемещение грузов', cargo:'Перемещение грузов',
+  move:'Погрузка и укладка', pall:'Погрузка и укладка',
+  assy:'Сборка и сварка', weld:'Сборка и сварка', mach:'Сборка и сварка',
+  watch:'Мониторинг и инспекция', clean:'Уборка',
+  guest:'Обслуживание посетителей', pass:'Перевозка пассажиров'
+ };
+ var JOB_BY_KIN={
+  'Складские роботы':'Перемещение грузов', 'Уборщики':'Уборка',
+  'Мониторинг и инспекция':'Мониторинг и инспекция', 'Строительные':'Строительные работы',
+  'Сельскохозяйственные':'Сельхозработы', 'Манипуляторы':'Сборка и сварка',
+  'Биоморфные':'Обслуживание посетителей'
+ };
+ function jobOf(r){
+  var s=(r.sub||[])[0];
+  if(s&&JOB_BY_SUB[s]) return JOB_BY_SUB[s];
+  if(r.kin==='Беспилотный транспорт')
+   return /такси|трамвай|метро|пассажир/i.test(r.type||'')?'Перевозка пассажиров':'Перемещение грузов';
+  return JOB_BY_KIN[r.kin]||'Сборка и сварка';
+ }
+ ROBOTS.forEach(function(r){
+  r.branch=BRANCH[r.industry]||'Промышленность';
+  r.job=jobOf(r);
+ });
+
+
  var CATS=['Промышленные','Сервисные','Транспортные'];
- var state={cat:'Все',sub:'Все',q:'',reg:false,collab:false,kin:'Все',ind:'Все',sub2:'Все'};
- /* подтип берется из разных полей: у сервисных это вид робота, у
-    промышленных и транспортных — тип изделия. Так подписи совпадают с тем,
-    как отрасль сама делит эти классы */
- function sub2Field(){ return (state.cat==='Промышленные'||state.cat==='Транспортные')?'type':'kin'; }
+ var state={cat:'Все',sub:'Все',q:'',reg:false,collab:false,kin:'Все',ind:'Все',branch:'Все',job:'Все'};
  var open={};       /* какие группы фильтров раскрыты */
 
- function inCat(){ return state.cat==='Все'?ROBOTS
-   :ROBOTS.filter(function(r){return r.cat===state.cat}); }
+ function inCat(){ return ROBOTS; }
  function list(){
   var q=state.q.trim().toLowerCase();
   return inCat().filter(function(r){
-   if(state.sub!=='Все'&&(r.sub||[]).indexOf(state.sub)<0) return false;
+   if(state.branch!=='Все'&&r.branch!==state.branch) return false;
+   if(state.job!=='Все'&&r.job!==state.job) return false;
    if(state.reg&&!r.registry) return false;
    if(state.kin!=='Все'&&r.kin!==state.kin) return false;
-   if(state.sub2!=='Все'&&r[sub2Field()]!==state.sub2) return false;
    if(state.ind!=='Все'&&r.industry!==state.ind) return false;
    if(q){ var hay=(r.name+' '+r.d+' '+(r.use||'')+' '+r.maker+' '+(r.kin||'')+' '+(r.type||'')+' '+(r.industry||'')).toLowerCase();
           if(hay.indexOf(q)<0) return false; }
@@ -3620,13 +3652,6 @@ var openWork=null,openModelCard=null;
   });
  }
 
- function drawCats(){
-  var all=[['Все','Все роботы',ROBOTS.length]].concat(CATS.map(function(c){
-    return [c,c,ROBOTS.filter(function(r){return r.cat===c}).length]; }));
-  cats.innerHTML=all.map(function(a){
-   return '<button type="button" class="cp-chip'+(state.cat===a[0]?' is-on':'')+
-    '" data-cat="'+esc(a[0])+'">'+esc(a[1])+'<b>'+a[2]+'</b></button>'; }).join('');
- }
 
  /* второй уровень — задачи внутри выбранной категории. Первым чипом
     «все», дальше задачи по убыванию числа решений. Для «всех роботов»
@@ -3663,32 +3688,41 @@ var openWork=null,openModelCard=null;
    '</div></div></div>';
  }
 
+ /* порядок значений задан списком: он читается как оглавление отрасли,
+    а сортировка по числу решений каждый раз меняла бы его местами */
+ function fixed(field,order){
+  var pool=inCat(), out=[];
+  order.forEach(function(v){
+   var c=0;
+   pool.forEach(function(r){ if(r[field]===v) c++; });
+   if(c) out.push({v:v,n:c});
+  });
+  return out;
+ }
+ var BRANCHES=['Промышленность','Склады и логистика','Строительство','Сельское хозяйство',
+   'Городское хозяйство','Торговля и услуги','Транспорт'];
+ var JOBS=['Перемещение грузов','Погрузка и укладка','Сборка и сварка','Мониторинг и инспекция',
+   'Уборка','Строительные работы','Сельхозработы','Перевозка пассажиров','Обслуживание посетителей'];
+
  function drawSide(){
   var pool=inCat();
   var regN=pool.filter(function(r){return r.registry}).length;
   side.innerHTML=
-   /* три оси отбора: чем робот является, где стоит и что делает.
-      Производителя фильтром не выносим — на семнадцать моделей приходится
-      почти столько же производителей, отбор по нему ничего не сужает.
-      Найти по производителю по-прежнему можно строкой поиска */
-   
-   group('sub2','Направления роботов',values(sub2Field()),state.sub2)+
-   group('sub','Что делает',values('sub'),state.sub,labelOf)+
+   group('branch','Отрасль',fixed('branch',BRANCHES),state.branch)+
+   group('job','Что делает',fixed('job',JOBS),state.job)+
    (regN?'<div class="cp-g'+(open.reg?' on':'')+'" data-g="reg">'+
      '<button type="button" class="cp-g-h">Реестр Москвы<i>+</i></button>'+
      '<div class="cp-g-list"><div class="cp-g-in">'+
       '<button type="button" class="cp-v'+(state.reg?' on':'')+'" data-f="reg" data-v="1">'+
        'Только из реестра<b>'+regN+'</b></button>'+
      '</div></div></div>':'');
-  var picked=(state.sub!=='Все')+(state.kin!=='Все')+(state.sub2!=='Все')+(state.reg?1:0);
+  var picked=(state.branch!=='Все')+(state.job!=='Все')+(state.reg?1:0);
+
   filtersBtn.innerHTML='Фильтры<b>'+(picked||'')+'</b>';
  }
 
  /* задача решения — короткая строка под названием */
- function taskOf(r){
-  var k=(state.sub!=='Все'&&(r.sub||[]).indexOf(state.sub)>=0)?state.sub:(r.sub||[])[0];
-  return (k&&SUBS[k]&&SUBS[k][0])||r.type||r.cat;
- }
+ function taskOf(r){ return r.job||r.type||r.cat; }
 
  /* карточка: снимок, название и задача — больше в каталоге не нужно.
     Производитель, характеристики и заявка — внутри карточки модели */
@@ -3700,7 +3734,7 @@ var openWork=null,openModelCard=null;
   '</button>';
  }
  function draw(){
-  drawCats(); drawSide();
+  drawSide();
   var l=list();
   showing.textContent=l.length+' '+plural(l.length);
   grid.innerHTML=l.length?l.map(card).join('')
@@ -3708,13 +3742,6 @@ var openWork=null,openModelCard=null;
  }
  draw();
 
- cats.addEventListener('click',function(e){
-  var b=e.target.closest('.cp-chip'); if(!b) return;
-  state.cat=b.getAttribute('data-cat'); state.sub='Все'; state.sub2='Все';
-  state.kin='Все'; state.ind='Все';
-  state.reg=false; state.collab=false;
-  draw();
- });
  side.addEventListener('click',function(e){
   var h=e.target.closest('.cp-g-h');
   if(h){ var k=h.parentNode.getAttribute('data-g'); open[k]=!open[k]; return drawSide(); }
