@@ -2194,7 +2194,7 @@ body.is-account > section:not(#account){display:none}
   <img class="tasks-robot" src="images/robot-courier.png" alt="" loading="lazy">
   <div class="tasks-head">
     <h2 class="h1">Подберите робота<br>под свою задачу</h2>
-    <p class="lead">Роботы умеют многое — теперь найдите того, кто решит вашу задачу</p>
+    <p class="lead">Выберите, где будет работать робот, — покажем, что он там делает и какие модели подойдут</p>
     <div class="tasks-objs" id="taskObjs" role="group" aria-label="объект внедрения"></div>
   </div>
   <div class="tape" id="tape"></div>
@@ -3673,10 +3673,10 @@ document.getElementById('tape').innerHTML=cards+cards;
    выбран по умолчанию и ничего не гасит: шаг виден как шаг, а лента
    при этом сразу показывает все задачи. */
 var OBJECTS=[
- {t:'Любой объект',  works:null},
+ {t:'Все объекты',   works:null},
  {t:'Торговый центр',works:['service','patrol']},
  {t:'Склад',        works:['cargo','patrol']},
- {t:'Завод',        works:['line','cargo','patrol']},
+ {t:'Производство', works:['line','cargo','patrol']},
  {t:'Офис',         works:['service','patrol']},
  {t:'Стройка',      works:['patrol','cargo']}
 ];
