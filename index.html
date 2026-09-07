@@ -331,6 +331,17 @@ body.is-path > section:not(#path){display:none}
 .rl-rob-n{display:block;font-size:15px;letter-spacing:.02em;text-transform:uppercase;
   font-weight:500;color:var(--white)}
 .rl-rob-t{display:block;margin-top:7px;font-size:14px;line-height:1.3;color:var(--w-45)}
+/* площадки: сетка вниз, а не лента вбок — шесть карточек читаются сразу */
+.rl-sites{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.rl-site{border:1px solid var(--w-08);border-radius:var(--r-s);background:var(--ink);
+  padding:clamp(20px,1.8vw,26px);display:flex;flex-direction:column;
+  transition:border-color .25s,background .25s,transform .3s cubic-bezier(.2,.7,.3,1)}
+.rl-site:hover{border-color:var(--w-16);background:var(--coal);transform:translateY(-4px)}
+.rl-site .rl-pic{height:190px;margin:18px 0 0;border-radius:14px;overflow:hidden}
+.rl-site .rl-pic img{object-fit:cover}
+.rl-more{margin-top:14px}
+@media(max-width:1100px){.rl-sites{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.rl-sites{grid-template-columns:1fr}}
 .rl-mcards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .rl-mcard{border:1px solid var(--w-08);border-radius:var(--r-s);background:var(--ink);
   padding:22px;display:flex;flex-direction:column}
@@ -3705,8 +3716,14 @@ var CASES=[
   task:'Обследовать и ремонтировать геометрически сложные и труднодоступные участки трубопроводов',
   taskS:'Обследовать и чинить сложные и труднодоступные участки труб',
   how:'Модульный гусеничный краулер везёт тяжёлое диагностическое и ремонтное оборудование внутри разветвлённых трубопроводов',
-  howS:'Гусеничный краулер везёт диагностику и ремонтное оборудование внутри труб'}
+  howS:'Гусеничный краулер везёт диагностику и ремонтное оборудование внутри труб'},
+ {id:'mark',fn:'Робот-уборщик территорий',short:'Уборка снега и мусора',resNum:'3 млн ₽',res:'экономии в год на уборке территории вокруг здания',model:'МАРК',photo:'images/cases/case-10-mark.jpg',maker:'ООО «Виафор»',where:'Территория Центра инновационного развития',
+  task:'Регулярно убирать территорию от снега, листьев и мусора и снизить зависимость от ручного труда',
+  taskS:'Регулярно убирать снег, листья и мусор без ручного труда',
+  how:'Автономный робот работает по заданному маршруту без оператора и содержит большие территории',
+  howS:'Едет по заданному маршруту и убирает территорию без оператора'}
 ];
+
 /* карточки продублированы шесть раз, поэтому работу определяем по data-work,
    а не по индексу: дубли в конце ленты открывают то же окно */
 var cards=TASKS.concat(TASKS,TASKS).map(function(x){
@@ -6025,16 +6042,19 @@ var RTC_STEPS=[
 
  function ribHTML(r){
   var head='<p class="rl-rib-h">'+esc(r.h)+' <em>'+esc(r.em)+'</em>'+
-   ((r.type==='works'||r.type==='sites')?'<i>листайте вправо →</i>':'')+'</p>';
-  if(r.type==='works'||r.type==='sites'){
+   ((r.type==='works')?'<i>листайте вправо →</i>':'')+'</p>';
+  if(r.type==='sites'){
+   return head+'<div class="rl-sites">'+r.items.map(function(w){
+    return '<a class="rl-site" href="'+esc(r.link)+'">'+
+     '<p class="rl-c-t">'+esc(w.t)+'</p><p class="rl-c-env">'+esc(w.env)+'</p>'+
+     '<span class="rl-pic"><img src="'+esc(w.img)+'" alt="" loading="lazy"></span>'+
+     '<p class="rl-note">'+esc(w.note)+'</p>'+
+     (w.size?'<p class="rl-size">'+esc(w.size)+'</p>':'')+'</a>';
+   }).join('')+'</div>'+
+   '<a class="btn btn-ghost rl-more" href="'+esc(r.link)+'">'+esc(r.ctaT)+' →</a>';
+  }
+  if(r.type==='works'){
    var cards=r.items.map(function(w){
-    if(r.type==='sites'){
-     return '<a class="rl-card rl-card-site" href="'+esc(r.link)+'">'+
-      '<p class="rl-c-t">'+esc(w.t)+'</p><p class="rl-c-env">'+esc(w.env)+'</p>'+
-      '<span class="rl-pic"><img src="'+esc(w.img)+'" alt="" loading="lazy"></span>'+
-      '<p class="rl-note">'+esc(w.note)+'</p>'+
-      (w.size?'<p class="rl-size">'+esc(w.size)+'</p>':'')+'</a>';
-    }
     return '<button type="button" class="rl-rob" data-model="'+esc(w.name)+'">'+
      '<span class="rl-rob-pic"><img src="'+esc(w.img)+'" alt="" loading="lazy" draggable="false"></span>'+
      '<span class="rl-rob-n nolow">'+esc(w.name)+'</span>'+
@@ -6078,7 +6098,7 @@ var RTC_STEPS=[
 
  function go(who){
   state.who=who; state.step=0;
-  if(location.hash==='#path'){ render(); route(); }
+  if(location.hash==='#path') render();   /* экран уже открыт, хватит перерисовки */
   else location.hash='#path';
  }
  window.rlRender=function(){ if(!state.who) state.who='biz'; render(); };
