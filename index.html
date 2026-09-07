@@ -254,41 +254,61 @@ section{position:relative}
 /* ---- второй экран: две двери с переходами в разделы ----
    Обе карточки светлые: темная сливалась с фоном страницы. Снимок робота
    лежит в правом нижнем углу и забирает разницу в высоте — строк слева три,
-   справа четыре, а нижний край у карточек общий */
+   справа четыре, а нижний край у карточек общий.
+   Размеры внутри блока считаются от --u: один шаг равен проценту ширины
+   экрана, поэтому кегли и поля растут вместе с макетом одной пропорцией */
+#roles{--u:1vw}
 .rd-head{max-width:none;margin:0 0 clamp(16px,1.8vw,26px)}
 .rd-head .h1{font-size:clamp(32px,4.8vw,76px);line-height:.96}
-.rd-lead{margin:clamp(12px,1.4vw,18px) 0 0;max-width:64ch}
+.rd-lead{margin:clamp(12px,1.4vw,18px) 0 0;max-width:64ch;
+  font-size:clamp(15px,calc(var(--u)*1.35),21px)}
 .rd-two{max-width:none;display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
 .rd-card{position:relative;overflow:hidden;border-radius:var(--r);
-  padding:clamp(22px,2.2vw,34px);display:flex;flex-direction:column;color:#06110B}
+  padding:clamp(28px,calc(var(--u)*3.4),52px) clamp(26px,calc(var(--u)*3.1),46px);
+  display:flex;flex-direction:column;color:#06110B}
 .rd-a{background:var(--sand)}
 .rd-b{background:var(--sky)}
-.rd-t{margin:0;font-size:clamp(26px,2.8vw,42px);line-height:1;letter-spacing:-.04em;font-weight:500}
-.rd-sub{margin:10px 0 0;max-width:34ch;min-height:2.7em;
-  font-size:clamp(14px,1.05vw,17px);line-height:1.35;color:rgba(6,17,11,.62)}
-.rd-list{position:relative;z-index:2;margin:clamp(16px,1.8vw,24px) 0 clamp(16px,1.8vw,24px);
-  max-width:min(100%,560px);display:grid;gap:8px;grid-auto-rows:1fr}
-.rd-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;min-height:64px;
-  gap:14px;padding:11px 15px;border-radius:var(--r-s);
-  background:rgba(255,255,255,.62);transition:.24s cubic-bezier(.2,.7,.3,1)}
+.rd-t{margin:0;font-size:clamp(28px,calc(var(--u)*3.1),48px);line-height:1;
+  letter-spacing:-.04em;font-weight:500}
+.rd-sub{margin:clamp(10px,calc(var(--u)*1.1),16px) 0 0;max-width:34ch;min-height:2.7em;
+  font-size:clamp(15px,calc(var(--u)*1.3),20px);line-height:1.35;color:rgba(6,17,11,.62)}
+/* список тянется на всю свободную высоту: слева строк три, справа четыре,
+   и без растяжения под левым списком оставалась мертвая зона */
+.rd-list{position:relative;z-index:2;flex:1 1 auto;align-content:stretch;
+  margin:clamp(18px,calc(var(--u)*2),28px) 0 clamp(18px,calc(var(--u)*2),28px);
+  display:grid;grid-auto-rows:1fr;gap:clamp(8px,calc(var(--u)*0.8),12px)}
+.rd-a .rd-list{max-width:min(100%,64%)}
+.rd-b .rd-list{max-width:min(100%,70%)}
+.rd-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;
+  min-height:clamp(64px,calc(var(--u)*6),84px);
+  gap:clamp(12px,calc(var(--u)*1.3),18px);
+  padding:clamp(13px,calc(var(--u)*1.3),18px) clamp(16px,calc(var(--u)*1.5),22px);
+  border-radius:var(--r-s);background:rgba(255,255,255,.62);
+  transition:.24s cubic-bezier(.2,.7,.3,1)}
 .rd-row:hover{background:#fff;transform:translateX(4px)}
-.rd-ico{flex:none;width:38px;height:38px;border-radius:11px;display:grid;place-content:center;
-  background:rgba(6,17,11,.06)}
-.rd-ico svg{width:19px;height:19px;fill:none;stroke:#06110B;stroke-width:1.5;
+.rd-ico{flex:none;width:clamp(38px,calc(var(--u)*3.2),50px);height:clamp(38px,calc(var(--u)*3.2),50px);
+  border-radius:13px;display:grid;place-content:center;background:rgba(6,17,11,.06)}
+.rd-ico svg{width:22px;height:22px;fill:none;stroke:#06110B;stroke-width:1.5;
   stroke-linecap:round;stroke-linejoin:round}
-.rd-txt b{display:block;font-size:15px;line-height:1.2;letter-spacing:-.015em;font-weight:500}
-.rd-txt span{display:block;margin-top:3px;font-size:12.5px;line-height:1.3;color:rgba(6,17,11,.55)}
-.rd-row i{font-style:normal;font-size:17px;line-height:1;color:rgba(6,17,11,.4);transition:transform .24s}
+.rd-txt b{display:block;font-size:clamp(15px,calc(var(--u)*1.25),18px);line-height:1.25;
+  letter-spacing:-.015em;font-weight:500}
+.rd-txt span{display:block;margin-top:4px;font-size:clamp(13px,calc(var(--u)*1.05),15.5px);
+  line-height:1.35;color:rgba(6,17,11,.55)}
+.rd-row i{font-style:normal;font-size:clamp(18px,calc(var(--u)*1.5),21px);line-height:1;
+  color:rgba(6,17,11,.4);transition:transform .24s}
 .rd-row:hover i{transform:translateX(3px)}
 .rd-cta{position:relative;z-index:2;align-self:flex-start;margin-top:auto;margin-bottom:0}
 .rd-cta-dark{background:#06110B;color:#fff}
 .rd-cta-dark:hover{background:var(--coal);transform:translateY(-2px)}
+/* кнопки только этого экрана: общий .btn остается прежним */
+#roles .btn{padding:clamp(15px,calc(var(--u)*1.5),19px) clamp(24px,calc(var(--u)*2.4),34px);
+  font-size:clamp(15px,calc(var(--u)*1.3),18px);gap:10px;border-radius:999px}
 /* снимок робота: заполняет правый нижний угол, под текстом и кнопками */
 .rd-fig{position:absolute;right:-4%;bottom:0;width:38%;max-width:300px;
   z-index:1;pointer-events:none;user-select:none}
 .rd-fig img{display:block;width:100%;height:auto}
 @media(max-width:1100px){
-  .rd-list{max-width:none}
+  .rd-a .rd-list,.rd-b .rd-list{max-width:none}
   .rd-fig{display:none}
 }
 @media(max-width:900px){
