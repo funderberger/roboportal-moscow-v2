@@ -144,9 +144,9 @@ section{position:relative}
 .hero-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
 /* низ героя: подпись слева, кнопка справа на одной линии — так блок текста
    опускается к нижнему краю, а не висит по центру кадра */
-.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:20px 32px;flex-wrap:wrap;margin-top:20px}
-.hero-bottom .lead{margin:0;align-self:center;flex:1;min-width:min(100%,320px);max-width:640px}
-.hero-cta.is-corner{margin:0 0 6px auto;justify-content:flex-end;flex:none}
+.hero-bottom{display:flex;align-items:flex-end;justify-content:space-between;gap:18px 32px;flex-wrap:wrap;margin-top:clamp(16px,1.8vw,26px)}
+.hero-bottom .lead{margin:0;align-self:flex-end;flex:1;min-width:min(100%,320px);max-width:640px}
+.hero-cta.is-corner{margin:0 0 0 auto;justify-content:flex-end;flex:none}
 @media(max-width:640px){
   .hero-row{flex-direction:column;align-items:stretch}
   .hero-cta.is-corner{margin:22px 0 0}
@@ -3529,7 +3529,17 @@ var openWork=null,openModelCard=null;
   document.body.classList.toggle('is-trials',tr);
   document.body.classList.toggle('is-account',acc);
   if(cat||fin||an||tr||acc){ window.scrollTo(0,0); return; }
-  if(h.length>1){ var t=document.getElementById(h.slice(1)); if(t) t.scrollIntoView(); }
+  if(h.length>1){
+   var t=document.getElementById(h.slice(1));
+   if(t){
+    var put=function(){
+     var head=parseInt(getComputedStyle(document.documentElement).getPropertyValue('--head-h'),10)||0;
+     scrollTo({top:Math.max(0, t.getBoundingClientRect().top+scrollY-head-8), behavior:"instant"});
+    };
+    put();
+    addEventListener('load',put,{once:true});
+   }
+  }
  }
  addEventListener('hashchange',route);
  route();
