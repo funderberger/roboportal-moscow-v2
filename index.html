@@ -1619,7 +1619,10 @@ dialog#taskDlg::backdrop,dialog#finDlg::backdrop,dialog#anDlg::backdrop,dialog#c
   transform-origin:top center;opacity:.32;cursor:pointer;
   transition:transform .5s cubic-bezier(.2,.7,.3,1),opacity .4s,border-color .3s}
 .cd-card.is-on{transform:translateX(-50%) scale(1);opacity:1;border-color:var(--green);cursor:default}
-.cd-card.is-far{opacity:0;pointer-events:none}
+/* соседние истории спрятаны: на экране остается одна карточка,
+   листается стрелками. Карточки не удалены, только скрыты */
+.cd-card{opacity:0;pointer-events:none}
+.cd-card.is-on{pointer-events:auto}
 .cd-media{position:relative;overflow:hidden;border-radius:var(--r-s);aspect-ratio:16/9;background:var(--coal)}
 .cd-media img{width:100%;height:100%;object-fit:cover;display:block}
 /* кейс без снимка: рамка держит место и говорит, что фото будет */
