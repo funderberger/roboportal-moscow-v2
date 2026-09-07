@@ -203,6 +203,53 @@ section{position:relative}
 .pocket p{margin:14px 0 0;font-size:clamp(16px,1.25vw,20px);line-height:1.35;opacity:.75;max-width:36ch}
 .pocket .btn{background:#06110B;color:#fff;align-self:flex-start;margin-top:clamp(22px,2vw,32px)}
 
+/* ---- второй экран: две двери с переходами в разделы ----
+   Обе карточки собраны одинаково: заголовок, строка о разделе, список
+   переходов и кнопка внизу. Кнопки стоят на одной линии за счет auto-отступа,
+   хотя строк слева три, а справа четыре */
+.rd-head{max-width:1180px;margin:0 auto clamp(24px,3vw,44px)}
+.rd-head .h1 em{font-style:normal;color:var(--green)}
+.rd-lead{margin:clamp(14px,1.6vw,22px) 0 0;max-width:64ch}
+.rd-two{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
+.rd-card{border-radius:var(--r);padding:clamp(26px,2.8vw,44px);display:flex;flex-direction:column}
+.rd-light{background:var(--sand);color:#06110B}
+.rd-dark{background:var(--ink);border:1px solid var(--w-08)}
+.rd-t{margin:0;font-size:clamp(30px,3.4vw,54px);line-height:1;letter-spacing:-.04em;font-weight:500}
+.rd-sub{margin:14px 0 0;max-width:44ch;font-size:clamp(15px,1.15vw,18px);line-height:1.4}
+.rd-light .rd-sub{color:rgba(6,17,11,.62)}
+.rd-dark .rd-sub{color:var(--w-70)}
+.rd-list{margin:clamp(22px,2.4vw,34px) 0 clamp(24px,2.6vw,36px);display:grid;gap:10px}
+/* строка — целиком ссылка: кликается вся плашка, а не подпись */
+.rd-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;
+  gap:16px;padding:14px 18px;border-radius:var(--r-s);transition:.24s cubic-bezier(.2,.7,.3,1)}
+.rd-light .rd-row{background:rgba(6,17,11,.05)}
+.rd-light .rd-row:hover{background:rgba(6,17,11,.09);transform:translateX(4px)}
+.rd-dark .rd-row{background:var(--coal);border:1px solid var(--w-08)}
+.rd-dark .rd-row:hover{border-color:var(--green);transform:translateX(4px)}
+.rd-ico{flex:none;width:44px;height:44px;border-radius:13px;display:grid;place-content:center}
+.rd-light .rd-ico{background:#fff}
+.rd-dark .rd-ico{background:var(--ink)}
+.rd-ico svg{width:21px;height:21px;fill:none;stroke-width:1.5;
+  stroke-linecap:round;stroke-linejoin:round}
+.rd-light .rd-ico svg{stroke:#06110B}
+.rd-dark .rd-ico svg{stroke:var(--green)}
+.rd-txt b{display:block;font-size:16px;line-height:1.2;letter-spacing:-.015em;font-weight:500}
+.rd-txt span{display:block;margin-top:5px;font-size:13.5px;line-height:1.35}
+.rd-light .rd-txt span{color:rgba(6,17,11,.55)}
+.rd-dark .rd-txt span{color:var(--w-45)}
+.rd-row i{font-style:normal;font-size:17px;line-height:1;transition:transform .24s}
+.rd-light .rd-row i{color:rgba(6,17,11,.4)}
+.rd-dark .rd-row i{color:var(--w-45)}
+.rd-row:hover i{transform:translateX(3px)}
+.rd-cta{align-self:flex-start;margin-top:auto;margin-bottom:0}
+.rd-cta-dark{background:#06110B;color:#fff}
+.rd-cta-dark:hover{background:var(--coal);transform:translateY(-2px)}
+.rd-cta-light{background:var(--white);color:#06110B}
+.rd-cta-light:hover{background:var(--mint);transform:translateY(-2px)}
+@media(max-width:900px){
+  .rd-two{grid-template-columns:1fr}
+  .rd-sub{max-width:none}
+}
 /* ---- развилка на две аудитории и маршрут ----
    Второй экран не раскладывает разделы, а ведет человека: сначала он
    говорит, кто он, дальше идет по четырем шагам, и под каждым шагом
@@ -595,18 +642,6 @@ body.is-catalog > section:not(#robots){display:none}
 .cp-chip.is-on b{color:var(--green)}
 .cp-chip:focus-visible{outline:2px solid var(--green);outline-offset:3px}
 
-/* второй уровень: подтипы внутри выбранной категории. Рисуется только когда
-   категория выбрана, у «всех роботов» подтипы разных категорий смешались бы */
-.cp-subs{display:flex;flex-wrap:wrap;gap:8px;margin:-6px 0 clamp(18px,2.4vw,30px)}
-.cp-subs:empty{display:none}
-.cp-sub{display:inline-flex;align-items:baseline;gap:8px;padding:9px 16px;
-  border:1px solid var(--w-08);border-radius:999px;font-size:13.5px;
-  letter-spacing:-.01em;color:var(--w-70);transition:.22s}
-.cp-sub b{font-weight:400;font-size:12px;color:var(--w-16)}
-.cp-sub:hover{border-color:var(--w-16);color:var(--white)}
-.cp-sub.is-on{background:var(--green);border-color:var(--green);color:#06110B}
-.cp-sub.is-on b{color:rgba(6,17,11,.6)}
-.cp-sub:focus-visible{outline:2px solid var(--green);outline-offset:2px}
 
 /* две колонки: слева фильтры, справа сетка решений */
 .cp-layout{display:grid;grid-template-columns:clamp(200px,17vw,260px) minmax(0,1fr);
@@ -2194,23 +2229,63 @@ body.is-account > section:not(#account){display:none}
 
 <!-- ============ две роли ============ -->
 <section class="roles rev" id="roles">
-  <div class="roles-slug">
-    <h2 class="h1 sec-h">Соединяем разработчиков<br>с заказчиками</h2>
-    <img class="roles-robot" src="images/robot-wave.png" alt="" width="684" height="900" loading="lazy">
-  </div>
-  <div class="rl-fork" id="rlFork">
-    <button type="button" class="rl-door rl-door-1" data-go="biz">
-      <h3>Найти робота<br>под задачу</h3>
-      <p>Подберите решение из каталога, проверьте его в деле и верните часть затрат</p>
-      <span class="rl-go"><i>→</i><b>Узнать подробнее</b></span>
-    </button>
-    <button type="button" class="rl-door rl-door-2" data-go="dev">
-      <h3>Вывести робота<br>на рынок</h3>
-      <p>Проведите испытания, доработайте решение и найдите заказчиков</p>
-      <span class="rl-go"><i>→</i><b>Узнать подробнее</b></span>
-    </button>
+  <div class="rd-head">
+    <h2 class="h1 sec-h">Среда для<br>технологического <em>рывка</em></h2>
+    <p class="lead rd-lead">Помогаем заказчикам находить передовые роботизированные решения, а разработчикам — воплощать технологии в реальных проектах</p>
   </div>
 
+  <div class="rd-two">
+    <article class="rd-card rd-light">
+      <h3 class="rd-t">Заказчикам</h3>
+      <p class="rd-sub">Подберите решение, проверьте его перед внедрением и получите поддержку</p>
+      <div class="rd-list">
+        <a class="rd-row" href="#robots">
+          <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></svg></span>
+          <span class="rd-txt"><b>Каталог решений</b><span>Подберите робота под свои задачи и инфраструктуру</span></span>
+          <i aria-hidden="true">→</i>
+        </a>
+        <a class="rd-row" href="#trials">
+          <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6A2 2 0 0 0 19 18l-5-9V3"/><path d="M9 3h6M7.5 15h9"/></svg></span>
+          <span class="rd-txt"><b>Центр испытаний</b><span>Проверьте решение в реальных условиях перед внедрением</span></span>
+          <i aria-hidden="true">→</i>
+        </a>
+        <a class="rd-row" href="#finance">
+          <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v5c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 11v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></svg></span>
+          <span class="rd-txt"><b>Меры поддержки</b><span>Компенсируйте затраты на внедрение роботов</span></span>
+          <i aria-hidden="true">→</i>
+        </a>
+      </div>
+      <a class="btn rd-cta rd-cta-dark" href="#robots">Подобрать робота →</a>
+    </article>
+
+    <article class="rd-card rd-dark">
+      <h3 class="rd-t">Разработчикам</h3>
+      <p class="rd-sub">Испытания, меры поддержки, продвижение и кооперация помогают быстрее доводить разработки до реального применения</p>
+      <div class="rd-list">
+        <a class="rd-row" href="#trials">
+          <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6A2 2 0 0 0 19 18l-5-9V3"/><path d="M9 3h6M7.5 15h9"/></svg></span>
+          <span class="rd-txt"><b>Испытания</b><span>Проверьте и доработайте решение в реальных условиях</span></span>
+          <i aria-hidden="true">→</i>
+        </a>
+        <a class="rd-row" href="#finance">
+          <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v5c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 11v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></svg></span>
+          <span class="rd-txt"><b>Меры поддержки</b><span>Гранты и льготные займы на разработку, производство и пилоты</span></span>
+          <i aria-hidden="true">→</i>
+        </a>
+        <a class="rd-row" href="#robots">
+          <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l5-6 4 4 7-8"/><path d="M15 7h5v5"/></svg></span>
+          <span class="rd-txt"><b>Продвижение</b><span>Включите решение в реестр и представьте его заказчикам</span></span>
+          <i aria-hidden="true">→</i>
+        </a>
+        <a class="rd-row" href="#band">
+          <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="7" r="2.4"/><circle cx="18" cy="7" r="2.4"/><circle cx="12" cy="17" r="2.4"/><path d="M7.6 8.9l3 6M16.4 8.9l-3 6M8.4 7h7.2"/></svg></span>
+          <span class="rd-txt"><b>Кооперация</b><span>Найдите партнёров по комплектующим и заказчиков для внедрения</span></span>
+          <i aria-hidden="true">→</i>
+        </a>
+      </div>
+      <a class="btn rd-cta rd-cta-light" href="#account">Добавить решение в реестр →</a>
+    </article>
+  </div>
 </section>
 
 
@@ -2494,7 +2569,6 @@ body.is-account > section:not(#account){display:none}
     <h1 class="cp-title">Найдите<br>своего робота</h1>
   </div>
   <div class="cp-cats" id="cpCats"></div>
-  <div class="cp-subs" id="cpSubs"></div>
   <div class="cp-layout">
     <aside class="cp-side">
       <button type="button" class="cp-filters" id="cpFilters">Фильтры<b></b></button>
@@ -2754,7 +2828,7 @@ var ROBOTS=[
  {cat:'Сервисные',name:'Волшебник 2.0',d:'Робот для животноводства: доение скота.',s:['Робот для животноводства','65 гол./сут.','24 ч'],img:'images/catalog/volshebnik-2-0.webp',maker:'ООО «Промтехника-Приволжье»',hint:'Сельхоз',works:[],site:'https://promtechnika.com'},
  {cat:'Сервисные',name:'Кати',d:'Робот для животноводства: вакцинация, транспортировка, сортировка.',s:['Робот для животноводства','2,2 кВт','24 ч'],img:'images/catalog/kati.webp',maker:'ООО «Агробит»',hint:'Сельхоз',works:[]},
  {cat:'Сервисные',name:'Минитрактор СР',d:'Робот для посева и сбора урожая: опрыскивание, сев, боронование, культивация.',s:['30 л.с.','20 ч','970 кг'],img:'images/catalog/minitraktor-sr.webp',maker:'АО «Когнитив пилот»',hint:'Сельхоз',works:[],site:'https://cognitivepilot.com'},
- {cat:'Промышленные',name:'Birbi S-1',d:'SCARA робот: укладка заготовок, фасовка мелких изделий.',s:['SCARA робот','0,5 кг','0,6 кг'],img:'images/catalog/birbi-s-1.webp',maker:'ООО «Биайди Технолоджис Рус»',hint:'Роботы SCARA',works:['line'],site:'https://bid.life'},
+ {cat:'Промышленные',name:'Birbi S-1',d:'Горизонтально-шарнирный манипулятор: укладка заготовок, фасовка мелких изделий.',s:['Горизонтально-шарнирный манипулятор','0,5 кг','0,6 кг'],img:'images/catalog/birbi-s-1.webp',maker:'ООО «Биайди Технолоджис Рус»',hint:'Роботы SCARA',works:['line'],site:'https://bid.life'},
  {cat:'Промышленные',name:'Битроботикс',d:'Дельта-робот: укладка заготовок.',s:['Дельта-робот','1-5 кг','6 кг'],img:'images/catalog/bitrobotiks.webp',maker:'ООО «Битроботикс»',hint:'Дельта-роботы',works:['line'],site:'https://bitrobotics.com'},
  {cat:'Промышленные',name:'Экстремум',d:'Дельта-робот: укладка заготовок.',s:['Дельта-робот','3 кг','± 0,5 мм'],img:'images/catalog/ekstremum.webp',maker:'ООО «МДРК» (Невлабс)',hint:'Дельта-роботы',works:['line'],site:'https://nevlabs.ru'},
  {cat:'Промышленные',name:'ARM 105',d:'Коллаборативный манипулятор: инспекция, сварка, покраска, сортировка.',s:['Коллаборативный манипулятор','16 кг','17 кг'],img:'images/catalog/arm-105.webp',maker:'ГК «Прикладная Робототехника»',hint:'Коллаборативный манипулятор',works:['cargo','line'],site:'https://appliedrobotics.ru'},
@@ -2859,7 +2933,7 @@ var DETAIL={
  "MARK 2 SE":{"d": "Конструкция адаптирована к российским условиям эксплуатации: реагенты, песок, высокая влажность и перепады температур. Робот оснащен лидаром, системой датчиков и алгоритмами динамического торможения. Обнаруживает людей и объекты в реальном времени, предугадывает и корректирует траекторию или останавливается. Робот настраивается под конкретные габариты проходов и конфигурацию торгового зала. Карты и маршруты адаптируются так, чтобы он стабильно работал даже в узких зонах между прилавками.", "sp": [["Габариты (Д×Ш×В)", "860 × 610 × 980 мм"], ["Тип АКБ", "LiFePO4"], ["Емкость АКБ", "100 А·ч"], ["Ширина водосборной балки", "670 мм"], ["Ширина моющей щетки", "450 мм"], ["Бак для моющего раствора", "40 л"], ["Время работы на одном заряде", "3 часа"], ["Время полной зарядки", "2 часа"]]},
  "Inchbot L1/L1 Edu":{"d": "Профессиональный четвероногий робот с высокой проходимостью: поднимается по ступеням до 16 см, несет до 8 кг, разгоняется до 3,7 м/с и работает 1–2 часа от батареи. Мощные моторы с пиковым крутящим моментом 48 Н·м не требуют калибровки и выдерживают миллионы ударных циклов. Прочный корпус с защитой IP54, усиленная рама и 360° защита обеспечивают надежную работу на улице и в промышленных условиях. Открытые интерфейсы (Ethernet, USB, UART, SBUS, питание) и поддержка LiDAR, камер, 4G, RTK и симуляторов Isaac Sim / MuJoCo делают платформу идеальной для R&D, робототехнических проектов и обучения.", "sp": [["Тип", "Робот собака"], ["Материалы", "алюминиевый сплав и высокопрочный инженерный пластик"], ["Габариты в стойке", "63 × 44 × 45,5 см"], ["Масса", "20 кг"], ["Рабочая температура", "от 0°C до 40°C"], ["Степень защиты", "IP54"], ["Время зарядки", "1 час"], ["Время работы", "1–2 часа"], ["Дальность хода на одном заряде", "до 9 км"], ["Базовая вычислительная платформа", "8‑ядерный высокопроизводительный CPU"], ["Максимальная потребляемая мощность", "3500 Вт"], ["Максимальная скорость", "3,7 м/с"], ["Предельная скорость", "5 м/с"], ["Максимальная нагрузка", "10 кг"], ["Максимальный угол подъема", "30° в стандартных условиях, до 40° в предельном режиме"], ["Стандартные движения", "стойка, приседание, коленопреклонение, наклон вперед, наклон назад, горизонтальный разворот"], ["Вторичная разработка", "поддерживается"], ["Гарантия производителя", "12 месяцев"], ["Графический процессор (ИИ)", "есть, 100Tops"], ["Комплектация", "робот, зарядное устройство, контроллер, транспортировочный кейс, акб"]]},
  "Unitree H2":{"d": "Unitree H2 — полноразмерный гуманоидный робот высотой 180 см с 31 степенью свободы, крутящим моментом 360 Н·м и вычислительной мощностью 2070 TOPS, созданный для динамичных промышленных и сервисных задач с постоянно обновляемыми ИИ‑алгоритмами.", "sp": [["Тип", "Робот гуманоид"], ["Степеней свободы", "31"], ["Габариты в стойке", "1820×456×218 мм"], ["Масса", "70 кг"], ["Степеней свободы одной руки", "7"], ["Степеней свободы одной ноги", "6"], ["Степеней свободы таза", "3"], ["Степеней свободы головы", "2"], ["Полезная нагрузка", "15 кг"], ["Бионические кисти", "нет"], ["Подшипники суставов", "Промышленные роликовые подшипники"], ["Двигатели суставов", "Высокоскоростной внутренний ротор PMSM с низкой инерцией"], ["Макс. крутящий момент сустава руки", "120 Н·м"], ["Макс. крутящий момент сустава ноги", "360 Н·м"], ["Длина голени + бедра", "1045 мм"], ["Длина предплечья + плеча", "690 мм"], ["Материалы", "Авиационный алюминий + титановый сплав + высокопрочный инженерный пластик"], ["Система охлаждения", "воздушная"], ["Вычислительный модуль", "PC1: Intel Core i5"], ["Управление голосом", "Массив микрофонов и мощный динамик для голосового взаимодействия"], ["Связь", "WiFi 6, Bluetooth 5.2"], ["Время работы", "3 часа"]]},
- "Birbi S-1 PRO":{"d": "Birbi S-1 PRO — SCARA-робот для быстрых и точных операций с небольшими деталями. Подходит для сборки, сортировки, перекладки изделий, упаковки и работы рядом с конвейером", "sp": [["4–5 осей"], ["Поднимает до 10 кг"], ["Достает до 700 мм"], ["Точность по XYZ", "0,01 мм. Размеры и скорости версии PRO производитель подбирает под заказ."]]},
+ "Birbi S-1 PRO":{"d": "Birbi S-1 PRO — Горизонтально-шарнирный робот для быстрых и точных операций с небольшими деталями. Подходит для сборки, сортировки, перекладки изделий, упаковки и работы рядом с конвейером", "sp": [["4–5 осей"], ["Поднимает до 10 кг"], ["Достает до 700 мм"], ["Точность по XYZ", "0,01 мм. Размеры и скорости версии PRO производитель подбирает под заказ."]]},
  "Birbi D-1":{"d": "Birbi D-1 — высокоскоростной дельта-робот для работы с легкими изделиями. Предназначен прежде всего для сортировки, упаковки, когда требуется очень быстро брать продукцию с конвейера и перекладывать ее в нужную позицию.", "sp": [["3 оси"], ["Поднимает до 0,5 кг"], ["Рабочий радиус 260 мм"], ["Точность 0,05 мм"], ["До 250 перемещений в минуту"], ["Габариты 350×380×720 мм"], ["Масса 24 кг."]]},
  "DOKA RC30":{"d": "DOKA RC30 — коллаборативный робот для операций, где обычным коботам не хватает грузоподъемности. Может применяться для паллетирования, загрузки и разгрузки станков, сварки, нанесения материалов и перемещения тяжелых деталей.", "sp": [["6 осей; номинально поднимает 30 кг, максимально — до 33 кг;"], ["рабочий радиус 1300 мм; масса около 70 кг. Управление через графический интерфейс «Пульс»."]]},
  "Promobot M13":{"d": "Promobot M13 — коллаборативный робот для автоматизации ручных производственных операций. Может выполнять сборку, упаковку, укладку, загрузку станков, сварку и контроль качества", "sp": [["6 осей; поднимает до 13 кг; рабочий радиус от 150 до 1300 мм;"], ["повторяемость 0,05 мм"]]},
@@ -2942,7 +3016,7 @@ var CATALOG={
  "Роботакси":{type:"Беспилотное такси",kin:"Беспилотный транспорт",industry:"Городские перевозки",maker:"ООО «Яндекс»",region:"Москва",funcs:["Пассажирские перевозки"],exp:"Запланировано крупное внедрение беспилотных такси: 100 единиц техники в Москве в 2026 году и 1000 единиц по всей России к 2030 году.",sp:[["Дальность детекции","250 м"],["Максимальная скорость","90 км/ч"],["Вместимость","3 чел."]]},
  "Москва 2024":{type:"Беспилотное метро",kin:"Беспилотный транспорт",industry:"Городские перевозки",maker:"АО «Метровагонмаш»",region:"Московская область",funcs:["Пассажирские перевозки"],exp:"Реализован пилотный проект по тестированию системы беспилотного управления движением поездов метрополитена.",sp:[["Максимальная скорость","90 км/ч"],["Мощность тяговых электродвигателей","4×170 кВт"],["Максимальная вместимость","1 490 чел."],["Срок службы","31 г"]]},
  "Львёнок-Москва":{type:"Беспилотный трамвай",kin:"Беспилотный транспорт",industry:"Городские перевозки",maker:"ООО «ПК Транспортные системы»",region:"Москва",funcs:["Пассажирские перевозки"],exp:"Регулярный пилотный маршрут запущен в Москве (Северо-Западный административный округ).",sp:[["Дальность детекции","200 м"],["Максимальная скорость","60 км/ч"],["Вместимость (сидячие места)","40 чел."]]},
- "Birbi S-1":{type:"SCARA робот",kin:"Манипуляторы",industry:"Производство",maker:"ООО «Биайди Технолоджис Рус»",region:"Ярославская область",price:"850 000 руб.",funcs:["Укладка заготовок","Фасовка мелких изделий"],exp:"Внедрен на производствах с/х, электроники и приборостроения, легкой промышленности.",sp:[["Грузоподъемность номинальная","0,5 кг"],["Грузоподъемность максимальная","0,6 кг"],["Повторяемость","± 0,01 мм"],["Рабочая зона","350 мм"],["Максимальная скорость оси X, Y, (Z)","1,1 (5,5) м/с"],["Вес","20 кг"]]},
+ "Birbi S-1":{type:"Горизонтально-шарнирный манипулятор",kin:"Манипуляторы",industry:"Производство",maker:"ООО «Биайди Технолоджис Рус»",region:"Ярославская область",price:"850 000 руб.",funcs:["Укладка заготовок","Фасовка мелких изделий"],exp:"Внедрен на производствах с/х, электроники и приборостроения, легкой промышленности.",sp:[["Грузоподъемность номинальная","0,5 кг"],["Грузоподъемность максимальная","0,6 кг"],["Повторяемость","± 0,01 мм"],["Рабочая зона","350 мм"],["Максимальная скорость оси X, Y, (Z)","1,1 (5,5) м/с"],["Вес","20 кг"]]},
  "Битроботикс":{type:"Дельта-робот",kin:"Манипуляторы",industry:"Производство",maker:"ООО «Битроботикс»",region:"Москва",funcs:["Укладка заготовок"],exp:"Внедрен в КБК «Черемушки», «Мираторг», «АБИ Продукт», «Додо пицца», Чамзинская птицефабрика, «Павловская птичка» и Grupo Bimbo.",sp:[["Грузоподъемность номинальная","1-5 кг"],["Грузоподъемность максимальная","6 кг"],["Повторяемость","± 0,3 мм"],["Рабочая зона","1600 мм"],["Движений в мин","180"],["Вес","60-90 кг"]]},
  "Экстремум":{type:"Дельта-робот",kin:"Манипуляторы",industry:"Производство",maker:"ООО «МДРК» (Невлабс)",region:"Москва",funcs:["Укладка заготовок"],exp:"Внедрено 4 робота в «Меридиан» и 2 дельта-робота в компании «Бондюэль».",sp:[["Грузоподъемность номинальная","3 кг"],["Повторяемость","± 0,5 мм"],["Рабочая зона","1200 мм"],["Движений в мин","120"]]},
  "Birbi D-1":{type:"Дельта-робот",kin:"Манипуляторы",industry:"Производство",maker:"ООО «Биайди Технолоджис Рус»",region:"Ярославская область",price:"840 000 руб.",funcs:["Укладка заготовок"],exp:"Внедрен на производствах с/х, электроники и приборостроения, легкой промышленности.",sp:[["Грузоподъемность номинальная","0,5 кг"],["Грузоподъемность максимальная","0,6 кг"],["Повторяемость","± 0,05 мм"],["Рабочая зона","260 мм"],["Движений в мин","350"],["Вес","24 кг"]]},
@@ -3457,7 +3531,7 @@ var openWork=null,openModelCard=null;
  /* подтип берется из разных полей: у сервисных это вид робота, у
     промышленных и транспортных — тип изделия. Так подписи совпадают с тем,
     как отрасль сама делит эти классы */
- function sub2Field(){ return state.cat==='Сервисные'?'kin':'type'; }
+ function sub2Field(){ return (state.cat==='Промышленные'||state.cat==='Транспортные')?'type':'kin'; }
  var open={};       /* какие группы фильтров раскрыты */
 
  function inCat(){ return state.cat==='Все'?ROBOTS
@@ -3474,29 +3548,6 @@ var openWork=null,openModelCard=null;
           if(hay.indexOf(q)<0) return false; }
    return true;
   });
- }
-
- /* подтипы считаем по всей категории, а не по текущей выборке: иначе чипы
-    исчезают после первого же клика и вернуться некуда */
- function drawSubs(){
-  var box=document.getElementById('cpSubs');
-  if(!box) return;
-  if(state.cat==='Все'){ box.innerHTML=''; return; }
-  var fld=sub2Field(), pool=inCat(), out=[];
-  pool.forEach(function(r){
-   var v=r[fld]; if(!v) return;
-   var hit=null;
-   for(var i=0;i<out.length;i++) if(out[i].v===v){ hit=out[i]; break; }
-   if(hit) hit.n++; else out.push({v:v,n:1});
-  });
-  if(out.length<2){ box.innerHTML=''; return; }
-  out.sort(function(a,b){ return b.n-a.n||a.v.localeCompare(b.v,'ru'); });
-  var all=[{v:'Все',n:pool.length}].concat(out);
-  box.innerHTML=all.map(function(x){
-   var lb=x.v==='Все'?('Все '+state.cat.toLowerCase()):x.v;
-   return '<button type="button" class="cp-sub'+(state.sub2===x.v?' is-on':'')+
-    '" data-sub2="'+esc(x.v)+'">'+esc(lb)+'<b>'+x.n+'</b></button>';
-  }).join('');
  }
 
  function drawCats(){
@@ -3551,7 +3602,7 @@ var openWork=null,openModelCard=null;
       почти столько же производителей, отбор по нему ничего не сужает.
       Найти по производителю по-прежнему можно строкой поиска */
    
-   group('ind','Направления роботов',values('industry'),state.ind)+
+   group('sub2','Направления роботов',values(sub2Field()),state.sub2)+
    group('sub','Что делает',values('sub'),state.sub,labelOf)+
    (regN?'<div class="cp-g'+(open.reg?' on':'')+'" data-g="reg">'+
      '<button type="button" class="cp-g-h">Реестр Москвы<i>+</i></button>'+
@@ -3559,8 +3610,7 @@ var openWork=null,openModelCard=null;
       '<button type="button" class="cp-v'+(state.reg?' on':'')+'" data-f="reg" data-v="1">'+
        'Только из реестра<b>'+regN+'</b></button>'+
      '</div></div></div>':'');
-  var picked=(state.sub!=='Все')+(state.kin!=='Все')+(state.ind!=='Все')+
-             (state.sub2!=='Все')+(state.reg?1:0);
+  var picked=(state.sub!=='Все')+(state.kin!=='Все')+(state.sub2!=='Все')+(state.reg?1:0);
   filtersBtn.innerHTML='Фильтры<b>'+(picked||'')+'</b>';
  }
 
@@ -3580,7 +3630,7 @@ var openWork=null,openModelCard=null;
   '</button>';
  }
  function draw(){
-  drawCats(); drawSubs(); drawSide();
+  drawCats(); drawSide();
   var l=list();
   showing.textContent=l.length+' '+plural(l.length);
   grid.innerHTML=l.length?l.map(card).join('')
@@ -3593,13 +3643,6 @@ var openWork=null,openModelCard=null;
   state.cat=b.getAttribute('data-cat'); state.sub='Все'; state.sub2='Все';
   state.kin='Все'; state.ind='Все';
   state.reg=false; state.collab=false;
-  draw();
- });
- var subsBox=document.getElementById('cpSubs');
- if(subsBox) subsBox.addEventListener('click',function(e){
-  var b=e.target.closest('[data-sub2]'); if(!b) return;
-  var v=b.getAttribute('data-sub2');
-  state.sub2=(v==='Все'||state.sub2===v)?'Все':v;
   draw();
  });
  side.addEventListener('click',function(e){
