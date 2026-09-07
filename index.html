@@ -197,6 +197,157 @@ section{position:relative}
 .pocket p{margin:14px 0 0;font-size:clamp(16px,1.25vw,20px);line-height:1.35;opacity:.75;max-width:36ch}
 .pocket .btn{background:#06110B;color:#fff;align-self:flex-start;margin-top:clamp(22px,2vw,32px)}
 
+/* ---- развилка на две аудитории и маршрут ----
+   Второй экран не раскладывает разделы, а ведет человека: сначала он
+   говорит, кто он, дальше идет по четырем шагам, и под каждым шагом
+   лежит лента с настоящим содержимым портала — работы и решения,
+   площадки испытаний, меры с суммами, сроки заявки. */
+.rl-chain{margin:clamp(22px,2.6vw,34px) 0 0;border:1px solid var(--w-08);border-radius:999px;
+  background:var(--ink);padding:12px clamp(16px,1.8vw,24px);
+  display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap}
+.rl-chain-h{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--w-45);flex:none}
+.rl-chain ol{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0;padding:0;list-style:none}
+.rl-chain li{display:flex;align-items:center;gap:8px;font-size:13.5px;line-height:1;color:var(--w-70);
+  transition:color .25s,opacity .25s}
+.rl-chain li::after{content:"";width:12px;height:1px;background:var(--w-16)}
+.rl-chain li:last-child::after{display:none}
+.rl-chain.pick li{opacity:.3}
+.rl-chain li.on{opacity:1;color:var(--white)}
+.rl-chain li.now{opacity:1;color:var(--green)}
+
+/* две двери. Строки жестко выровнены между карточками: заголовок всегда в
+   две строки, подзаголовок в две, кнопка на одном уровне — иначе половинки
+   прыгают друг относительно друга */
+.rl-fork{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.rl-fork[hidden],.rl-route[hidden]{display:none}
+.rl-door{text-align:left;border:0;cursor:pointer;font:inherit;border-radius:var(--r);
+  padding:clamp(24px,2.4vw,38px);display:flex;flex-direction:column;color:#06110B;
+  transition:transform .3s cubic-bezier(.2,.7,.3,1)}
+.rl-door-1{background:var(--green)}
+.rl-door-2{background:var(--sky)}
+.rl-door:hover{transform:translateY(-6px)}
+.rl-door h3{margin:0;font-size:clamp(25px,2.6vw,42px);line-height:1.04;min-height:2.08em;
+  letter-spacing:-.035em;font-weight:500}
+.rl-door p{margin:14px 0 0;max-width:34ch;min-height:2.9em;
+  font-size:clamp(15px,1.15vw,18px);line-height:1.4;opacity:.75}
+.rl-go{margin:clamp(22px,2vw,32px) 0 0;display:flex;align-items:center;gap:15px}
+.rl-go i{flex:none;width:50px;height:50px;border-radius:50%;background:#06110B;color:#fff;
+  display:grid;place-content:center;font-size:19px;font-style:normal;transition:transform .25s}
+.rl-door:hover .rl-go i{transform:translateX(4px)}
+.rl-go b{font-size:15.5px;font-weight:500}
+
+.rl-bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:14px 0}
+.rl-bar h3{margin:0;font-size:clamp(20px,2vw,30px);line-height:1.05;letter-spacing:-.03em;font-weight:500}
+.rl-swap{margin-left:auto;display:inline-flex;align-items:center;gap:8px;padding:10px 18px;
+  border-radius:999px;border:1px solid var(--w-16);background:none;cursor:pointer;font:inherit;
+  font-size:14px;color:var(--w-70);transition:.2s}
+.rl-swap:hover{border-color:var(--green);color:var(--green)}
+
+/* шаги видны все сразу: это путь, а не анкета. Выбранный целиком зеленый */
+.rl-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.rl-step{text-align:left;border:1px solid var(--w-08);border-radius:var(--r-s);background:var(--ink);
+  padding:18px 20px;display:flex;flex-direction:column;gap:8px;cursor:pointer;font:inherit;transition:.25s}
+.rl-step:hover{border-color:var(--w-16)}
+.rl-step.on{background:var(--green);border-color:var(--green)}
+.rl-step u{text-decoration:none;font-size:11px;letter-spacing:.1em;color:var(--w-45)}
+.rl-step b{font-size:clamp(15px,1.25vw,19px);line-height:1.15;letter-spacing:-.02em;font-weight:500;color:var(--white)}
+.rl-step s{text-decoration:none;font-size:13px;line-height:1.35;color:var(--w-45)}
+.rl-step.on u{color:rgba(6,17,11,.6)}
+.rl-step.on b{color:#06110B}
+.rl-step.on s{color:rgba(6,17,11,.72)}
+
+.rl-detail{margin-top:10px;border:1px solid var(--w-08);border-radius:var(--r);background:var(--ink);
+  padding:clamp(22px,2.2vw,34px);display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.8fr);
+  gap:clamp(18px,2.4vw,36px);align-items:start}
+.rl-kick{margin:0;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--green)}
+.rl-t{margin:10px 0 0;font-size:clamp(21px,2vw,30px);line-height:1.08;letter-spacing:-.03em;font-weight:500}
+.rl-lead{margin:12px 0 0;font-size:clamp(15px,1.15vw,17px);line-height:1.5;color:var(--w-70)}
+.rl-side{border-left:1px solid var(--w-08);padding-left:clamp(18px,2vw,28px)}
+.rl-side-h{margin:0 0 12px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--w-45)}
+.rl-row{display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+  padding:11px 0;border-top:1px solid var(--w-08);font-size:14.5px;line-height:1.3}
+.rl-row:first-child{border-top:0}
+.rl-row b{font-weight:400;color:var(--white)}
+.rl-row span{flex:none;font-size:13px;color:var(--w-45);text-align:right}
+
+/* лента: карточки уходят за правый край, последняя ведет в раздел */
+.rl-rib{margin-top:10px}
+.rl-rib-h{margin:0 0 14px;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--w-45)}
+.rl-rib-h em{font-style:normal;color:var(--green)}
+.rl-rib-h i{margin-left:auto;font-style:normal;color:var(--w-16)}
+.rl-rail{display:flex;gap:12px;overflow-x:auto;padding:0 var(--gut) 12px 0;
+  margin-right:calc(var(--gut) * -1);scroll-snap-type:x proximity;
+  scrollbar-width:thin;scrollbar-color:var(--w-16) transparent}
+.rl-rail::-webkit-scrollbar{height:6px}
+.rl-rail::-webkit-scrollbar-thumb{background:var(--w-16);border-radius:999px}
+.rl-rail::-webkit-scrollbar-track{background:transparent}
+.rl-card{flex:0 0 clamp(276px,25vw,340px);scroll-snap-align:start;
+  border:1px solid var(--w-08);border-radius:var(--r-s);background:var(--ink);
+  padding:clamp(20px,1.8vw,26px);display:flex;flex-direction:column;
+  transition:border-color .25s,background .25s,transform .3s cubic-bezier(.2,.7,.3,1)}
+.rl-card:hover{border-color:var(--w-16);background:var(--coal);transform:translateY(-4px)}
+.rl-c-t{margin:0;font-size:clamp(19px,1.7vw,24px);line-height:1.05;letter-spacing:-.02em;
+  text-transform:uppercase;font-weight:500}
+.rl-c-env{margin:10px 0 0;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--w-45)}
+.rl-pic{display:block;position:relative;height:160px;margin:20px 0}
+.rl-pic img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+  transition:transform .35s cubic-bezier(.2,.7,.3,1)}
+.rl-card:hover .rl-pic img{transform:scale(1.05)}
+.rl-lb{margin:auto 0 4px;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--green)}
+.rl-list{margin:0;padding:0;list-style:none;display:grid}
+.rl-list li{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  padding:10px 0;border-top:1px solid var(--w-08);font-size:14.5px;line-height:1.25}
+.rl-list b{font-weight:400;color:var(--white)}
+.rl-list span{flex:0 1 auto;min-width:0;max-width:52%;font-size:12.5px;color:var(--w-45);text-align:right}
+/* площадки: кадр во всю ширину карточки */
+.rl-card-site .rl-pic{height:180px;margin:18px 0 0;border-radius:14px;overflow:hidden}
+.rl-card-site .rl-pic img{object-fit:cover}
+.rl-note{margin:16px 0 auto;font-size:14px;line-height:1.4;color:var(--w-70)}
+.rl-size{margin:16px 0 0;padding-top:12px;border-top:1px solid var(--w-08);
+  font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--w-45)}
+/* последняя карточка ленты — переход в раздел */
+.rl-card-cta{background:var(--green);border-color:var(--green);color:#06110B;
+  justify-content:center;position:relative}
+.rl-card-cta:hover{background:var(--mint);border-color:var(--mint)}
+.rl-card-cta b{display:block;font-size:clamp(23px,2.2vw,32px);line-height:1.04;
+  letter-spacing:-.03em;text-transform:uppercase;font-weight:500;max-width:9ch}
+.rl-card-cta span{display:block;margin-top:14px;font-size:11px;letter-spacing:.12em;
+  text-transform:uppercase;color:rgba(6,17,11,.66)}
+.rl-card-cta i{position:absolute;top:clamp(20px,1.8vw,26px);right:clamp(20px,1.8vw,26px);
+  width:46px;height:46px;border-radius:50%;background:#06110B;color:var(--green);
+  display:grid;place-content:center;font-size:18px;font-style:normal}
+
+.rl-mcards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.rl-mcard{border:1px solid var(--w-08);border-radius:var(--r-s);background:var(--ink);
+  padding:22px;display:flex;flex-direction:column}
+.rl-mcard .st{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--w-45)}
+.rl-mcard .st.live{color:var(--green)}
+.rl-mcard h4{margin:10px 0 0;font-size:17px;line-height:1.2;letter-spacing:-.02em;font-weight:500}
+.rl-mcard .sum{align-self:flex-start;margin-top:12px;padding:6px 13px;border-radius:999px;
+  background:var(--green);color:#06110B;font-size:13.5px;font-weight:500}
+.rl-mcard p{margin:12px 0 0;font-size:14px;line-height:1.4;color:var(--w-70)}
+.rl-mcard .org{margin-top:auto;padding-top:16px;font-size:12.5px;line-height:1.3;color:var(--w-45)}
+.rl-tl{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.rl-tl div{border-top:1px solid var(--w-16);padding-top:16px}
+.rl-tl u{text-decoration:none;font-size:11px;letter-spacing:.12em;color:var(--green)}
+.rl-tl b{display:block;margin-top:8px;font-size:15px;line-height:1.25;font-weight:500}
+.rl-tl span{display:block;margin-top:6px;font-size:13px;line-height:1.35;color:var(--w-45)}
+@media(max-width:900px){
+  .rl-fork{grid-template-columns:1fr}
+  .rl-steps{grid-template-columns:1fr 1fr}
+  .rl-detail{grid-template-columns:1fr}
+  .rl-side{border-left:0;border-top:1px solid var(--w-08);padding:18px 0 0}
+  .rl-mcards{grid-template-columns:1fr}
+  .rl-tl{grid-template-columns:1fr 1fr}
+}
+@media(max-width:560px){
+  .rl-steps{grid-template-columns:1fr}
+  .rl-tl{grid-template-columns:1fr}
+  .rl-swap{margin-left:0}
+  .rl-door h3,.rl-door p{min-height:0}
+}
+
 /* ---------- развилка: текст слева, лента карточек справа ----------
    Раньше это были три цветные плашки в ряд. Теперь слева стоит неподвижная
    колонка с заголовком и стрелками, справа едет лента: карточка — фотография
@@ -1999,21 +2150,41 @@ body.is-account > section:not(#account){display:none}
     <h2 class="h1 sec-h">Соединяем разработчиков<br>с заказчиками</h2>
     <img class="roles-robot" src="images/robot-wave.png" alt="" width="684" height="900" loading="lazy">
   </div>
-  <div class="pockets">
-    <div class="pocket pocket-1">
-      <div>
-        <h3 class="h2">Выберите робота<br>под задачу</h3>
-        <p>Расскажем о характеристиках<br>и поможем сравнить производителей</p>
-      </div>
-      <a href="#robots" class="btn">Подобрать робота →</a>
+  <div class="rl-chain" id="rlChain">
+    <span class="rl-chain-h" id="rlChainH">Портал закрывает всю цепочку</span>
+    <ol>
+      <li data-st="dev">Разработка</li>
+      <li data-st="reg">Реестр</li>
+      <li data-st="test">Испытания</li>
+      <li data-st="pilot">Пилот</li>
+      <li data-st="money">Поддержка</li>
+      <li data-st="cat">Каталог</li>
+      <li data-st="deploy">Внедрение</li>
+      <li data-st="coop">Кооперация</li>
+    </ol>
+  </div>
+
+  <div class="rl-fork" id="rlFork">
+    <button type="button" class="rl-door rl-door-1" data-go="biz">
+      <h3>Найти робота<br>под задачу</h3>
+      <p>Подберите решение из каталога, проверьте его в деле и верните часть затрат.</p>
+      <span class="rl-go"><i>→</i><b>Перейти для бизнеса</b></span>
+    </button>
+    <button type="button" class="rl-door rl-door-2" data-go="dev">
+      <h3>Вывести робота<br>на рынок</h3>
+      <p>Пройдите реестр и испытания, возьмите заем или грант, выйдите на заказчиков.</p>
+      <span class="rl-go"><i>→</i><b>Перейти для разработчиков</b></span>
+    </button>
+  </div>
+
+  <div class="rl-route" id="rlRoute" hidden>
+    <div class="rl-bar">
+      <h3 id="rlTitle"></h3>
+      <button type="button" class="rl-swap" id="rlSwap"></button>
     </div>
-    <div class="pocket pocket-2">
-      <div>
-        <h3 class="h2">Доведите решение<br>до внедрения</h3>
-        <p>Проведем испытания<br>и подберем займы и гранты</p>
-      </div>
-      <a href="#band" class="btn">Оставить заявку →</a>
-    </div>
+    <div class="rl-steps" id="rlSteps"></div>
+    <div class="rl-detail" id="rlDetail"></div>
+    <div class="rl-rib" id="rlRib"></div>
   </div>
 </section>
 
@@ -5583,6 +5754,296 @@ var RTC_STEPS=[
 
 })();
 
+</script>
+
+<script>
+/* ---- второй экран: развилка на две аудитории и маршрут ----
+   Экран ведет человека, а не раскладывает разделы: он говорит, кто он,
+   и получает путь из четырех шагов. Под каждым шагом лента с настоящим
+   содержимым портала. Данные не дублируются: модели берутся из ROBOTS,
+   площадки из ENVIRONMENTS, меры из MEASURES — если каталог обновится,
+   этот экран обновится вместе с ним. */
+(function(){
+ var fork=document.getElementById('rlFork'), route=document.getElementById('rlRoute');
+ if(!fork||!route) return;
+
+ function esc(s){ return String(s==null?'':s)
+   .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+ /* счетчики берутся из данных, поэтому склонение считаем, а не пишем руками */
+ function plu(n,f){
+  var a=Math.abs(n)%100, b=a%10;
+  if(a>10&&a<20) return f[2];
+  if(b>1&&b<5) return f[1];
+  if(b===1) return f[0];
+  return f[2];
+ }
+ function cnt(n,f){ return n+' '+plu(n,f); }
+
+ /* в карточке рядом с моделью нужно короткое имя завода: полное
+    юридическое в колонку не влезает */
+ var FORM=/^(ООО|АО|ПАО|ЗАО|АНО|ИП|ГК|НПО|НПП|ПК)\s+/;
+ function shortMaker(m){
+  if(!m||m.indexOf('запросу')>-1) return '';
+  var q=m.match(/[«"]([^»"]+)[»"]/);
+  var s=q?q[1]:m;
+  return s.replace(FORM,'').replace(FORM,'');
+ }
+ var ORG={
+  'Департамент предпринимательства и инновационного развития города Москвы':'ДПиИР Москвы',
+  'Департамент инвестиционной и промышленной политики Москвы':'ДИПП Москвы',
+  'Московский Фонд поддержки промышленности и предпринимательства':'МФППиП'
+ };
+
+ var BY_NAME={}; ROBOTS.forEach(function(r){ BY_NAME[r.name]=r; });
+ function uniq(list){ var o={}; list.forEach(function(x){ if(x) o[x]=1; }); return Object.keys(o).length; }
+ var nRobots=ROBOTS.length;
+ var nMakers=uniq(ROBOTS.map(function(r){ return shortMaker(r.maker); }));
+ var nRegions=uniq(ROBOTS.map(function(r){
+  return (r.region&&r.region.indexOf('запросу')<0)?r.region:''; }));
+ var nSites=0; ENVIRONMENTS.forEach(function(e){ nSites+=e.sites.length; });
+ var nEnv=ENVIRONMENTS.length;
+ var nMeasures=MEASURES.length;
+
+ /* работы — как в ленте задач, но карточка сразу показывает, какие модели
+    и чьего производства эту работу уже делают */
+ var WORK_LIST=[
+  {t:'Возить паллеты по складу', env:'Склад, распредцентр', face:'Ronavi H1500',
+   models:['Ronavi H1500','AMR1500','AK-2000-2','RoboCV X-MOTION NG']},
+  {t:'Мыть полы после закрытия', env:'Ритейл, аэропорты, склады', face:'MARK 2 SE',
+   models:['MARK 2 SE','АК-SC80','Клинботикс 600','РУБИ-С-03']},
+  {t:'Убирать улицы и дворы', env:'ЖКХ, парки, предприятия', face:'Пиксель',
+   models:['Пиксель','БРО 3.0','МАРК','Веном Саранча']},
+  {t:'Ездить без водителя', env:'Заводы, дороги, город', face:'Evocargo N1',
+   models:['Evocargo N1','Navio L5','Роботакси','Львёнок-Москва']},
+  {t:'Ходить в обход круглосуточно', env:'Предприятия, закрытые объекты', face:'Inchbot L1/L1 Edu',
+   models:['Inchbot L1/L1 Edu','Трал Патруль 5','ГУМИЧ Спасатель']},
+  {t:'Работать рядом с людьми', env:'Сервис, офисы, приемные', face:'Unitree H2',
+   models:['Unitree H2','Promobot V.4','Грин','Арди']},
+  {t:'Сваривать и собирать на линии', env:'Производственная линия', face:'DOKA RC30',
+   models:['DOKA RC30','RX-20/1700','Birbi S-1 PRO','ARM 135']},
+  {t:'Возить грузы по трассе', env:'Магистрали, терминалы', face:'Navio L5',
+   models:['Navio L5','AMT 6×6','Evocargo N1']},
+  {t:'Перевозить пассажиров', env:'Город, закрытые территории', face:'Роботакси',
+   models:['Роботакси','Львёнок-Москва','Москва 2024']}
+ ];
+ var WORKS_RIB=WORK_LIST.map(function(w){
+  var face=BY_NAME[w.face];
+  var models=w.models.map(function(n){
+   var r=BY_NAME[n]; if(!r) return null;
+   return [r.name, shortMaker(r.maker)||'по запросу'];
+  }).filter(Boolean);
+  return {t:w.t, env:w.env, img:face?face.img:'', models:models};
+ }).filter(function(w){ return w.img&&w.models.length; });
+
+ /* по одной площадке из каждой среды — так видно, что испытания закрывают
+    улицу, цех, помещение, воздух, воду и лабораторию. Если у площадок среды
+    своих снимков нет, берем кадр самой среды */
+ var SITES_RIB=ENVIRONMENTS.map(function(e){
+  var s=null, i;
+  for(i=0;i<e.sites.length;i++) if(e.sites[i].photo){ s=e.sites[i]; break; }
+  var base=s||e.sites[0];
+  if(!base) return null;
+  return {t:base.name, env:e.title, img:(s?s.photo:e.photo), note:base.desc, size:base.size};
+ }).filter(Boolean);
+
+ function measures(shorts){
+  return shorts.map(function(sh){
+   for(var i=0;i<MEASURES.length;i++) if(MEASURES[i].short===sh) return MEASURES[i];
+   return null;
+  }).filter(Boolean);
+ }
+ var M_BIZ=measures(['Субсидия на внедрение роботов','Льготное кредитование на внедрение роботов',
+                     'Компенсация платежей по сервисной модели']);
+ var M_DEV=measures(['Заем на разработку','Заем на производство','Грант на пилот']);
+
+ var TL_BIZ=[
+  ['01','Заявка на портале','Выбираете модель из реестра и заполняете форму'],
+  ['02','Проверка комплектности','Смотрят документы и подтверждение затрат'],
+  ['03','Экспертиза','Проверяют внедрение и уровень локализации'],
+  ['04','Решение и договор','Штаб по локализации согласует размер выплаты']
+ ];
+ var TL_DEV=[
+  ['01','Заявление и документы','Подаются через портал, регистрация сразу'],
+  ['02','Комплектность','Проверяют документы и сведения о производстве'],
+  ['03','Оценка робота','Испытания на соответствие стандартам и ТТХ'],
+  ['04','Решение','Включение в реестр с уровнем локализации']
+ ];
+
+ var RIB_WORKS={type:'works', h:'Что можно поручить роботу',
+   em:cnt(WORKS_RIB.length,['работа','работы','работ']),
+   items:WORKS_RIB, link:'#robots', ctaT:'Найдите своего робота',
+   ctaS:cnt(nRobots,['решение','решения','решений'])+' и '+
+        cnt(nMakers,['производитель','производителя','производителей'])};
+ var RIB_SITES={type:'sites', h:'Где проверяют роботов',
+   em:SITES_RIB.length+' из '+nSites+' площадок',
+   items:SITES_RIB, link:'#trials', ctaT:'Все площадки',
+   ctaS:cnt(nSites,['площадка','площадки','площадок'])+' в '+
+        cnt(nEnv,['среде','средах','средах'])};
+
+ var APPLY=document.getElementById('account')?'#account':'#band';
+
+ function bizSteps(){
+  return [
+   {n:'Шаг 01', b:'Выбрать робота', s:'Каталог из '+nRobots+' решений',
+    kicker:'Шаг 01 · выбор', title:'Найдите робота под свою задачу',
+    lead:'В каталоге '+nRobots+' моделей от '+nMakers+' производителей: склад, уборка, производство, обходы территории, транспорт. У каждой указаны характеристики, производитель и регион выпуска, поэтому сравнивать можно до первого звонка.',
+    sideH:'Что внутри каталога',
+    rows:[['Решений',nRobots],['Производителей',nMakers],['Регионов выпуска',nRegions]],
+    cta:'Открыть каталог →', link:'#robots', rib:RIB_WORKS},
+   {n:'Шаг 02', b:'Проверить в деле',
+    s:cnt(nSites,['площадка','площадки','площадок'])+', '+cnt(nEnv,['среда','среды','сред']),
+    kicker:'Шаг 02 · проверка', title:'Убедитесь, что робот справится у вас',
+    lead:'До закупки решение проверяют на городских площадках: снимают характеристики, проверяют соответствие московским стандартам и выдают протокол испытаний.',
+    sideH:'Сроки',
+    rows:[['Программа испытаний','до 3 р. д.'],['Проверка на площадке','до 10 р. д.'],['Протокол и заключение','2 р. д.']],
+    cta:'Площадки испытаний →', link:'#trials', rib:RIB_SITES},
+   {n:'Шаг 03', b:'Вернуть часть затрат', s:'Субсидии и компенсации',
+    kicker:'Шаг 03 · деньги', title:'Заберите часть расходов у города',
+    lead:'Для тех, кто внедряет робота из реестра Москвы, действует несколько мер. Размер зависит от уровня локализации решения и от того, как вы платите за робота.',
+    sideH:'Условие для всех мер',
+    rows:[['Робот в реестре Москвы','обязательно'],['Компания из Москвы','обязательно'],['Решение штаба','до 25 р. д.']],
+    cta:'Гранты и кредиты →', link:'#finance',
+    rib:{type:'measures', h:'Меры для заказчика', em:M_BIZ.length+' из '+nMeasures, items:M_BIZ}},
+   {n:'Шаг 04', b:'Подать заявку', s:'Одна форма на портале',
+    kicker:'Шаг 04 · заявка', title:'Оформите все в личном кабинете',
+    lead:'Заявка подается на портале: выбираете модель из реестра, прикладываете договор, акт приема и платежные документы. Дальше ее рассматривает штаб по локализации.',
+    sideH:'Что приложить',
+    rows:[['Договор поставки','копия'],['Акт приема-передачи','копия'],['Платежные документы','копии']],
+    cta:'Подать заявку →', link:APPLY,
+    rib:{type:'timeline', h:'Как проходит заявка', em:'до 25 рабочих дней', items:TL_BIZ}}
+  ];
+ }
+
+ function devSteps(){
+  return [
+   {n:'Шаг 01', b:'Войти в реестр', s:'Пропуск ко всем мерам',
+    kicker:'Шаг 01 · реестр', title:'Заявите решение в реестр Москвы',
+    lead:'Без реестра меры недоступны. Проверяют два факта: робот собран в России и соответствует московским стандартам роботизации. Уровень локализации определяет, сколько поддержки вы получите.',
+    sideH:'Уровни локализации',
+    rows:[['1-й уровень','50% суммы'],['2-й уровень','100% суммы'],['Решение','до 25 р. д.']],
+    cta:'Подать заявку в реестр →', link:APPLY,
+    rib:{type:'timeline', h:'Как проходит включение в реестр', em:'не позднее 25 р. д.', items:TL_DEV}},
+   {n:'Шаг 02', b:'Испытать',
+    s:cnt(nEnv,['среда','среды','сред'])+', '+cnt(nSites,['площадка','площадки','площадок']),
+    kicker:'Шаг 02 · испытания', title:'Проверьте робота там, где он будет работать',
+    lead:'Улицы, цеха, помещения, воздух, вода и лаборатория. Под сценарий составляют программу и методику испытаний, на выходе протокол — для реестра и для будущего заказчика.',
+    sideH:'Среды испытаний',
+    rows:ENVIRONMENTS.map(function(e){ return [e.title, e.sites.length+' площ.']; }),
+    cta:'Площадки испытаний →', link:'#trials', rib:RIB_SITES},
+   {n:'Шаг 03', b:'Взять деньги', s:cnt(nMeasures,['мера','меры','мер'])+' поддержки',
+    kicker:'Шаг 03 · деньги', title:'Возьмите заем или грант на свой этап',
+    lead:'Поддержка закрывает всю цепочку: разработку, производство, исполнение контракта и первый пилот на городской площадке.',
+    sideH:'Еще доступно',
+    rows:[['Заем на контракт','до 100 млн ₽'],['Ставка','10%'],['Срок','до 24 мес.']],
+    cta:'Гранты и кредиты →', link:'#finance',
+    rib:{type:'measures', h:'Меры для разработчика', em:M_DEV.length+' из '+nMeasures, items:M_DEV}},
+   {n:'Шаг 04', b:'Выйти на заказчиков', s:'Витрина и кооперация',
+    kicker:'Шаг 04 · рынок', title:'Покажите решение тем, кто его купит',
+    lead:'Модель попадает в каталог, который смотрят город и промышленность. Дальше пилот на реальном объекте и поиск партнеров по комплектующим.',
+    sideH:'Что дает портал',
+    rows:[['Карточка в каталоге',nRobots+' решений'],['Пилот на площадке','грант до 4 млн ₽'],['Кооперация','раздел готовится']],
+    cta:'Открыть каталог →', link:'#robots', rib:RIB_WORKS}
+  ];
+ }
+
+ var CHAIN_BIZ=[['cat'],['test','pilot'],['money'],['deploy']];
+ var CHAIN_DEV=[['dev','reg'],['test'],['money','pilot'],['cat','coop']];
+ var state={who:null, step:0};
+
+ function drawChain(){
+  var box=document.getElementById('rlChain');
+  if(!box) return;
+  var items=Array.prototype.slice.call(box.querySelectorAll('li'));
+  var h=document.getElementById('rlChainH');
+  if(!state.who){
+   box.classList.remove('pick');
+   items.forEach(function(li){ li.classList.remove('on','now'); });
+   h.textContent='Портал закрывает всю цепочку';
+   return;
+  }
+  var map=state.who==='biz'?CHAIN_BIZ:CHAIN_DEV;
+  var mine={}; map.forEach(function(a){ a.forEach(function(k){ mine[k]=1; }); });
+  var now={}; (map[state.step]||[]).forEach(function(k){ now[k]=1; });
+  box.classList.add('pick');
+  items.forEach(function(li){
+   var k=li.getAttribute('data-st');
+   li.classList.toggle('on', !!mine[k]);
+   li.classList.toggle('now', !!now[k]);
+  });
+  h.textContent='Ваш участок цепочки';
+ }
+
+ function ribHTML(r){
+  var head='<p class="rl-rib-h">'+esc(r.h)+' <em>'+esc(r.em)+'</em>'+
+   ((r.type==='works'||r.type==='sites')?'<i>листайте вправо →</i>':'')+'</p>';
+  if(r.type==='works'||r.type==='sites'){
+   var cards=r.items.map(function(w){
+    if(r.type==='sites'){
+     return '<a class="rl-card rl-card-site" href="'+esc(r.link)+'">'+
+      '<p class="rl-c-t">'+esc(w.t)+'</p><p class="rl-c-env">'+esc(w.env)+'</p>'+
+      '<span class="rl-pic"><img src="'+esc(w.img)+'" alt="" loading="lazy"></span>'+
+      '<p class="rl-note">'+esc(w.note)+'</p>'+
+      (w.size?'<p class="rl-size">'+esc(w.size)+'</p>':'')+'</a>';
+    }
+    return '<a class="rl-card" href="'+esc(r.link)+'">'+
+     '<p class="rl-c-t">'+esc(w.t)+'</p><p class="rl-c-env">'+esc(w.env)+'</p>'+
+     '<span class="rl-pic"><img src="'+esc(w.img)+'" alt="" loading="lazy"></span>'+
+     '<p class="rl-lb">решения:</p><ul class="rl-list">'+w.models.map(function(m){
+      return '<li><b>'+esc(m[0])+'</b><span>'+esc(m[1])+'</span></li>'; }).join('')+'</ul></a>';
+   }).join('');
+   cards+='<a class="rl-card rl-card-cta" href="'+esc(r.link)+'">'+
+    '<i>↗</i><b>'+esc(r.ctaT)+'</b><span>'+esc(r.ctaS)+'</span></a>';
+   return head+'<div class="rl-rail">'+cards+'</div>';
+  }
+  if(r.type==='measures'){
+   return head+'<div class="rl-mcards">'+r.items.map(function(m){
+    var live=!m.proposed;
+    return '<article class="rl-mcard"><span class="st'+(live?' live':'')+'">'+
+     (live?'Действующая мера':'Отбор пока не открыт')+'</span>'+
+     '<h4>'+esc(m.short)+'</h4><span class="sum">'+esc(m.amount)+'</span>'+
+     '<p>'+esc(m.terms||m.spend||m.params||'')+'</p>'+
+     '<span class="org">'+esc(ORG[m.operator]||m.operator)+'</span></article>'; }).join('')+'</div>';
+  }
+  return head+'<div class="rl-tl">'+r.items.map(function(s){
+   return '<div><u>'+esc(s[0])+'</u><b>'+esc(s[1])+'</b><span>'+esc(s[2])+'</span></div>'; }).join('')+'</div>';
+ }
+
+ function render(){
+  var list=state.who==='biz'?bizSteps():devSteps(), d=list[state.step];
+  document.getElementById('rlTitle').textContent = state.who==='biz'?'Путь внедрения':'Путь развития';
+  document.getElementById('rlSwap').textContent =
+   state.who==='biz'?'Я вообще-то делаю роботов →':'Я вообще-то ищу робота →';
+  document.getElementById('rlSteps').innerHTML = list.map(function(s,i){
+   return '<button type="button" class="rl-step'+(i===state.step?' on':'')+'" data-step="'+i+'">'+
+    '<u>'+esc(s.n)+'</u><b>'+esc(s.b)+'</b><s>'+esc(s.s)+'</s></button>'; }).join('');
+  document.getElementById('rlDetail').innerHTML =
+   '<div><p class="rl-kick">'+esc(d.kicker)+'</p>'+
+    '<h4 class="rl-t">'+esc(d.title)+'</h4>'+
+    '<p class="rl-lead">'+esc(d.lead)+'</p>'+
+    '<a class="btn btn-green" href="'+esc(d.link)+'" style="margin-top:20px">'+esc(d.cta)+'</a></div>'+
+   '<div class="rl-side"><p class="rl-side-h">'+esc(d.sideH)+'</p><div>'+
+    d.rows.map(function(r){ return '<div class="rl-row"><b>'+esc(r[0])+'</b><span>'+esc(r[1])+'</span></div>'; }).join('')+
+   '</div></div>';
+  document.getElementById('rlRib').innerHTML = ribHTML(d.rib);
+  drawChain();
+ }
+
+ function go(who){
+  state.who=who; state.step=0;
+  fork.hidden=true; route.hidden=false;
+  render();
+ }
+
+ fork.addEventListener('click', function(e){
+  var b=e.target.closest('[data-go]'); if(b) go(b.getAttribute('data-go'));
+ });
+ route.addEventListener('click', function(e){
+  var s=e.target.closest('[data-step]');
+  if(s){ state.step=+s.getAttribute('data-step'); render(); return; }
+  if(e.target.closest('#rlSwap')) go(state.who==='biz'?'dev':'biz');
+ });
+})();
 </script>
 </body>
 </html>
