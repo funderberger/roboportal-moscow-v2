@@ -1260,9 +1260,9 @@ select.trf-in option{background:var(--coal);color:var(--white)}
 /* ---------- окно подбора роботов под работу ---------- */
 /* два уровня живут в одном <dialog>: экран работы и карточка модели.
    Содержимое целиком собирает скрипт из ROBOTS и WORKS */
-dialog#taskDlg,dialog#finDlg,dialog#anDlg,dialog#caseDlg,dialog#trDlg,dialog#trFormDlg{border:0;padding:0;background:transparent;color:var(--white);
+dialog#rlDlg,dialog#taskDlg,dialog#finDlg,dialog#anDlg,dialog#caseDlg,dialog#trDlg,dialog#trFormDlg{border:0;padding:0;background:transparent;color:var(--white);
   width:100%;max-width:none;height:100%;max-height:none}
-dialog#taskDlg::backdrop,dialog#finDlg::backdrop,dialog#anDlg::backdrop,dialog#caseDlg::backdrop,dialog#trDlg::backdrop,dialog#trFormDlg::backdrop{background:rgba(6,10,8,.72);
+dialog#rlDlg::backdrop,dialog#taskDlg::backdrop,dialog#finDlg::backdrop,dialog#anDlg::backdrop,dialog#caseDlg::backdrop,dialog#trDlg::backdrop,dialog#trFormDlg::backdrop{background:rgba(6,10,8,.72);
   backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
 .tdlg{min-height:100%;display:flex;align-items:center;justify-content:center;padding:var(--gut)}
 /* колонка: шапка приколота, прокручивается только тело — окно не вылезает
