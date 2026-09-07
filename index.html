@@ -203,6 +203,57 @@ section{position:relative}
 .pocket p{margin:14px 0 0;font-size:clamp(16px,1.25vw,20px);line-height:1.35;opacity:.75;max-width:36ch}
 .pocket .btn{background:#06110B;color:#fff;align-self:flex-start;margin-top:clamp(22px,2vw,32px)}
 
+/* ---- кооперация: типы комплектующих и их производители ----
+   Лента карточек: номер, снимок и цветная подпись. Чипы сверху оставляют
+   на экране один тип — так человек ищет не «что вообще бывает»,
+   а конкретного поставщика под свою задачу */
+.coop{padding:clamp(40px,4.6vw,70px) var(--gut) clamp(36px,4vw,58px)}
+.co-head{max-width:1180px;margin:0 auto clamp(16px,1.8vw,26px)}
+.co-head .h1{font-size:clamp(30px,4.4vw,68px);line-height:.98}
+.co-head .h1 em{font-style:normal;color:var(--green)}
+.co-lead{margin:clamp(12px,1.4vw,18px) 0 0;max-width:60ch}
+.co-chips{max-width:1180px;margin:0 auto clamp(16px,1.8vw,24px);
+  display:flex;flex-wrap:wrap;gap:8px}
+.co-chip{padding:10px 18px;border-radius:999px;border:1px solid var(--w-08);
+  background:var(--ink);font-size:14px;letter-spacing:-.01em;color:var(--w-70);transition:.22s}
+.co-chip:hover{border-color:var(--w-16);color:var(--white)}
+.co-chip.on{background:var(--green);border-color:var(--green);color:#06110B}
+.co-chip:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+.co-rail{max-width:1180px;margin:0 auto;display:flex;gap:12px;overflow-x:auto;
+  padding-bottom:12px;scroll-snap-type:x proximity;
+  scrollbar-width:thin;scrollbar-color:var(--w-16) transparent}
+.co-rail::-webkit-scrollbar{height:6px}
+.co-rail::-webkit-scrollbar-thumb{background:var(--w-16);border-radius:999px}
+.co-rail::-webkit-scrollbar-track{background:transparent}
+/* карточка: снимок сверху, цветная подпись снизу — как на образце */
+.co-card{flex:0 0 clamp(214px,19vw,248px);scroll-snap-align:start;
+  display:flex;flex-direction:column;border-radius:var(--r-s);overflow:hidden;
+  background:var(--coal);border:1px solid var(--w-08);
+  transition:transform .3s cubic-bezier(.2,.7,.3,1),border-color .25s}
+.co-card:hover{transform:translateY(-5px);border-color:var(--w-16)}
+.co-pic{position:relative;aspect-ratio:1/1;background:var(--ink)}
+.co-pic img{width:100%;height:100%;object-fit:cover;display:block}
+.co-pic.is-wait{display:grid;place-content:center;border-bottom:1px dashed var(--w-16)}
+.co-pic.is-wait span{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--w-45)}
+.co-num{position:absolute;top:12px;left:14px;font-size:12.5px;letter-spacing:.08em;
+  color:var(--white);text-shadow:0 1px 6px rgba(0,0,0,.6)}
+.co-go{position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;
+  background:rgba(10,12,11,.6);color:#fff;display:grid;place-content:center;
+  font-size:14px;font-style:normal;backdrop-filter:blur(6px)}
+.co-foot{flex:1;padding:16px 16px 18px;color:#06110B;display:flex;flex-direction:column}
+.co-t{margin:0;font-size:16px;line-height:1.15;letter-spacing:-.02em;font-weight:500}
+.co-d{margin:8px 0 0;font-size:13px;line-height:1.3;color:rgba(6,17,11,.62)}
+.co-cnt{margin:auto 0 0;padding-top:12px;font-size:11.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:rgba(6,17,11,.5)}
+.co-c1{background:var(--mint)}
+.co-c2{background:var(--sky)}
+.co-c3{background:var(--sand)}
+.co-c4{background:var(--pink)}
+.co-c5{background:var(--green)}
+@media(max-width:640px){
+  .co-card{flex:0 0 78%}
+}
+
 /* ---- второй экран: две двери с переходами в разделы ----
    Обе карточки собраны одинаково: заголовок, строка о разделе, список
    переходов и кнопка внизу. Кнопки стоят на одной линии за счет auto-отступа,
@@ -2285,7 +2336,7 @@ body.is-account > section:not(#account){display:none}
           <span class="rd-txt"><b>Продвижение</b><span>Включите решение в реестр и представьте его заказчикам</span></span>
           <i aria-hidden="true">→</i>
         </a>
-        <a class="rd-row" href="#band">
+        <a class="rd-row" href="#coop">
           <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="7" r="2.4"/><circle cx="18" cy="7" r="2.4"/><circle cx="12" cy="17" r="2.4"/><path d="M7.6 8.9l3 6M16.4 8.9l-3 6M8.4 7h7.2"/></svg></span>
           <span class="rd-txt"><b>Кооперация</b><span>Найдите партнёров по комплектующим и заказчиков для внедрения</span></span>
           <i aria-hidden="true">→</i>
@@ -2380,6 +2431,16 @@ body.is-account > section:not(#account){display:none}
     </span>
     <span class="sup-band-go">Подать заявку <i aria-hidden="true">→</i></span>
   </button>
+</section>
+
+<!-- ============ кооперация: комплектующие и их производители ============ -->
+<section class="coop rev" id="coop">
+  <div class="co-head">
+    <h2 class="h1 sec-h">Подберите партнёра<br><em>для кооперации</em></h2>
+    <p class="lead co-lead">Выберите тип комплектующего и найдите исполнителей под вашу задачу</p>
+  </div>
+  <div class="co-chips" id="coChips" role="group" aria-label="тип комплектующих"></div>
+  <div class="co-rail" id="coRail"></div>
 </section>
 
 <!-- ============ зачем здесь робот: стопка кейсов ============ -->
@@ -6240,6 +6301,73 @@ var RTC_STEPS=[
  /* адрес мог открыться сразу на #path: маршрутизатор отработал раньше,
     чем появился этот модуль, поэтому дорисовываем экран сами */
  if(location.hash==='#path') window.rlRender();
+})();
+</script>
+<script>
+/* ---- кооперация ----
+   Типы комплектующих из структуры каталога робототехники. Числа — сколько
+   компаний и изделий уже собрано по каждому направлению; там, где выгрузки
+   еще нет, снимок заменяет рамка, а число остается из структуры. */
+(function(){
+ var rail=document.getElementById('coRail'), chips=document.getElementById('coChips');
+ if(!rail||!chips) return;
+ function esc(s){ return String(s==null?'':s)
+   .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+ var PARTS=[
+  {g:'Двигатели', t:'Двигатели и сервоприводы', d:'Сервопривод для роботизированного манипулятора',
+   img:'images/parts/part-2.jpg', co:27, it:80, c:'co-c1'},
+  {g:'Управление', t:'Системы управления и обработки данных', d:'Промышленный контроллер движения',
+   img:'images/parts/part-3.jpg', co:40, it:79, c:'co-c2'},
+  {g:'Сенсоры', t:'Сенсоры и средства связи', d:'Видеопередатчик и навигационный модуль',
+   img:'images/parts/part-4.jpg', co:19, it:42, c:'co-c3'},
+  {g:'Электропитание', t:'Электропитание', d:'Тяговый аккумуляторный модуль',
+   img:'images/parts/part-0.jpg', co:16, it:78, c:'co-c4'},
+  {g:'Компоненты', t:'Электронная компонентная база', d:'Микроконтроллер реального времени',
+   img:'', co:15, it:17, c:'co-c5'},
+  {g:'Разъёмы', t:'Разъёмы', d:'Силовые и слаботочные соединители',
+   img:'', co:0, it:0, c:'co-c3'},
+  {g:'ПО', t:'ПО', d:'Программное обеспечение для автономной навигации',
+   img:'', co:11, it:30, c:'co-c2'}
+ ];
+ var pick='Все';
+
+ function plu(n,f){ var a=Math.abs(n)%100,b=a%10;
+  if(a>10&&a<20) return f[2]; if(b>1&&b<5) return f[1]; if(b===1) return f[0]; return f[2]; }
+
+ function drawChips(){
+  var all=['Все'].concat(PARTS.map(function(p){ return p.g; }));
+  chips.innerHTML=all.map(function(g){
+   return '<button type="button" class="co-chip'+(pick===g?' on':'')+'" data-g="'+esc(g)+'">'+
+    esc(g==='Все'?'Все комплектующие':g)+'</button>'; }).join('');
+ }
+
+ function drawRail(){
+  var list=PARTS.filter(function(p){ return pick==='Все'||p.g===pick; });
+  rail.innerHTML=list.map(function(p,i){
+   var num=('0'+(PARTS.indexOf(p)+1)).slice(-2);
+   var cnt=p.co? p.co+' '+plu(p.co,['компания','компании','компаний'])+' · '+
+                 p.it+' '+plu(p.it,['изделие','изделия','изделий'])
+                : 'данные собираются';
+   return '<article class="co-card">'+
+    '<div class="co-pic'+(p.img?'':' is-wait')+'">'+
+     (p.img?'<img src="'+esc(p.img)+'" alt="" loading="lazy">':'<span>фото готовится</span>')+
+     '<span class="co-num">'+num+'</span><i class="co-go" aria-hidden="true">↗</i>'+
+    '</div>'+
+    '<div class="co-foot '+p.c+'">'+
+     '<h3 class="co-t">'+esc(p.t)+'</h3>'+
+     '<p class="co-d">'+esc(p.d)+'</p>'+
+     '<span class="co-cnt">'+esc(cnt)+'</span>'+
+    '</div></article>';
+  }).join('');
+ }
+
+ chips.addEventListener('click',function(e){
+  var b=e.target.closest('[data-g]'); if(!b) return;
+  pick=b.getAttribute('data-g');
+  drawChips(); drawRail();
+ });
+ drawChips(); drawRail();
 })();
 </script>
 </body>
