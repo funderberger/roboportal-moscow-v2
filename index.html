@@ -202,23 +202,10 @@ section{position:relative}
    говорит, кто он, дальше идет по четырем шагам, и под каждым шагом
    лежит лента с настоящим содержимым портала — работы и решения,
    площадки испытаний, меры с суммами, сроки заявки. */
-.rl-chain{margin:clamp(22px,2.6vw,34px) 0 0;border:1px solid var(--w-08);border-radius:999px;
-  background:var(--ink);padding:12px clamp(16px,1.8vw,24px);
-  display:flex;align-items:center;gap:10px 14px;flex-wrap:wrap}
-.rl-chain-h{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--w-45);flex:none}
-.rl-chain ol{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0;padding:0;list-style:none}
-.rl-chain li{display:flex;align-items:center;gap:8px;font-size:13.5px;line-height:1;color:var(--w-70);
-  transition:color .25s,opacity .25s}
-.rl-chain li::after{content:"";width:12px;height:1px;background:var(--w-16)}
-.rl-chain li:last-child::after{display:none}
-.rl-chain.pick li{opacity:.3}
-.rl-chain li.on{opacity:1;color:var(--white)}
-.rl-chain li.now{opacity:1;color:var(--green)}
-
 /* две двери. Строки жестко выровнены между карточками: заголовок всегда в
    две строки, подзаголовок в две, кнопка на одном уровне — иначе половинки
    прыгают друг относительно друга */
-.rl-fork{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.rl-fork{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:clamp(22px,2.6vw,34px)}
 .rl-fork[hidden],.rl-route[hidden]{display:none}
 .rl-door{text-align:left;border:0;cursor:pointer;font:inherit;border-radius:var(--r);
   padding:clamp(24px,2.4vw,38px);display:flex;flex-direction:column;color:#06110B;
@@ -2156,20 +2143,6 @@ body.is-account > section:not(#account){display:none}
     <h2 class="h1 sec-h">Соединяем разработчиков<br>с заказчиками</h2>
     <img class="roles-robot" src="images/robot-wave.png" alt="" width="684" height="900" loading="lazy">
   </div>
-  <div class="rl-chain" id="rlChain">
-    <span class="rl-chain-h" id="rlChainH">Портал закрывает всю цепочку</span>
-    <ol>
-      <li data-st="dev">Разработка</li>
-      <li data-st="reg">Реестр</li>
-      <li data-st="test">Испытания</li>
-      <li data-st="pilot">Пилот</li>
-      <li data-st="money">Поддержка</li>
-      <li data-st="cat">Каталог</li>
-      <li data-st="deploy">Внедрение</li>
-      <li data-st="coop">Кооперация</li>
-    </ol>
-  </div>
-
   <div class="rl-fork" id="rlFork">
     <button type="button" class="rl-door rl-door-1" data-go="biz">
       <h3>Найти робота<br>под задачу</h3>
@@ -5981,32 +5954,7 @@ var RTC_STEPS=[
   ];
  }
 
- var CHAIN_BIZ=[['cat'],['test','pilot'],['money'],['deploy']];
- var CHAIN_DEV=[['dev','reg'],['test'],['money','pilot'],['cat','coop']];
  var state={who:null, step:0};
-
- function drawChain(){
-  var box=document.getElementById('rlChain');
-  if(!box) return;
-  var items=Array.prototype.slice.call(box.querySelectorAll('li'));
-  var h=document.getElementById('rlChainH');
-  if(!state.who){
-   box.classList.remove('pick');
-   items.forEach(function(li){ li.classList.remove('on','now'); });
-   h.textContent='Портал закрывает всю цепочку';
-   return;
-  }
-  var map=state.who==='biz'?CHAIN_BIZ:CHAIN_DEV;
-  var mine={}; map.forEach(function(a){ a.forEach(function(k){ mine[k]=1; }); });
-  var now={}; (map[state.step]||[]).forEach(function(k){ now[k]=1; });
-  box.classList.add('pick');
-  items.forEach(function(li){
-   var k=li.getAttribute('data-st');
-   li.classList.toggle('on', !!mine[k]);
-   li.classList.toggle('now', !!now[k]);
-  });
-  h.textContent='Ваш участок цепочки';
- }
 
  function ribHTML(r){
   var head='<p class="rl-rib-h">'+esc(r.h)+' <em>'+esc(r.em)+'</em>'+
@@ -6060,7 +6008,6 @@ var RTC_STEPS=[
     d.rows.map(function(r){ return '<div class="rl-row"><b>'+esc(r[0])+'</b><span>'+esc(r[1])+'</span></div>'; }).join('')+
    '</div></div>';
   document.getElementById('rlRib').innerHTML = ribHTML(d.rib);
-  drawChain();
  }
 
  function go(who){
