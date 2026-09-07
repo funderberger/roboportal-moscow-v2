@@ -324,6 +324,7 @@ section{position:relative}
 /* ---- путь на портале ----
    Отдельный экран, как каталог и витрина мер: при хеше #path лендинг
    прячется целиком, остается шапка, маршрут и подвал */
+#coop[hidden]{display:none}
 #path{display:none}
 body.is-path #path{display:block}
 body.is-path > section:not(#path){display:none}
@@ -2321,7 +2322,7 @@ body.is-account > section:not(#account){display:none}
           <span class="rd-txt"><b>Продвижение</b><span>Расскажите о своем решении, включите его в реестр робототехники Москвы и получите доступ к новым заказчикам</span></span>
           <i aria-hidden="true">→</i>
         </a>
-        <a class="rd-row" href="#coop">
+        <a class="rd-row" href="#band">
           <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="7" r="2.4"/><circle cx="18" cy="7" r="2.4"/><circle cx="12" cy="17" r="2.4"/><path d="M7.6 8.9l3 6M16.4 8.9l-3 6M8.4 7h7.2"/></svg></span>
           <span class="rd-txt"><b>Кооперация</b><span>Найдите партнеров для развития и доработки ваших решений</span></span>
           <i aria-hidden="true">→</i>
@@ -2441,7 +2442,7 @@ body.is-account > section:not(#account){display:none}
 </section>
 
 <!-- ============ кооперация: комплектующие и их производители ============ -->
-<section class="coop rev" id="coop">
+<section class="coop rev" id="coop" hidden>
   <div class="co-head">
     <h2 class="h1 sec-h">Подберите партнера<br>для кооперации</h2>
     <p class="lead co-lead">Выберите тип задачи для решения и найдите исполнителей из проверенных партнеров</p>
