@@ -258,71 +258,82 @@ section{position:relative}
 @media(max-width:820px){.co-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:520px){.co-grid{grid-template-columns:1fr}}
 
-/* ---- второй экран: две двери с переходами в разделы ----
-   Обе карточки светлые: темная сливалась с фоном страницы. Снимок робота
-   лежит в правом нижнем углу и забирает разницу в высоте — строк слева три,
-   справа четыре, а нижний край у карточек общий.
-   Размеры внутри блока считаются от --u: один шаг равен проценту ширины
-   экрана, поэтому кегли и поля растут вместе с макетом одной пропорцией */
+/* ---- второй экран: две роли и сетки быстрых переходов ---- */
 #roles{--u:1vw}
 .rd-head{max-width:none;margin:0 0 clamp(16px,1.8vw,26px)}
-.rd-head .h1{font-size:clamp(34px,5.6vw,92px);line-height:.94}
+.rd-head .h1{font-size:clamp(35.7px,5.88vw,96.6px);line-height:.94}
 .rd-lead{margin:clamp(12px,1.4vw,18px) 0 0;max-width:64ch;
-  font-size:clamp(15px,calc(var(--u)*1.35),21px)}
+  font-size:clamp(15.75px,calc(var(--u)*1.4175),22.05px)}
 .rd-two{max-width:none;display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:stretch}
 .rd-card{position:relative;overflow:hidden;border-radius:var(--r);
-  padding:clamp(20px,calc(var(--u)*1.65),25px) clamp(20px,calc(var(--u)*1.8),28px);
-  display:flex;flex-direction:column;color:#06110B}
-.rd-a{background:var(--mint)}
-.rd-b{background:var(--green);overflow:visible}
-.rd-t{margin:0;font-size:clamp(30px,calc(var(--u)*2.6),40px);line-height:1;
-  letter-spacing:-.04em;font-weight:500}
-.rd-sub{margin:clamp(6px,calc(var(--u)*0.55),9px) 0 0;max-width:44ch;min-height:2.45em;
-  font-size:clamp(13px,calc(var(--u)*0.95),14.5px);line-height:1.24;color:rgba(6,17,11,.62)}
-/* список занимает доступную высоту карточки. В левой колонке три строки
-   чуть выше четырех правых — так под ними не остается пустого провала,
-   при этом внутренняя трехколоночная ось у всех пунктов одинаковая */
-.rd-list{position:relative;z-index:2;flex:1 1 auto;align-content:stretch;
-  margin:clamp(10px,calc(var(--u)*0.8),13px) 0 clamp(8px,calc(var(--u)*0.65),10px);
-  display:grid;grid-auto-rows:1fr;gap:clamp(6px,calc(var(--u)*0.45),7px)}
-.rd-a .rd-list,.rd-b .rd-list{max-width:none}
-.rd-row{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;
-  min-height:54px;
-  gap:clamp(9px,calc(var(--u)*0.72),11px);
-  padding:clamp(7px,calc(var(--u)*0.55),9px) clamp(10px,calc(var(--u)*0.75),12px);
-  border-radius:var(--r-s);background:rgba(255,255,255,.62);
-  transition:.24s cubic-bezier(.2,.7,.3,1)}
-.rd-row:hover{background:#fff;transform:translateX(4px)}
-.rd-ico{flex:none;width:36px;height:36px;
-  border-radius:11px;display:grid;place-content:center;background:rgba(6,17,11,.06)}
-.rd-ico svg{width:18px;height:18px;fill:none;stroke:#06110B;stroke-width:1.5;
+  min-height:clamp(450px,28vw,470px);padding:clamp(17px,1.35vw,23px);
+  display:flex;flex-direction:column;color:#06110B;isolation:isolate}
+.rd-a{background:linear-gradient(145deg,#d8fae8 0%,var(--mint) 58%,#aef0cf 100%)}
+.rd-b{background:linear-gradient(145deg,#5be997 0%,var(--green) 52%,#22c96b 100%)}
+.rd-t{margin:0;font-size:clamp(37.8px,3.213vw,54.6px);line-height:.94;letter-spacing:-.045em;font-weight:500}
+.rd-sub{margin:clamp(6px,.65vw,9px) 0 0;max-width:39ch;min-height:2.4em;
+  font-size:clamp(15.12px,1.1088vw,18.9px);line-height:1.22;color:rgba(6,17,11,.62)}
+.rd-t,.rd-sub{position:relative;z-index:2}
+.rd-list{position:relative;z-index:2;flex:1 1 auto;
+  min-height:0;
+  margin:clamp(9px,.8vw,13px) 0;display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:1.1fr 1fr;
+  gap:12px}
+.rd-b .rd-list{grid-template-columns:repeat(7,minmax(0,1fr));grid-template-rows:1.1fr 1fr}
+.rd-a .rd-row:nth-child(1){grid-column:1/4;grid-row:1/3}
+.rd-a .rd-row:nth-child(2){grid-column:4/7;grid-row:1}
+.rd-a .rd-row:nth-child(3){grid-column:4/7;grid-row:2}
+.rd-b .rd-row:nth-child(1){grid-column:1/4;grid-row:1}
+.rd-b .rd-row:nth-child(2){grid-column:4/8;grid-row:1}
+.rd-b .rd-row:nth-child(3){grid-column:1/4;grid-row:2}
+.rd-b .rd-row:nth-child(4){grid-column:4/8;grid-row:2}
+.rd-row{position:relative;overflow:hidden;isolation:isolate;box-sizing:border-box;display:flex;flex-direction:column;align-items:flex-start;
+  min-height:0;padding:14px 68px 42px 14px;border-radius:clamp(13px,1vw,18px);
+  border:1px solid rgba(255,255,255,.52);
+  background:linear-gradient(145deg,rgba(255,255,255,.74),rgba(239,255,247,.55));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.55);
+  transition:transform .2s ease,background-color .2s ease,box-shadow .2s ease}
+.rd-row:hover{transform:translateY(-3px);background:rgba(255,255,255,.84);
+  box-shadow:0 10px 24px rgba(6,17,11,.08),inset 0 1px 0 rgba(255,255,255,.7)}
+.rd-row:focus-visible{outline:3px solid #06110B;outline-offset:3px}
+.rd-row>*{position:relative;z-index:1}
+.rd-ico{flex:none;width:clamp(30.45px,2.1vw,35.7px);height:clamp(30.45px,2.1vw,35.7px);
+  border-radius:11px;display:grid;place-content:center;background:rgba(66,227,131,.2)}
+.rd-ico svg{width:clamp(16.8px,1.2075vw,21px);height:clamp(16.8px,1.2075vw,21px);fill:none;stroke:#06110B;stroke-width:1.5;
   stroke-linecap:round;stroke-linejoin:round}
-.rd-txt{min-width:0}
-.rd-txt b{display:block;font-size:clamp(13.5px,calc(var(--u)*0.98),15px);line-height:1.18;
-  letter-spacing:-.015em;font-weight:500}
-.rd-txt span{display:block;margin-top:2px;font-size:clamp(11.5px,calc(var(--u)*0.82),13px);
-  line-height:1.22;color:rgba(6,17,11,.55)}
-.rd-row i{align-self:center;justify-self:end;font-style:normal;font-size:18px;line-height:1;
-  color:rgba(6,17,11,.4);transition:transform .24s}
-.rd-row:hover i{transform:translateX(3px)}
+.rd-txt{min-width:0;margin-top:8px;max-width:100%}
+.rd-txt b{display:block;font-size:clamp(17.22px,1.26vw,21px);line-height:1.12;letter-spacing:-.025em;font-weight:600}
+.rd-a .rd-row:first-child .rd-txt b{font-size:clamp(25.2px,1.911vw,31.5px);max-width:8ch}
+.rd-b .rd-row:nth-child(2) .rd-txt b{font-size:clamp(19.95px,1.386vw,23.625px)}
+.rd-txt span{display:block;margin-top:7px;font-size:clamp(14.7px,.9975vw,16.275px);
+  line-height:1.3;color:rgba(6,17,11,.62);max-width:31ch}
+.rd-row i{position:absolute;right:14px;bottom:14px;
+  width:36px;height:36px;
+  border:1px solid rgba(255,255,255,.7);border-radius:10px;background:rgba(255,255,255,.52);
+  display:grid;place-content:center;font-style:normal;font-size:clamp(16px,1.2vw,20px);line-height:1;
+  color:#06110B;z-index:2;transition:transform .2s ease,background-color .2s ease}
+.rd-row:hover i{transform:translateX(3px);background:#fff}
 .rd-cta{position:relative;z-index:2;align-self:flex-start;margin-top:auto;margin-bottom:0}
 .rd-cta-dark{background:#06110B;color:#fff}
 .rd-cta-dark:hover{background:var(--coal);transform:translateY(-2px)}
-/* кнопки только этого экрана: общий .btn остается прежним */
-#roles .btn{padding:clamp(11px,calc(var(--u)*0.85),13px) clamp(18px,calc(var(--u)*1.7),24px);
-  font-size:clamp(13.5px,calc(var(--u)*1),15px);gap:8px;border-radius:999px}
-/* гуманоид вынесен из карточки вверх и прижат к правому краю экрана */
-.rd-fig{position:absolute;right:calc(var(--gut)*-1);top:clamp(-300px,-19.5vw,-230px);
-  bottom:auto;width:clamp(185px,16vw,250px);
-  z-index:1;pointer-events:none;user-select:none}
-.rd-fig img{display:block;width:100%;height:auto}
-@media(max-width:1100px){
-  .rd-a .rd-list,.rd-b .rd-list{max-width:none}
-  .rd-fig{display:none}
+#roles .btn{padding:clamp(9px,.72vw,12px) clamp(16px,1.45vw,23px);
+  font-size:clamp(15.12px,1.1088vw,18.9px);gap:6px;border-radius:999px}
+@media(max-width:1180px){
+  .rd-card{min-height:450px}
+  .rd-row{min-height:0;padding:14px 68px 42px 14px}
+  .rd-txt span{font-size:14.7px}
 }
 @media(max-width:900px){
   .rd-two{grid-template-columns:1fr}
+  .rd-card{min-height:430px}
   .rd-sub{max-width:none}
+}
+@media(max-width:580px){
+  .rd-card{min-height:0;padding:20px}
+  .rd-list{grid-template-columns:1fr;grid-template-rows:none;grid-auto-rows:minmax(160px,auto)}
+  .rd-a .rd-row:nth-child(n),.rd-b .rd-row:nth-child(n){grid-column:auto;grid-row:auto}
+  .rd-a .rd-row:first-child .rd-txt b{max-width:none}
+  .rd-cta{width:100%;justify-content:center}
 }
 /* ---- развилка на две аудитории и маршрут ----
    Второй экран не раскладывает разделы, а ведет человека: сначала он
@@ -543,12 +554,13 @@ body.is-path > section:not(#path){display:none}
   .env{flex:0 0 auto}
   .env-i{flex:0 0 auto;padding:16px 18px}
 }
-.test-r{position:relative;padding:clamp(14px,1.5vw,22px);
+.test-r{position:relative;padding:0;overflow:hidden;border-radius:inherit;
   background:radial-gradient(100% 100% at 70% 20%,#1B3F2E,#0C100E)}
 /* кадры лежат стопкой и уже загружены — переключение без подгрузки и мигания */
 /* кадром может быть и видео — правила общие, рамка не меняется */
-.test-r img,.test-r video{position:absolute;inset:clamp(14px,1.5vw,22px);
-  width:auto;height:auto;border-radius:var(--r-s);
+.test-r img,.test-r video{position:absolute;inset:0;
+  width:100%;height:100%;border-radius:inherit;
+  box-sizing:border-box;
   object-fit:cover;opacity:0;transition:opacity .45s ease}
 .test-r img.is-on,.test-r video.is-on{opacity:.85}
 .test-cap{position:absolute;left:clamp(26px,2.6vw,38px);bottom:clamp(26px,2.6vw,38px);z-index:2;margin:0;
@@ -2323,21 +2335,21 @@ body.is-account > section:not(#account){display:none}
   <div class="rd-two">
     <article class="rd-card rd-a">
       <h3 class="rd-t">Заказчикам</h3>
-      <p class="rd-sub">Подберите, протестируйте и внедряйте роботизированные решения</p>
+      <p class="rd-sub">Подберите, протестируйте и&nbsp;внедряйте роботизированные решения</p>
       <div class="rd-list">
         <a class="rd-row" href="#robots">
           <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></svg></span>
-          <span class="rd-txt"><b>Каталог решений</b><span>Подберите робота под свои задачи и инфраструктуру</span></span>
+          <span class="rd-txt"><b>Каталог решений</b><span>Подберите робота под&nbsp;свои задачи и&nbsp;инфраструктуру</span></span>
           <i aria-hidden="true">→</i>
         </a>
         <a class="rd-row" href="#trials">
           <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6A2 2 0 0 0 19 18l-5-9V3"/><path d="M9 3h6M7.5 15h9"/></svg></span>
-          <span class="rd-txt"><b>Центр испытаний</b><span>Проверьте решение в реальных условиях перед внедрением</span></span>
+          <span class="rd-txt"><b>Центр испытаний</b><span>Проверьте решение в&nbsp;реальных условиях перед&nbsp;внедрением</span></span>
           <i aria-hidden="true">→</i>
         </a>
         <a class="rd-row" href="#finance">
           <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v5c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 11v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></svg></span>
-          <span class="rd-txt"><b>Меры развития</b><span>Компенсируйте затраты на внедрение роботов</span></span>
+          <span class="rd-txt"><b>Меры развития</b><span>Компенсируйте затраты на&nbsp;внедрение роботов</span></span>
           <i aria-hidden="true">→</i>
         </a>
       </div>
@@ -2346,31 +2358,30 @@ body.is-account > section:not(#account){display:none}
 
     <article class="rd-card rd-b">
       <h3 class="rd-t">Разработчикам</h3>
-      <p class="rd-sub">Создавайте, развивайте и масштабируйте роботизированные решения</p>
+      <p class="rd-sub">Создавайте, развивайте и&nbsp;масштабируйте роботизированные решения</p>
       <div class="rd-list">
         <a class="rd-row" href="#trials">
           <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6A2 2 0 0 0 19 18l-5-9V3"/><path d="M9 3h6M7.5 15h9"/></svg></span>
-          <span class="rd-txt"><b>Испытания</b><span>Проверьте и доработайте решение в реальных условиях</span></span>
+          <span class="rd-txt"><b>Испытания</b><span>Проверьте и&nbsp;доработайте решение в&nbsp;реальных условиях</span></span>
           <i aria-hidden="true">→</i>
         </a>
         <a class="rd-row" href="#robots">
           <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 17l5-6 4 4 7-8"/><path d="M15 7h5v5"/></svg></span>
-          <span class="rd-txt"><b>Продвижение</b><span>Расскажите о своем решении, включите его в реестр робототехники Москвы и получите доступ к новым заказчикам</span></span>
+          <span class="rd-txt"><b>Продвижение</b><span>Расскажите о&nbsp;своем решении, включите его в&nbsp;реестр робототехники Москвы и&nbsp;получите доступ к&nbsp;новым заказчикам</span></span>
           <i aria-hidden="true">→</i>
         </a>
         <a class="rd-row" href="#coop">
           <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="6" cy="7" r="2.4"/><circle cx="18" cy="7" r="2.4"/><circle cx="12" cy="17" r="2.4"/><path d="M7.6 8.9l3 6M16.4 8.9l-3 6M8.4 7h7.2"/></svg></span>
-          <span class="rd-txt"><b>Кооперация</b><span>Найдите партнеров для развития и доработки ваших решений</span></span>
+          <span class="rd-txt"><b>Кооперация</b><span>Найдите партнеров для&nbsp;развития и&nbsp;доработки ваших решений</span></span>
           <i aria-hidden="true">→</i>
         </a>
         <a class="rd-row" href="#finance">
           <span class="rd-ico"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v5c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 11v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></svg></span>
-          <span class="rd-txt"><b>Меры развития</b><span>Получите гранты и льготные кредиты на разработку и развитие решений</span></span>
+          <span class="rd-txt"><b>Меры развития</b><span>Получите гранты и&nbsp;льготные кредиты на&nbsp;разработку и&nbsp;развитие решений</span></span>
           <i aria-hidden="true">→</i>
         </a>
       </div>
       <a class="btn rd-cta rd-cta-dark" href="#account">Рассказать о своем решении →</a>
-      <span class="rd-fig"><img src="images/robot-wave.png" alt="" loading="lazy"></span>
     </article>
   </div>
 </section>
